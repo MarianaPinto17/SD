@@ -1,5 +1,4 @@
 package commonInfrastructures;
-
 /**
  * Hostess life states
  * @author Mariana Pinto
