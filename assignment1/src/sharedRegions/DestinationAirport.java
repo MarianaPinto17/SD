@@ -8,7 +8,7 @@ public class DestinationAirport {
     /**
      * Pilot function - pilot announces that the plane arrived at destination
      */
-    public void announceArrival(){
+    public synchronized void announceArrival(){
 
     }
 }
