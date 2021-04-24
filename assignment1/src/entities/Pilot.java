@@ -2,6 +2,9 @@ package entities;
 
 import commonInfrastructures.PassengerStates;
 import commonInfrastructures.PilotStates;
+import sharedRegions.DepartureAirport;
+import sharedRegions.DestinationAirport;
+import sharedRegions.Plane;
 
 /**
  * Pilot thread and life cycle
@@ -25,11 +28,20 @@ public class Pilot extends Thread{
      */
     private boolean asleep;
 
+
+    private final DepartureAirport depAir;
+    private final DestinationAirport destAir;
+    private final Plane plane;
+
     /**
      * Hosstess Constructor.
      * Initiates a new Pilot that drives a plane
      */
-    public Pilot (){
+    public Pilot (String name , int pilotId, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
+        super(name);
+        this.depAir = depAir;
+        this.destAir = destAir;
+        this.plane = plane;
         this.endOfLife = false;
         this.asleep = false;
         this.currentState = PilotStates.AT_TRANSFER_GATE;
