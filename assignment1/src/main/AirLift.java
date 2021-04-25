@@ -47,7 +47,7 @@ public class AirLift {
 
         repos = new GeneralRepository (fileName);
         departureAirport = new DepartureAirport(repos);
-        destinationAirport = new DestinationAirport();
+        destinationAirport = new DestinationAirport(repos);
         plane = new Plane(repos);
 
         for (int i = 0; i < SimulPar.N; i++) {

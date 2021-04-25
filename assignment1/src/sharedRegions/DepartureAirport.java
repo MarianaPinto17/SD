@@ -138,7 +138,7 @@ public class DepartureAirport {
         ho = (Hostess) Thread.currentThread();
         while(!isReadyForBoarding()){
             try {
-                ho.wait();
+                wait();
             } catch (InterruptedException e) {}
         }
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
@@ -285,6 +285,8 @@ public class DepartureAirport {
         }
         pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
         repo.setPassengerState(passengerID, PassengerStates.IN_FLIGHT);
+
+        repo.setInF(repo.getInF() + 1);
 
         notifyAll();
     }

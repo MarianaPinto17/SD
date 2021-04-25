@@ -17,12 +17,6 @@ public class Plane {
     private boolean arrivedAtDest;
 
     /**
-     *  Number of passengers waiting to enter plane.
-     */
-
-    private int nPassengersWait;
-
-    /**
      * Reference to Passenger threads.
      */
 
@@ -61,8 +55,6 @@ public class Plane {
      */
 
     public Plane(GeneralRepository repos) {
-        nPassengersWait = 0;
-
         pass = new Passenger[SimulPar.N];
         for (int i = 0; i < SimulPar.N; i++)
                 pass[i] = null;
@@ -75,6 +67,7 @@ public class Plane {
             System.exit (1);
         }
 
+        arrivedAtDest = false;
         this.repos = repos;
 
     }
@@ -89,7 +82,7 @@ public class Plane {
         pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
         try {
-            pi.sleep ((long) (1 + 100 * Math.random ()));
+            pi.sleep((long) (1 + 100 * Math.random ()));
         } catch (InterruptedException e) {}
     }
 
@@ -97,15 +90,11 @@ public class Plane {
      * Passenger function - passenger waits for the flight to end
      */
     public synchronized void waitForEndOfFlight(){
-        while(true){
+        while(!arrivedAtDest){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
-
-
-
-
     }
 
 
@@ -123,8 +112,9 @@ public class Plane {
         pi.setCurrentState(PilotStates.FLYING_FORWARD);
         repos.setPilotState(PilotStates.FLYING_FORWARD);
 
-
-
+        try {
+            pi.sleep ((long) (1 + 100 * Math.random ()));
+        } catch (InterruptedException e) {}
 
     }
 
@@ -135,5 +125,13 @@ public class Plane {
     public synchronized void flyToDeparturePoint(){
 
 
+    }
+
+    public boolean isArrivedAtDest() {
+        return arrivedAtDest;
+    }
+
+    public void setArrivedAtDest(boolean arrivedAtDest) {
+        this.arrivedAtDest = arrivedAtDest;
     }
 }
