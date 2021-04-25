@@ -1,11 +1,7 @@
 package sharedRegions;
 
-import commonInfrastructures.HostessStates;
-import commonInfrastructures.PassengerStates;
-import commonInfrastructures.PilotStates;
-import entities.Hostess;
-import entities.Passenger;
-import entities.Pilot;
+import commonInfrastructures.*;
+import entities.*;
 
 import java.beans.IntrospectionException;
 
@@ -36,7 +32,7 @@ public class DepartureAirport {
     /**
      * number of passengers at Queue
      */
-    private int passengersAtQueue;
+    private MemFIFO<Integer> passengersAtQueue;
 
     /**
      * number of passengers at the plane
@@ -64,6 +60,11 @@ public class DepartureAirport {
      * @param repo general repository of information
      */
     public DepartureAirport(GeneralRepository repo){
+        try{
+
+        }catch (MemException e){
+
+        }
         this.repo = repo;
     }
 
@@ -116,7 +117,7 @@ public class DepartureAirport {
         Passenger pa = (Passenger) Thread.currentThread();
         // checks if passenger is in queue
         assert(pa.getCurrentState() == PassengerStates.IN_QUEUE);
-        if(passengersAtQueue>0){
+        if(passengersAtQueue){
             //get id of passenger
             pa.getID();
 

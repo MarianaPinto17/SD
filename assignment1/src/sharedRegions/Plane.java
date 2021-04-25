@@ -1,13 +1,9 @@
 package sharedRegions;
 
-<<<<<<< HEAD
-import commonInfrastructures.PilotStates;
-import entities.Pilot;
-=======
 import commonInfrastructures.*;
 import entities.*;
 import main.*;
->>>>>>> 59cc258da1d0349efb9c5d4568887ff510bbcba4
+
 
 /**
  * Shared Region Plane
@@ -87,8 +83,7 @@ public class Plane {
      * Passenger function - passenger waits for the flight to end
      */
     public synchronized void waitForEndOfFlight(){
-<<<<<<< HEAD
-=======
+
 
     }
 
@@ -106,7 +101,7 @@ public class Plane {
      */
 
     public synchronized void flyToDeparturePoint(){
->>>>>>> 59cc258da1d0349efb9c5d4568887ff510bbcba4
+
 
     }
 }
