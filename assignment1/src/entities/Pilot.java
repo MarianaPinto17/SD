@@ -47,6 +47,11 @@ public class Pilot extends Thread{
     /**
      * Pilot Constructor.
      * Initiates a new Pilot that drives a plane
+     *
+     * @param name name of the pilot
+     * @param depAir departure Airport.
+     * @param destAir destination Airport
+     * @param plane plane that is flying
      */
     public Pilot (String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
         super(name);

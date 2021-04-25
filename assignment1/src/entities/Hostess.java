@@ -47,6 +47,10 @@ public class Hostess extends Thread{
     /**
      * Hosstess Constructor.
      * Initiates a new Hostess that checks passengers aboard
+     * @param name hostess name.
+     * @param depAir departure Airport.
+     * @param destAir destination Airport
+     * @param plane plane that is flying
      */
     public Hostess(String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
         super(name);

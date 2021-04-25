@@ -55,6 +55,11 @@ public class Passenger extends Thread{
     /**
      * Passenger Constructor.
      * Initiates a new Passenger that flies on a plane
+     *
+     * @param id Passenger's ID
+     * @param depAir departure Airport.
+     * @param destAir destination Airport
+     * @param plane plane that is flying
      */
     public Passenger(int id, DepartureAirport depAir, DestinationAirport destAir, Plane plane) {
         this.id = id;

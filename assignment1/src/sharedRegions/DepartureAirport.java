@@ -9,44 +9,43 @@ import main.SimulPar;
  */
 public class DepartureAirport {
     /**
-     * If a plane is ready to start boarding (controlled by the pilot)
+     * If a plane is ready to start boarding (controlled by the pilot).
      */
     private boolean readyForBoarding;
 
     /**
-     * if a plane is full
+     * if a plane is full.
      */
     private boolean planeIsFull;
 
     /**
-     * If a plane has a minimum of passengers checked in
+     * If a plane has a minimum of passengers checked in.
      */
     private boolean planeIsMin;
 
     /**
-     * number of passengers at Queue
+     * number of passengers at Queue.
      */
     private MemFIFO<Integer> passengersAtQueue;
 
     /**
-     * number of passengers at the plane
+     * number of passengers at the plane.
      */
     private int passengersAtPlane;
 
     /**
-     * plane at departure gate
+     * plane at departure gate.
      */
     private boolean planeAtDeparture;
 
     /**
-     * number of passengers in queue
+     * number of passengers in queue.
      */
     private int nPassengers;
 
     /**
-     * number of checkes passengers in queue
+     * number of checked passengers in queue.
      */
-
     private int nCheckedPassengers;
 
     /**
@@ -56,30 +55,38 @@ public class DepartureAirport {
     private GeneralRepository repo ;
 
     /**
-     * Reference to passenger threads
+     * Reference to passenger threads.
      */
     private final Passenger [] pass;
 
     /**
      * Reference to pilot.
      */
-
     private Pilot pi;
-
 
     /**
      * Reference to hostess.
      */
-
     private Hostess ho;
 
     /**
      * array of passengers who checked documents.
      */
-
     private boolean [] checkedPass;
+
+    /**
+     * if a passenger showed the documents to a hostess.
+     */
     private boolean docShow;
+
+    /**
+     * if a passenger can board a plane.
+     */
     private boolean canBoard;
+
+    /**
+     * if a plane is ready to take off.
+     */
     private boolean informPlane;
 
     /**
@@ -112,7 +119,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Pilot function - says to hostess boarding can start
+     * Pilot function - says to hostess boarding can start.
      */
     public synchronized void informPlaneReadyForBoarding(){
         pi = (Pilot) Thread.currentThread();
@@ -125,7 +132,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Hostess Function - prepare to start boarding passengers on the plane
+     * Hostess Function - prepare to start boarding passengers on the plane.
      */
     public synchronized void prepareForPassBoarding(){
         ho = (Hostess) Thread.currentThread();
@@ -142,7 +149,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Passenger function - passenger waits in queue to board the plane
+     * Passenger function - passenger waits in queue to board the plane.
      */
     public synchronized void waitInQueue(){
         int passengerID = ((Passenger) Thread.currentThread()).getID();
@@ -158,7 +165,6 @@ public class DepartureAirport {
             System.out.println("Insertion of customer id in FIFO failed: " +e.getMessage());
             System.exit(1);
         }
-
         try{
             pass[passengerID].wait();
         } catch (InterruptedException e){}
@@ -167,7 +173,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents
+     * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents.
      */
     public synchronized void checkDocuments(){
         int passengerID;
@@ -193,7 +199,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Passenger function - passenger shows documents to hostess
+     * Passenger function - passenger shows documents to hostess.
      */
     public synchronized void showDocuments() {
         docShow = true;
@@ -208,7 +214,7 @@ public class DepartureAirport {
     }
 
     /**
-     *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue
+     *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue.
      */
     public synchronized void waitForNextPassenger(){
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
@@ -234,7 +240,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Hostess Function - if no passenger at queue or plane is full awakes pilot
+     * Hostess Function - if no passenger at queue or plane is full awakes pilot.
      */
     public synchronized void informPlaneReadyToTakeOff(){
         while(nPassengers != 0){
@@ -252,7 +258,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Hostess function - hostess informs next Flight
+     * Hostess function - hostess informs next Flight.
      */
     public synchronized void informNextFlight(){
         try{
@@ -265,6 +271,9 @@ public class DepartureAirport {
         }
     }
 
+    /**
+     * Passenger function - passenger boards the plane
+     */
     public synchronized void boardThePlane() {
         nPassengers --;
         int passengerID = -1;
@@ -284,74 +293,34 @@ public class DepartureAirport {
      * Getters and setters
      */
 
-    public boolean isPlaneIsFull() {
-        return planeIsFull;
-    }
-
-    public void setPlaneIsFull(boolean planeIsFull) {
-        this.planeIsFull = planeIsFull;
-    }
-
-    public boolean isPlaneIsMin() {
-        return planeIsMin;
-    }
-
-    public void setPlaneIsMin(boolean planeIsMin) {
-        this.planeIsMin = planeIsMin;
-    }
-
-    public MemFIFO<Integer> getPassengersAtQueue() {
-        return passengersAtQueue;
-    }
-
-    public void setPassengersAtQueue(MemFIFO<Integer> passengersAtQueue) {
-        this.passengersAtQueue = passengersAtQueue;
-    }
-
-    public int getPassengersAtPlane() {
-        return passengersAtPlane;
-    }
-
-    public void setPassengersAtPlane(int passengersAtPlane) {
-        this.passengersAtPlane = passengersAtPlane;
-    }
-
-    public boolean isPlaneAtDeparture() {
-        return planeAtDeparture;
-    }
-
-    public void setPlaneAtDeparture(boolean planeAtDeparture) {
-        this.planeAtDeparture = planeAtDeparture;
-    }
-
+    /**
+     * checks if a plane is ready for boaring
+     * @return true if is ready
+     */
     public boolean isReadyForBoarding() {
         return readyForBoarding;
     }
 
+    /**
+     * sets a plane ready for boarding
+     * @param readyForBoarding
+     */
     public void setReadyForBoarding(boolean readyForBoarding) {
         this.readyForBoarding = readyForBoarding;
     }
 
-    public int getnPassengers() {
-        return nPassengers;
-    }
-
-    public void setnPassengers(int nPassengers) {
-        this.nPassengers = nPassengers;
-    }
-
-    public int getnCheckedPassengers() {
-        return nCheckedPassengers;
-    }
-
-    public void setnCheckedPassengers(int nCheckedPassengers) {
-        this.nCheckedPassengers = nCheckedPassengers;
-    }
-
+    /**
+     * checks if a plane is ready for flying
+     * @return true if the boarding is over
+     */
     public boolean isInformPlane() {
         return informPlane;
     }
 
+    /**
+     * sets the plane ready for flying
+     * @param informPlane
+     */
     public void setInformPlane(boolean informPlane) {
         this.informPlane = informPlane;
     }

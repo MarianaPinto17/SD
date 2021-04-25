@@ -8,6 +8,9 @@ import entities.*;
  */
 public class DestinationAirport {
 
+    /**
+     * if the plane arrived at the destination gate
+     */
     private boolean arrivedDestination;
     /**
      * Pilot function - pilot announces that the plane arrived at destination
@@ -18,9 +21,11 @@ public class DestinationAirport {
         arrivedDestination = true;
     }
 
+    /**
+     * Passenger function - passenger arrived at the destination and leaves the plane
+     */
     public synchronized void leaveThePlane(){
         int passengerID;
-
 
     }
 }
