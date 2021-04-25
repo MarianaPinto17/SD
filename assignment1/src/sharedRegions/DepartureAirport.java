@@ -2,6 +2,7 @@ package sharedRegions;
 
 import commonInfrastructures.*;
 import entities.*;
+import main.SimulPar;
 
 import java.beans.IntrospectionException;
 
@@ -56,12 +57,20 @@ public class DepartureAirport {
     private GeneralRepository repo ;
 
     /**
+     * Reference to customer threads
+     */
+    private final Passenger [] pass;
+
+    /**
      * Departure Airport constructor
      * @param repo general repository of information
      */
     public DepartureAirport(GeneralRepository repo){
-        try{
+        nPassengers = 0;
+        pass = new Passenger[SimulPar.N];
 
+        try{
+            passengersAtQueue = new MemFIFO<>(new Integer[])
         }catch (MemException e){
 
         }
@@ -103,58 +112,64 @@ public class DepartureAirport {
      * Passenger function - passenger waits in queue to board the plane
      */
     public synchronized void waitInQueue(){
-        Passenger pa = (Passenger) Thread.currentThread();
-        //checks if passenger is going to aiport
-        assert(pa.getCurrentState() == PassengerStates.GOING_TO_AIRPORT);
+        int passengerID;
+        passengerID =((Passenger) Thread.currentThread()).getID();
+        pass[passengerID] = (Passenger) Thread.currentThread();
         // passenger is waiting in queue
-        pa.setCurrentState(PassengerStates.IN_QUEUE);
-    }
-
-    /**
-     * Passenger function - passenger shows documents to hostess
-     */
-    public synchronized void showDocuments() {
-        Passenger pa = (Passenger) Thread.currentThread();
-        // checks if passenger is in queue
-        assert(pa.getCurrentState() == PassengerStates.IN_QUEUE);
-        if(passengersAtQueue){
-            //get id of passenger
-            pa.getID();
-
-        }
+        pass[passengerID].setCurrentState(PassengerStates.IN_QUEUE);
+        // number of passengers in queue increases
+        nPassengers++;
         try{
-            while(){
-                wait();
-            }
-        }catch (InterruptedException exc){
-            System.out.println("Documents checked.");
+            passengersAtQueue.write(passengerID);
+        }catch (MemException e){
+            System.out.println("Insertion of customer id in FIFO failed: " +e.getMessage());
+            System.exit(1);
         }
+        notifyAll();
     }
 
     /**
      * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents
      */
-    public synchronized void checkDocuments(){
+    public synchronized int checkDocuments(){
+        int passengerID;
         Hostess ho = (Hostess) Thread.currentThread();
         assert(ho.getCurrentState() == HostessStates.WAIT_FOR_PASSENGER);
+        ho.setCurrentState(HostessStates.CHECK_PASSENGER);
         try{
-            while(){
-                System.out.println("Waiting for Documents.");
-                wait();
+            passengerID = passengersAtQueue.read();
+            if((passengerID<0) || (passengerID>=SimulPar.N)){
+                throw new MemException("Illegal passenger ID");
             }
-        }catch (InterruptedException exc){
-            ho.setCurrentState(HostessStates.CHECK_PASSENGER);
-            System.out.println("Checking documents.");
+        }catch (MemException e){
+            System.out.println("Retrieval of passsenger ID from wainting FIFO failed." +e.getMessage());
+            passengerID = -1;
+            System.exit(1);
         }
+        return passengerID;
+        //pass[passengerID].setCurrentState(PassengerStates.);
+    }
+
+    /**
+     * Passenger function - passenger shows documents to hostess
+     */
+    public synchronized void showDocuments(int passengerID) {
+        Hostess ho = (Hostess) Thread.currentThread();
+        ho.setCurrentState(HostessStates.CHECK_PASSENGER);
+        pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
+        nPassengers--;
+        notifyAll();
     }
 
     /**
      *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue
      */
     public synchronized void waitForNextPassenger(){
+        Hostess ho = (Hostess) Thread.currentThread();
         try{
-            while(passengersAtQueue>0 && ( || !planeIsMin)){
+            while((!isPlaneIsFull() || !isPlaneIsMin())){
                 System.out.println("Waits for passenger");
+                ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
                 wait();
             }
         }catch(InterruptedException exc){
@@ -162,16 +177,12 @@ public class DepartureAirport {
         }
     }
 
-
-
-
-
     /**
      * Hostess Function - if no passenger at queue or plane is full awakes pilot
      */
     public synchronized void informPlaneReadyToTakeOff(){
         try{
-            while(!planeIsFull && !readyToFly && passengersAtQueue>0){
+            while(!planeIsFull && !planeIsMin && nPassengers>0){
                 System.out.println("Passengers boarding");
                 wait();
             }
@@ -199,10 +210,6 @@ public class DepartureAirport {
             System.out.println("Plane at departure gate, start boarding.");
         }
     }
-
-
-
-
 
     /**
      * Getters and setters
