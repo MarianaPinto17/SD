@@ -2,8 +2,10 @@ package entities;
 
 import commonInfrastructures.PassengerStates;
 import commonInfrastructures.PilotStates;
+import main.AirLift;
 import sharedRegions.DepartureAirport;
 import sharedRegions.DestinationAirport;
+import sharedRegions.GeneralRepository;
 import sharedRegions.Plane;
 
 /**
@@ -28,16 +30,29 @@ public class Pilot extends Thread{
      */
     private boolean asleep;
 
+    /**
+     * Reference to Departure Airport
+     */
 
     private final DepartureAirport depAir;
+
+    /**
+     * Reference to Destination Airport
+     */
+
     private final DestinationAirport destAir;
+
+    /**
+     * Reference to Plane
+     */
+
     private final Plane plane;
 
     /**
-     * Hosstess Constructor.
+     * Pilot Constructor.
      * Initiates a new Pilot that drives a plane
      */
-    public Pilot (String name , int pilotId, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
+    public Pilot (String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
         super(name);
         this.depAir = depAir;
         this.destAir = destAir;
@@ -55,14 +70,19 @@ public class Pilot extends Thread{
         while(!endOfLife){
             switch(currentState){
                 case AT_TRANSFER_GATE:
+                    depAir.informPlaneReadyForBoarding();
                     break;
                 case READY_FOR_BOARDING:
+                    plane.waitForAllInBoard();
                     break;
                 case WAIT_FOR_BOARDING:
+                    plane.flyToDestinationPoint();
                     break;
                 case FLYING_FORWARD:
+                    destAir.announceArrival();
                     break;
                 case DEBOARDING:
+                    plane.flyToDeparturePoint();
                     break;
                 case FLYING_BACK:
                     break;

@@ -16,8 +16,8 @@ public class AirLift {
 
     public static void main (String[] args){
 
-        Pilot pilot;                              // Pilot thread
-        Hostess hostess;                        // Hostess thread
+        Pilot pilot;                                            // Pilot thread
+        Hostess hostess;                                        // Hostess thread
         Passenger[] passengers = new Passenger[SimulPar.N];     // Array of Passenger threads
 
         DepartureAirport departureAirport;                      // reference to DepartureAirport
@@ -31,9 +31,6 @@ public class AirLift {
         boolean success;                                        // end of operation flag
 
         System.out.println ("\n" + "      Problem of Air Lift\n");
-        System.out.print ("Number of iterations? ");
-        int nIter = Integer.parseInt(System.console().readLine());
-
         do {
             System.out.print ("Logging file name? ");
             fileName = System.console().readLine();
@@ -42,24 +39,22 @@ public class AirLift {
                     System.out.print ("There is already a file with this name. Delete it (y - yes; n - no)? ");
                     opt = System.console().readLine().charAt(0);
                 } while ((opt != 'y') && (opt != 'n'));
-                if (opt == 'y')
-                    success = true;
-                else success = false;
+                success = opt == 'y';
             } else success = true;
         } while (success);
 
         /* problem initialization */
 
-        repos = new GeneralRepository (fileName, nIter);
-        departureAirport = new DepartureAirport();
+        repos = new GeneralRepository (fileName);
+        departureAirport = new DepartureAirport(repos);
         destinationAirport = new DestinationAirport();
         plane = new Plane(repos);
 
         for (int i = 0; i < SimulPar.N; i++) {
-            passengers[i] = new Passenger(i);
+            passengers[i] = new Passenger(i, departureAirport, destinationAirport, plane);
         }
         hostess = new Hostess();
-        pilot = new Pilot("Piloto",1,departureAirport,destinationAirport,plane);
+        pilot = new Pilot("Piloto",departureAirport,destinationAirport,plane);
 
 
         /* START OF SIMULATION */

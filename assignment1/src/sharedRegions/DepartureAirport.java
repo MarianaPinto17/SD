@@ -4,8 +4,6 @@ import commonInfrastructures.*;
 import entities.*;
 import main.SimulPar;
 
-import java.beans.IntrospectionException;
-
 /**
  * Shared Region Departure Airport
  */
@@ -70,9 +68,11 @@ public class DepartureAirport {
         pass = new Passenger[SimulPar.N];
 
         try{
-            passengersAtQueue = new MemFIFO<>(new Integer[])
+            passengersAtQueue = new MemFIFO<>(new Integer[SimulPar.N]);
         }catch (MemException e){
-
+            System.out.println ("Instantiation of waiting FIFO failed: " + e.getMessage ());
+            passengersAtQueue = null;
+            System.exit (1);
         }
         this.repo = repo;
     }
@@ -112,11 +112,11 @@ public class DepartureAirport {
      * Passenger function - passenger waits in queue to board the plane
      */
     public synchronized void waitInQueue(){
-        int passengerID;
-        passengerID =((Passenger) Thread.currentThread()).getID();
+        int passengerID = ((Passenger) Thread.currentThread()).getID();
         pass[passengerID] = (Passenger) Thread.currentThread();
-        // passenger is waiting in queue
         pass[passengerID].setCurrentState(PassengerStates.IN_QUEUE);
+        Passenger passenger = (Passenger) Thread.currentThread();
+        repo.setPassengerState(passengerID, PassengerStates.IN_QUEUE);
         // number of passengers in queue increases
         nPassengers++;
         try{
@@ -136,6 +136,7 @@ public class DepartureAirport {
         Hostess ho = (Hostess) Thread.currentThread();
         assert(ho.getCurrentState() == HostessStates.WAIT_FOR_PASSENGER);
         ho.setCurrentState(HostessStates.CHECK_PASSENGER);
+        repo.setHostessState(HostessStates.CHECK_PASSENGER);
         try{
             passengerID = passengersAtQueue.read();
             if((passengerID<0) || (passengerID>=SimulPar.N)){
@@ -170,6 +171,7 @@ public class DepartureAirport {
             while((!isPlaneIsFull() || !isPlaneIsMin())){
                 System.out.println("Waits for passenger");
                 ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
+                repo.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
                 wait();
             }
         }catch(InterruptedException exc){
@@ -238,11 +240,11 @@ public class DepartureAirport {
         this.planeIsMin = planeIsMin;
     }
 
-    public int getPassengersAtQueue() {
+    public MemFIFO<Integer> getPassengersAtQueue() {
         return passengersAtQueue;
     }
 
-    public void setPassengersAtQueue(int passengersAtQueue) {
+    public void setPassengersAtQueue(MemFIFO<Integer> passengersAtQueue) {
         this.passengersAtQueue = passengersAtQueue;
     }
 

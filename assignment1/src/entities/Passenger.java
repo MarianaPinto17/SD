@@ -1,7 +1,8 @@
 package entities;
 
-import commonInfrastructures.HostessStates;
-import commonInfrastructures.PassengerStates;
+import commonInfrastructures.*;
+import sharedRegions.*;
+import main.*;
 
 /**
  * Passenger thread and life cycle
@@ -30,14 +31,35 @@ public class Passenger extends Thread{
     private boolean asleep;
 
     /**
+     * Reference to Departure Airport
+     */
+
+    private final DepartureAirport depAir;
+
+    /**
+     * Reference to Destination Airport
+     */
+
+    private final DestinationAirport destAir;
+
+    /**
+     * Reference to Plane
+     */
+
+    private final Plane plane;
+
+    /**
      * Passenger Constructor.
      * Initiates a new Passenger that flies on a plane
      */
-    public Passenger(int id) {
+    public Passenger(int id, DepartureAirport depAir, DestinationAirport destAir, Plane plane) {
         this.id = id;
         this.currentState = PassengerStates.GOING_TO_AIRPORT;
         this.endOfLife = false;
         this.asleep = false;
+        this.depAir = depAir;
+        this.destAir = destAir;
+        this.plane = plane;
     }
 
     /**
@@ -48,6 +70,8 @@ public class Passenger extends Thread{
         while(!endOfLife){
             switch(currentState){
                 case GOING_TO_AIRPORT:
+                    travelToAirport();
+                    while (depAir.waitInQueue());
                     break;
                 case IN_QUEUE:
                     break;
@@ -58,6 +82,22 @@ public class Passenger extends Thread{
             }
         }
     }
+
+
+    /**
+     *  Travel to Airport.
+     *
+     *  Internal operation.
+     */
+
+    private void travelToAirport()
+    {
+        try
+        { sleep ((long) (1 + 40 * Math.random ()));
+        }
+        catch (InterruptedException e) {}
+    }
+
     /**
      * Get the passenger's ID
      * @return Passenger's ID

@@ -29,31 +29,50 @@ public class GeneralRepository {
     private final String logFileName;
 
     /**
-     *  Number of iterations of the customer life cycle.
+     * Current state of the pilot.
      */
 
-    private final int nIter;
+    private PilotStates pilotState;
 
-    private final PilotStates pilotState;
-    private final HostessStates hostessState;
+    /**
+     * Current state of the hostess.
+     */
+
+    private HostessStates hostessState;
+
+    /**
+     * Current state of each passenger (in array).
+     */
+
     private final PassengerStates[] passengerStates;
 
-    private int InQ;  //number of passengers presently forming a queue to board the plane
-    private int InF;  //number of passengers in the plane
-    private int PTAL; //number of passengers that have already arrived at their destination
+    /**
+     * Number of passengers presently forming a queue to board the plane.
+     */
 
-    private int N_PASSENGERS;
+    private int InQ;
+
+    /**
+     * Number of passengers in the plane.
+     */
+
+    private int InF;
+
+    /**
+     * Number of passengers that have already arrived at their destination
+     */
+
+    private int PTAL;
 
     /**
      *
      */
-    public GeneralRepository(String logFileName, int nIter){
+    public GeneralRepository(String logFileName){
         if ((logFileName == null) || Objects.equals (logFileName, ""))
             this.logFileName = "logger";
         else this.logFileName = logFileName;
-        this.nIter = nIter;
         pilotState = PilotStates.AT_TRANSFER_GATE;
-        hostessState = HostessStates.WAIT_FOR_NEXT_FLIGHT;
+        hostessState = HostessStates.WAIT_FOR_FLIGHT;
         passengerStates = new PassengerStates[SimulPar.N];
         for (int i = 0; i < SimulPar.N; i++)
             passengerStates[i] = PassengerStates.GOING_TO_AIRPORT;
@@ -124,7 +143,7 @@ public class GeneralRepository {
                     case WAIT_FOR_PASSENGER:
                         lineStatus += "WTPS ";
                         break;
-                    case WAIT_FOR_NEXT_FLIGHT:
+                    case WAIT_FOR_FLIGHT:
                         lineStatus += "WTFL ";
                         break;
                 }
@@ -156,5 +175,41 @@ public class GeneralRepository {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     *   Set Pilot state.
+     *
+     *     @param state pilot state
+     */
+
+    public synchronized void setPilotState (PilotStates state)
+    {
+        this.pilotState = state;
+        reportStatus ();
+    }
+
+    /**
+     *   Set Hostess state.
+     *
+     *     @param state hostess state
+     */
+
+    public synchronized void setHostessState (HostessStates state)
+    {
+        this.hostessState = state;
+        reportStatus ();
+    }
+    /**
+     *   Set Passenger state.
+     *
+     *     @param id passenger id
+     *     @param state passenger state
+     */
+
+    public synchronized void setPassengerState (int id, PassengerStates state)
+    {
+        this.passengerStates[id] = state;
+        reportStatus ();
     }
 }

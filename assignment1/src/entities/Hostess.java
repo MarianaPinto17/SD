@@ -29,7 +29,7 @@ public class Hostess extends Thread{
     public Hostess(){
         this.endOfLife = false;
         this.asleep = false;
-        this.currentState = HostessStates.WAIT_FOR_NEXT_FLIGHT;
+        this.currentState = HostessStates.WAIT_FOR_FLIGHT;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Hostess extends Thread{
     public void run(){
         while(!endOfLife){
             switch (currentState){
-                case WAIT_FOR_NEXT_FLIGHT:
+                case WAIT_FOR_FLIGHT:
                     break;
                 case WAIT_FOR_PASSENGER:
                     break;
