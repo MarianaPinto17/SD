@@ -1,4 +1,4 @@
-package commonInfrastructures;
+package entities;
 /**
  * Pilot life states
  * @author Mariana Pinto

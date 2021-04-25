@@ -1,11 +1,7 @@
 package entities;
 
-import commonInfrastructures.PassengerStates;
-import commonInfrastructures.PilotStates;
-import main.AirLift;
 import sharedRegions.DepartureAirport;
 import sharedRegions.DestinationAirport;
-import sharedRegions.GeneralRepository;
 import sharedRegions.Plane;
 
 /**

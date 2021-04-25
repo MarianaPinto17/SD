@@ -1,11 +1,9 @@
 package sharedRegions;
 
-import commonInfrastructures.*;
 import entities.*;
 import main.*;
 
 import java.io.IOException;
-import java.nio.file.*;
 import java.io.*;
 
 import java.util.Objects;
@@ -64,6 +62,12 @@ public class GeneralRepository {
 
     private int PTAL;
 
+
+    /**
+     * Ready to fly
+     */
+    private boolean readyToFly;
+
     /**
      *
      */
@@ -79,6 +83,7 @@ public class GeneralRepository {
         InQ = 0;
         InF = 0;
         PTAL = 0;
+        readyToFly = false;
 
         reportInitialStatus();
     }
@@ -211,5 +216,13 @@ public class GeneralRepository {
     {
         this.passengerStates[id] = state;
         reportStatus ();
+    }
+
+    public boolean isReadyToFly() {
+        return readyToFly;
+    }
+
+    public void setReadyToFly(boolean readyToFly) {
+        this.readyToFly = readyToFly;
     }
 }

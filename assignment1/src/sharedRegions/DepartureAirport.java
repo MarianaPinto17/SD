@@ -60,6 +60,14 @@ public class DepartureAirport {
     private final Passenger [] pass;
 
     /**
+     * array of passengers who checked documents.
+     */
+
+    private boolean [] checkedPass;
+    private boolean docShow;
+    private boolean canBoard;
+
+    /**
      * Departure Airport constructor
      * @param repo general repository of information
      */
@@ -74,6 +82,15 @@ public class DepartureAirport {
             passengersAtQueue = null;
             System.exit (1);
         }
+
+        this.checkedPass = new boolean[SimulPar.N];
+        for (int i = 0; i < SimulPar.N; i++) {
+            this.checkedPass[i] = false;
+        }
+
+        docShow = false;
+        this.canBoard = false;
+
         this.repo = repo;
     }
 
@@ -82,13 +99,12 @@ public class DepartureAirport {
      */
     public synchronized void informPlaneReadyForBoarding(){
         Pilot pi = (Pilot) Thread.currentThread();
-        // pilot is at transfer gate
-        assert(pi.getCurrentState() == PilotStates.AT_TRANSFER_GATE);
         // pilot is at transfer gate and ready for boarding
         pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
         System.out.println("Plane ready for boarding.");
         // hostess can start boarding
         setReadyForBoarding(true);
+        notifyAll();
     }
 
     /**
@@ -96,16 +112,16 @@ public class DepartureAirport {
      */
     public synchronized void prepareForPassBoarding(){
         Hostess ho = (Hostess) Thread.currentThread();
-        // hostess is waiting for a flight
-        assert(ho.getCurrentState() == HostessStates.WAIT_FOR_FLIGHT);
-        try{
-            while(!isReadyForBoarding()) {
-                wait();
-            }
-        }catch (InterruptedException exc){
-            ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
-            System.out.print("Boarding Starting.");
+        while(!isReadyForBoarding()){
+            try {
+                ho.wait();
+            } catch (InterruptedException e) {}
         }
+        ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
+        repo.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
+
+        notifyAll();
+
     }
 
     /**
@@ -115,7 +131,6 @@ public class DepartureAirport {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
         pass[passengerID] = (Passenger) Thread.currentThread();
         pass[passengerID].setCurrentState(PassengerStates.IN_QUEUE);
-        Passenger passenger = (Passenger) Thread.currentThread();
         repo.setPassengerState(passengerID, PassengerStates.IN_QUEUE);
         // number of passengers in queue increases
         nPassengers++;
@@ -125,41 +140,55 @@ public class DepartureAirport {
             System.out.println("Insertion of customer id in FIFO failed: " +e.getMessage());
             System.exit(1);
         }
+
+        try{
+            pass[passengerID].wait();
+        } catch (InterruptedException e){}
+
         notifyAll();
     }
 
     /**
      * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents
      */
-    public synchronized int checkDocuments(){
+    public synchronized void checkDocuments(){
         int passengerID;
         Hostess ho = (Hostess) Thread.currentThread();
-        assert(ho.getCurrentState() == HostessStates.WAIT_FOR_PASSENGER);
         ho.setCurrentState(HostessStates.CHECK_PASSENGER);
         repo.setHostessState(HostessStates.CHECK_PASSENGER);
         try{
             passengerID = passengersAtQueue.read();
-            if((passengerID<0) || (passengerID>=SimulPar.N)){
-                throw new MemException("Illegal passenger ID");
-            }
         }catch (MemException e){
             System.out.println("Retrieval of passsenger ID from wainting FIFO failed." +e.getMessage());
             passengerID = -1;
             System.exit(1);
         }
-        return passengerID;
-        //pass[passengerID].setCurrentState(PassengerStates.);
+
+        this.checkedPass[passengerID] = true;
+
+        notifyAll();
+
+        while (!docShow){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
     }
 
     /**
      * Passenger function - passenger shows documents to hostess
      */
-    public synchronized void showDocuments(int passengerID) {
-        Hostess ho = (Hostess) Thread.currentThread();
-        ho.setCurrentState(HostessStates.CHECK_PASSENGER);
-        pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
-        nPassengers--;
+    public synchronized void showDocuments() {
+        int passengerID = ((Passenger) Thread.currentThread()).getID();
+        docShow = true;
+
         notifyAll();
+
+        while (!canBoard){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
     }
 
     /**
@@ -167,16 +196,18 @@ public class DepartureAirport {
      */
     public synchronized void waitForNextPassenger(){
         Hostess ho = (Hostess) Thread.currentThread();
+
+        ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
+        repo.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
+
+        this.canBoard = true;
+
+        notifyAll();
+
         try{
-            while((!isPlaneIsFull() || !isPlaneIsMin())){
-                System.out.println("Waits for passenger");
-                ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
-                repo.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
-                wait();
-            }
-        }catch(InterruptedException exc){
-            System.out.println("Next passenger arrived");
-        }
+            wait();
+        } catch (InterruptedException e){}
+
     }
 
     /**
@@ -192,9 +223,11 @@ public class DepartureAirport {
             if(!planeIsFull){
                 System.out.println("All passengers on board, ready to departure.");
                 readyToFly = true;
+                repo.setReadyToFly(true);
             }else{
                 System.out.println("Plane is full, ready to departure");
                 readyToFly = true;
+                repo.setReadyToFly(true);
             }
         }
     }

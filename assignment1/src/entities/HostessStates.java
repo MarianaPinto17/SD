@@ -1,4 +1,4 @@
-package commonInfrastructures;
+package entities;
 /**
  * Hostess life states
  * @author Mariana Pinto

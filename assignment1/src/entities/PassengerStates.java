@@ -1,4 +1,4 @@
-package commonInfrastructures;
+package entities;
 /**
  * Passenger life states
  * @author Mariana Pinto

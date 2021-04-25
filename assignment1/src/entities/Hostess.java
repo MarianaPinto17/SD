@@ -1,12 +1,34 @@
 package entities;
 
-import commonInfrastructures.HostessStates;
+import sharedRegions.DepartureAirport;
+import sharedRegions.DestinationAirport;
+import sharedRegions.Plane;
+
 /**
  * Hostess thread and life cycle
  * @author Mariana Pinto
  * @author André Alves
  */
 public class Hostess extends Thread{
+
+    /**
+     * Reference to Departure Airport
+     */
+
+    private final DepartureAirport depAir;
+
+    /**
+     * Reference to Destination Airport
+     */
+
+    private final DestinationAirport destAir;
+
+    /**
+     * Reference to Plane
+     */
+
+    private final Plane plane;
+
     /**
      * The current state of the Hostess
      */
@@ -26,7 +48,11 @@ public class Hostess extends Thread{
      * Hosstess Constructor.
      * Initiates a new Hostess that checks passengers aboard
      */
-    public Hostess(){
+    public Hostess(String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
+        super(name);
+        this.depAir = depAir;
+        this.destAir = destAir;
+        this.plane = plane;
         this.endOfLife = false;
         this.asleep = false;
         this.currentState = HostessStates.WAIT_FOR_FLIGHT;
@@ -40,10 +66,13 @@ public class Hostess extends Thread{
         while(!endOfLife){
             switch (currentState){
                 case WAIT_FOR_FLIGHT:
+                    depAir.prepareForPassBoarding();
                     break;
                 case WAIT_FOR_PASSENGER:
+                    depAir.checkDocuments();
                     break;
                 case CHECK_PASSENGER:
+                    depAir.waitForNextPassenger();
                     break;
                 case READY_TO_FLY:
                     break;

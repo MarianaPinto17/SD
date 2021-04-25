@@ -53,8 +53,8 @@ public class AirLift {
         for (int i = 0; i < SimulPar.N; i++) {
             passengers[i] = new Passenger(i, departureAirport, destinationAirport, plane);
         }
-        hostess = new Hostess();
-        pilot = new Pilot("Piloto",departureAirport,destinationAirport,plane);
+        hostess = new Hostess("Hospedeira", departureAirport, destinationAirport, plane);
+        pilot = new Pilot("Piloto", departureAirport, destinationAirport, plane);
 
 
         /* START OF SIMULATION */

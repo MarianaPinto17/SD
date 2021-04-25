@@ -1,8 +1,6 @@
 package entities;
 
-import commonInfrastructures.*;
 import sharedRegions.*;
-import main.*;
 
 /**
  * Passenger thread and life cycle
@@ -34,6 +32,12 @@ public class Passenger extends Thread{
      * Reference to Departure Airport
      */
 
+    /**
+     * Documents checked
+     * True if documents are checked
+     */
+    private boolean docChecked;
+
     private final DepartureAirport depAir;
 
     /**
@@ -60,6 +64,7 @@ public class Passenger extends Thread{
         this.depAir = depAir;
         this.destAir = destAir;
         this.plane = plane;
+        this.docChecked = false;
     }
 
     /**
@@ -71,9 +76,13 @@ public class Passenger extends Thread{
             switch(currentState){
                 case GOING_TO_AIRPORT:
                     travelToAirport();
-                    while (depAir.waitInQueue());
+                    depAir.waitInQueue();
                     break;
                 case IN_QUEUE:
+                    while(! docChecked){
+                        depAir.showDocuments();
+                    }
+
                     break;
                 case IN_FLIGHT:
                     break;
@@ -92,10 +101,10 @@ public class Passenger extends Thread{
 
     private void travelToAirport()
     {
-        try
-        { sleep ((long) (1 + 40 * Math.random ()));
-        }
-        catch (InterruptedException e) {}
+        try {
+            sleep ((long) (1 + 40 * Math.random ()));
+        } catch (InterruptedException e) {}
+
     }
 
     /**

@@ -66,17 +66,11 @@ public class Plane {
     public synchronized void waitForAllInBoard(){
         Pilot pi = (Pilot) Thread.currentThread();
         // Pilot is inside the plane ready for boarding
-        assert(pi.getCurrentState() == PilotStates.READY_FOR_BOARDING);
-
-        try{
-            while(!isReadyToFly()){
-                System.out.println("Wait for all passengers on board.");
-                wait();
-            }
-        }catch (InterruptedException exc) {
-            pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
-            System.out.println("All Passengers on board.");
-        }
+        pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
+        repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
+        try {
+            pi.sleep ((long) (1 + 100 * Math.random ()));
+        } catch (InterruptedException e) {}
     }
 
     /**
