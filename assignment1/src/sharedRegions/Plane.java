@@ -11,6 +11,12 @@ import main.*;
 public class Plane {
 
     /**
+     *
+     */
+
+    private boolean arrivedAtDest;
+
+    /**
      *  Number of passengers waiting to enter plane.
      */
 
@@ -21,6 +27,19 @@ public class Plane {
      */
 
     private final Passenger[] pass;
+
+    /**
+     * Reference to pilot.
+     */
+
+    private Pilot pi;
+
+
+    /**
+     * Reference to hostess.
+     */
+
+    private Hostess ho;
 
 
     /**
@@ -64,7 +83,8 @@ public class Plane {
      * Pilot function - waits for all passengers get on board
      */
     public synchronized void waitForAllInBoard(){
-        Pilot pi = (Pilot) Thread.currentThread();
+        pi = (Pilot) Thread.currentThread();
+
         // Pilot is inside the plane ready for boarding
         pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
@@ -77,6 +97,13 @@ public class Plane {
      * Passenger function - passenger waits for the flight to end
      */
     public synchronized void waitForEndOfFlight(){
+        while(true){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
+
+
 
 
     }
@@ -87,6 +114,17 @@ public class Plane {
      */
 
     public synchronized void flyToDestinationPoint(){
+        while (!repos.isReadyToFly()){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
+
+        pi.setCurrentState(PilotStates.FLYING_FORWARD);
+        repos.setPilotState(PilotStates.FLYING_FORWARD);
+
+
+
 
     }
 

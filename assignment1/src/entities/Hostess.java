@@ -69,7 +69,10 @@ public class Hostess extends Thread{
                     depAir.prepareForPassBoarding();
                     break;
                 case WAIT_FOR_PASSENGER:
-                    depAir.checkDocuments();
+                    if(depAir.isInformPlane())
+                        depAir.informPlaneReadyToTakeOff();
+                    else
+                        depAir.checkDocuments();
                     break;
                 case CHECK_PASSENGER:
                     depAir.waitForNextPassenger();

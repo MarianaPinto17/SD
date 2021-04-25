@@ -1,7 +1,7 @@
 package sharedRegions;
 
-import commonInfrastructures.PilotStates;
-import entities.Pilot;
+import commonInfrastructures.*;
+import entities.*;
 
 /**
  * Shared Region Destination Airport

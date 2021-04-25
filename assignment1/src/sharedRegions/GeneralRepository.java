@@ -225,4 +225,28 @@ public class GeneralRepository {
     public void setReadyToFly(boolean readyToFly) {
         this.readyToFly = readyToFly;
     }
+
+    public int getInQ() {
+        return InQ;
+    }
+
+    public void setInQ(int inQ) {
+        InQ = inQ;
+    }
+
+    public int getInF() {
+        return InF;
+    }
+
+    public void setInF(int inF) {
+        InF = inF;
+    }
+
+    public int getPTAL() {
+        return PTAL;
+    }
+
+    public void setPTAL(int PTAL) {
+        this.PTAL = PTAL;
+    }
 }

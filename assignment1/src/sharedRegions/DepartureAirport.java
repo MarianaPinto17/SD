@@ -14,11 +14,6 @@ public class DepartureAirport {
     private boolean readyForBoarding;
 
     /**
-     * if a plane is ready to Fly
-     */
-    private boolean readyToFly;
-
-    /**
      * if a plane is full
      */
     private boolean planeIsFull;
@@ -49,15 +44,34 @@ public class DepartureAirport {
     private int nPassengers;
 
     /**
+     * number of checkes passengers in queue
+     */
+
+    private int nCheckedPassengers;
+
+    /**
      * General repository of information
      * @serialField repo
      */
     private GeneralRepository repo ;
 
     /**
-     * Reference to customer threads
+     * Reference to passenger threads
      */
     private final Passenger [] pass;
+
+    /**
+     * Reference to pilot.
+     */
+
+    private Pilot pi;
+
+
+    /**
+     * Reference to hostess.
+     */
+
+    private Hostess ho;
 
     /**
      * array of passengers who checked documents.
@@ -66,6 +80,7 @@ public class DepartureAirport {
     private boolean [] checkedPass;
     private boolean docShow;
     private boolean canBoard;
+    private boolean informPlane;
 
     /**
      * Departure Airport constructor
@@ -73,6 +88,7 @@ public class DepartureAirport {
      */
     public DepartureAirport(GeneralRepository repo){
         nPassengers = 0;
+        nCheckedPassengers = 0;
         pass = new Passenger[SimulPar.N];
 
         try{
@@ -89,7 +105,8 @@ public class DepartureAirport {
         }
 
         docShow = false;
-        this.canBoard = false;
+        canBoard = false;
+        informPlane = false;
 
         this.repo = repo;
     }
@@ -98,7 +115,7 @@ public class DepartureAirport {
      * Pilot function - says to hostess boarding can start
      */
     public synchronized void informPlaneReadyForBoarding(){
-        Pilot pi = (Pilot) Thread.currentThread();
+        pi = (Pilot) Thread.currentThread();
         // pilot is at transfer gate and ready for boarding
         pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
         System.out.println("Plane ready for boarding.");
@@ -111,7 +128,7 @@ public class DepartureAirport {
      * Hostess Function - prepare to start boarding passengers on the plane
      */
     public synchronized void prepareForPassBoarding(){
-        Hostess ho = (Hostess) Thread.currentThread();
+        ho = (Hostess) Thread.currentThread();
         while(!isReadyForBoarding()){
             try {
                 ho.wait();
@@ -134,6 +151,7 @@ public class DepartureAirport {
         repo.setPassengerState(passengerID, PassengerStates.IN_QUEUE);
         // number of passengers in queue increases
         nPassengers++;
+        repo.setInQ(nPassengers);
         try{
             passengersAtQueue.write(passengerID);
         }catch (MemException e){
@@ -153,7 +171,6 @@ public class DepartureAirport {
      */
     public synchronized void checkDocuments(){
         int passengerID;
-        Hostess ho = (Hostess) Thread.currentThread();
         ho.setCurrentState(HostessStates.CHECK_PASSENGER);
         repo.setHostessState(HostessStates.CHECK_PASSENGER);
         try{
@@ -179,7 +196,6 @@ public class DepartureAirport {
      * Passenger function - passenger shows documents to hostess
      */
     public synchronized void showDocuments() {
-        int passengerID = ((Passenger) Thread.currentThread()).getID();
         docShow = true;
 
         notifyAll();
@@ -195,18 +211,25 @@ public class DepartureAirport {
      *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue
      */
     public synchronized void waitForNextPassenger(){
-        Hostess ho = (Hostess) Thread.currentThread();
-
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
         repo.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
 
         this.canBoard = true;
+        nCheckedPassengers++;
 
         notifyAll();
 
-        try{
-            wait();
-        } catch (InterruptedException e){}
+        int passInDep = (SimulPar.N - (repo.getInF() + repo.getPTAL()));
+
+        while(passengersAtQueue.isEmpty() || nCheckedPassengers != passInDep && (passInDep < 5)){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
+
+        if((nCheckedPassengers <= 10 && nCheckedPassengers > 5) || passInDep < 5){
+            informPlane = true;
+        }
 
     }
 
@@ -214,22 +237,18 @@ public class DepartureAirport {
      * Hostess Function - if no passenger at queue or plane is full awakes pilot
      */
     public synchronized void informPlaneReadyToTakeOff(){
-        try{
-            while(!planeIsFull && !planeIsMin && nPassengers>0){
-                System.out.println("Passengers boarding");
+        while(nPassengers != 0){
+            try{
                 wait();
-            }
-        }catch(InterruptedException exc){
-            if(!planeIsFull){
-                System.out.println("All passengers on board, ready to departure.");
-                readyToFly = true;
-                repo.setReadyToFly(true);
-            }else{
-                System.out.println("Plane is full, ready to departure");
-                readyToFly = true;
-                repo.setReadyToFly(true);
-            }
+            } catch (InterruptedException e){}
         }
+
+        ho.setCurrentState(HostessStates.READY_TO_FLY);
+        repo.setHostessState(HostessStates.READY_TO_FLY);
+
+        repo.setReadyToFly(true);
+
+        notifyAll();
     }
 
     /**
@@ -246,16 +265,24 @@ public class DepartureAirport {
         }
     }
 
+    public synchronized void boardThePlane() {
+        nPassengers --;
+        int passengerID = -1;
+        try{
+            passengerID = passengersAtQueue.read();
+        }catch (MemException e){
+            System.out.println("read of customer id in FIFO failed: " +e.getMessage());
+            System.exit(1);
+        }
+        pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
+        repo.setPassengerState(passengerID, PassengerStates.IN_FLIGHT);
+
+        notifyAll();
+    }
+
     /**
      * Getters and setters
      */
-    public boolean isReadyToFly() {
-        return readyToFly;
-    }
-
-    public void setReadyToFly(boolean readyToFly) {
-        this.readyToFly = readyToFly;
-    }
 
     public boolean isPlaneIsFull() {
         return planeIsFull;
@@ -311,5 +338,21 @@ public class DepartureAirport {
 
     public void setnPassengers(int nPassengers) {
         this.nPassengers = nPassengers;
+    }
+
+    public int getnCheckedPassengers() {
+        return nCheckedPassengers;
+    }
+
+    public void setnCheckedPassengers(int nCheckedPassengers) {
+        this.nCheckedPassengers = nCheckedPassengers;
+    }
+
+    public boolean isInformPlane() {
+        return informPlane;
+    }
+
+    public void setInformPlane(boolean informPlane) {
+        this.informPlane = informPlane;
     }
 }
