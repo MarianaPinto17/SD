@@ -69,6 +69,12 @@ public class GeneralRepository {
     private boolean readyToFly;
 
     /**
+     * Arrived at destination airport
+     */
+
+    private boolean arrivedAtDest;
+
+    /**
      *
      */
     public GeneralRepository(String logFileName){
@@ -248,5 +254,13 @@ public class GeneralRepository {
 
     public void setPTAL(int PTAL) {
         this.PTAL = PTAL;
+    }
+
+    public boolean isArrivedAtDest() {
+        return arrivedAtDest;
+    }
+
+    public void setArrivedAtDest(boolean arrivedAtDest) {
+        this.arrivedAtDest = arrivedAtDest;
     }
 }
