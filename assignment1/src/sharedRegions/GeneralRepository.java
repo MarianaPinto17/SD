@@ -356,4 +356,12 @@ public class GeneralRepository {
     public void setArrivedAtDest(boolean arrivedAtDest) {
         this.arrivedAtDest = arrivedAtDest;
     }
+
+    /**
+     * sets the status of the plane to empty when all the passengers left the plane at the destination airport.
+     * @param emptyPlaneDest changes status to emptyPlaneDest.
+     */
+    public void setEmptyPlaneDest(boolean emptyPlaneDest) {
+        this.emptyPlaneDest = emptyPlaneDest;
+    }
 }
