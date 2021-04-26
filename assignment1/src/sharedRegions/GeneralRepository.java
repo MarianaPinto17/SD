@@ -74,7 +74,13 @@ public class GeneralRepository {
     private boolean arrivedAtDest;
 
     /**
-     * Plane empty in destination airport
+     * Number of flight.
+     */
+
+    private int nFlights;
+
+    /**
+     * True when Plane is empty in destination.
      */
 
     private boolean emptyPlaneDest;
@@ -94,9 +100,10 @@ public class GeneralRepository {
         InQ = 0;
         InF = 0;
         PTAL = 0;
-        emptyPlaneDest = false;
         arrivedAtDest = false;
         readyToFly = false;
+        nFlights = 1;
+        emptyPlaneDest = false;
 
         reportInitialStatus();
     }
@@ -115,7 +122,7 @@ public class GeneralRepository {
             try (PrintWriter pw = new PrintWriter(fw)) {
                 pw.print("Airlift - Description of the internal state");
                 pw.println();
-                pw.println("PT HT P00 P01 P02 P03 P04 P05 P06 P07 P08 P09 P10 P11 P12 P13 P14 P15 P16 P17 P18 P19 P20 InQ InF PTAL");
+                pw.println("PT   HT   P00  P01  P02  P03  P04  P05  P06  P07  P08  P09  P10  P11  P12  P13  P14  P15  P16  P17  P18  P19  P20  InQ  InF  PTAL");
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -183,8 +190,8 @@ public class GeneralRepository {
                     }
                 }
 
-                lineStatus += String.valueOf(InQ) + " ";
-                lineStatus += String.valueOf(InF) + " ";
+                lineStatus += String.valueOf(InQ) + "     ";
+                lineStatus += String.valueOf(InF) + "     ";
                 lineStatus += String.valueOf(PTAL);
 
                 pw.println(lineStatus);
@@ -205,18 +212,31 @@ public class GeneralRepository {
     {
         this.pilotState = state;
 
-        String lineStatus;
-        try {
-            FileWriter fw = new FileWriter(logFileName, true);
-
-            try (PrintWriter pw = new PrintWriter(fw)) {
-                lineStatus = state.toString();
-                pw.println();
-                pw.println("PILOT: "+lineStatus);
-
+        if(state == PilotStates.DEBOARDING || state == PilotStates.READY_FOR_BOARDING || state == PilotStates.FLYING_BACK){
+            String lineStatus;
+            switch (state){
+                case DEBOARDING:
+                    lineStatus = "arrived.";
+                    break;
+                case READY_FOR_BOARDING:
+                    lineStatus = "boarding started.";
+                    break;
+                case FLYING_BACK:
+                    lineStatus = "returning.";
+                    break;
+                default:
+                    lineStatus = "";
             }
-        } catch (IOException e){
-            e.printStackTrace();
+            try {
+                FileWriter fw = new FileWriter(logFileName, true);
+
+                try (PrintWriter pw = new PrintWriter(fw)) {
+                    pw.println("\nFlight "+nFlights+": "+lineStatus);
+
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
         }
         reportStatus ();
     }
@@ -230,19 +250,20 @@ public class GeneralRepository {
     public synchronized void setHostessState (HostessStates state)
     {
         this.hostessState = state;
+        if (state == HostessStates.READY_TO_FLY) {
 
-        String lineStatus;
-        try {
-            FileWriter fw = new FileWriter(logFileName, true);
 
-            try (PrintWriter pw = new PrintWriter(fw)) {
-                lineStatus = state.toString();
-                pw.println();
-                pw.println("Hostess: "+lineStatus);
+            String lineStatus = "departed with "+InF+" passengers.";
+            try {
+                FileWriter fw = new FileWriter(logFileName, true);
 
+                try (PrintWriter pw = new PrintWriter(fw)) {
+                    pw.println("\nFlight "+nFlights+": "+lineStatus);
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e){
-            e.printStackTrace();
         }
         reportStatus ();
     }
@@ -256,19 +277,18 @@ public class GeneralRepository {
     public synchronized void setPassengerState (int id, PassengerStates state)
     {
         this.passengerStates[id] = state;
+        if(state == PassengerStates.IN_FLIGHT) {
+            String lineStatus = "passenger " + id + " checked.";
+            try {
+                FileWriter fw = new FileWriter(logFileName, true);
 
-        String lineStatus;
-        try {
-            FileWriter fw = new FileWriter(logFileName, true);
+                try (PrintWriter pw = new PrintWriter(fw)) {
+                    pw.println("\nFlight "+nFlights+": "+lineStatus);
 
-            try (PrintWriter pw = new PrintWriter(fw)) {
-                lineStatus = state.toString();
-                pw.println();
-                pw.println("PASS_"+id+": "+lineStatus);
-
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e){
-            e.printStackTrace();
         }
         reportStatus ();
     }
@@ -363,5 +383,17 @@ public class GeneralRepository {
      */
     public void setEmptyPlaneDest(boolean emptyPlaneDest) {
         this.emptyPlaneDest = emptyPlaneDest;
+    }
+
+    public boolean isEmptyPlaneDest() {
+        return emptyPlaneDest;
+    }
+
+    public void setnFlights(int nFlights) {
+        this.nFlights = nFlights;
+    }
+
+    public int getnFlights() {
+        return nFlights;
     }
 }

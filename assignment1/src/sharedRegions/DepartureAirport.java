@@ -114,6 +114,7 @@ public class DepartureAirport {
         pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
         repo.setPilotState(PilotStates.READY_FOR_BOARDING);
         System.out.println("Plane ready for boarding.");
+        repo.setnFlights(repo.getnFlights()+1);
         // hostess can start boarding
         setReadyForBoarding(true);
         notifyAll();
