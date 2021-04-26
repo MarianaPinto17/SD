@@ -3,7 +3,6 @@ package sharedRegions;
 import entities.*;
 import main.*;
 
-import java.io.IOException;
 import java.io.*;
 
 import java.util.Objects;
