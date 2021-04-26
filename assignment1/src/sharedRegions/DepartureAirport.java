@@ -272,7 +272,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Passenger function - passenger boards the plane
+     * Passenger function - passenger boards the plane.
      */
     public synchronized void boardThePlane() {
         nPassengers --;
@@ -296,32 +296,32 @@ public class DepartureAirport {
      */
 
     /**
-     * checks if a plane is ready for boaring
-     * @return true if is ready
+     * Checks if a plane is ready for boarding.
+     * @return true if is ready.
      */
     public boolean isReadyForBoarding() {
         return readyForBoarding;
     }
 
     /**
-     * sets a plane ready for boarding
-     * @param readyForBoarding
+     * Sets a plane ready for boarding.
+     * @param readyForBoarding changes status of readyForBoarding.
      */
     public void setReadyForBoarding(boolean readyForBoarding) {
         this.readyForBoarding = readyForBoarding;
     }
 
     /**
-     * checks if a plane is ready for flying
-     * @return true if the boarding is over
+     * Checks if a plane is ready for flying.
+     * @return true if the boarding is over.
      */
     public boolean isInformPlane() {
         return informPlane;
     }
 
     /**
-     * sets the plane ready for flying
-     * @param informPlane
+     * Sets the plane ready for flying.
+     * @param informPlane changes status of informPlane.
      */
     public void setInformPlane(boolean informPlane) {
         this.informPlane = informPlane;

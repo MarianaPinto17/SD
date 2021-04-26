@@ -11,7 +11,7 @@ import main.*;
 public class Plane {
 
     /**
-     *
+     * checks if a plane is at the destination airport.
      */
 
     private boolean arrivedAtDest;
@@ -73,7 +73,7 @@ public class Plane {
     }
 
     /**
-     * Pilot function - waits for all passengers get on board
+     * Pilot function - waits for all passengers get on board.
      */
     public synchronized void waitForAllInBoard(){
         pi = (Pilot) Thread.currentThread();
@@ -87,7 +87,7 @@ public class Plane {
     }
 
     /**
-     * Passenger function - passenger waits for the flight to end
+     * Passenger function - passenger waits for the flight to end.
      */
     public synchronized void waitForEndOfFlight(){
         while(!arrivedAtDest){
@@ -121,16 +121,26 @@ public class Plane {
     /**
      * Pilot function - Pilot flies back to departure.
      */
-
     public synchronized void flyToDeparturePoint(){
 
 
     }
+    /**
+     * Setters and Getters.
+     */
 
+    /**
+     * Checks if a plane arrived at the destination.
+     * @return true if the plane it's at the destination gate.
+     */
     public boolean isArrivedAtDest() {
         return arrivedAtDest;
     }
 
+    /**
+     * Sets the current state of the plane (arrived or not).
+     * @param arrivedAtDest new state of arrivedAtDest
+     */
     public void setArrivedAtDest(boolean arrivedAtDest) {
         this.arrivedAtDest = arrivedAtDest;
     }
