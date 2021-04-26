@@ -73,9 +73,6 @@ public class Plane {
         // Pilot is inside the plane ready for boarding
         pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
-        try {
-            pi.sleep((long) (1 + 100 * Math.random ()));
-        } catch (InterruptedException e) {}
     }
 
     /**
@@ -87,7 +84,6 @@ public class Plane {
                 wait();
             } catch (InterruptedException e){}
         }
-        repos.setArrivedAtDest(false);
     }
 
 
@@ -108,7 +104,7 @@ public class Plane {
         repos.setPilotState(PilotStates.FLYING_FORWARD);
 
         try {
-            pi.sleep ((long) (1 + 100 * Math.random ()));
+            pi.sleep ((long) (1 + 150 * Math.random ()));
         } catch (InterruptedException e) {}
 
     }
@@ -117,11 +113,6 @@ public class Plane {
      * Pilot function - Pilot flies back to departure.
      */
     public synchronized void flyToDeparturePoint(){
-        while(!repos.isEmptyPlaneDest()){
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
 
         repos.setEmptyPlaneDest(false);
 
@@ -129,8 +120,62 @@ public class Plane {
         repos.setPilotState(PilotStates.FLYING_BACK);
 
         try {
-            pi.sleep ((long) (1 + 100 * Math.random ()));
+            pi.sleep ((long) (1 + 150 * Math.random ()));
         } catch (InterruptedException e) {}
 
+    }
+
+    /**
+     * Hostess Function - if no passenger at queue or plane is full awakes pilot.
+     */
+    public synchronized void informPlaneReadyToTakeOff(){
+        ho = (Hostess) Thread.currentThread();
+
+        ho.setCurrentState(HostessStates.READY_TO_FLY);
+        repos.setHostessState(HostessStates.READY_TO_FLY);
+
+        repos.setReadyToFly(true);
+
+        notifyAll();
+    }
+
+
+    /**
+     * Pilot function - pilot announces that the plane arrived at destination
+     */
+    public synchronized void announceArrival(){
+        Pilot pi = (Pilot) Thread.currentThread();
+        pi.setCurrentState(PilotStates.DEBOARDING);
+        repos.setPilotState(PilotStates.DEBOARDING);
+        repos.setArrivedAtDest(true);
+
+        notifyAll();
+
+        while (repos.getInF() > 0){
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
+
+    }
+
+    public synchronized void leaveThePlane(){
+        int passengerID = ((Passenger) Thread.currentThread()).getID();
+
+        pass[passengerID] = (Passenger) Thread.currentThread();
+
+        repos.setInF(repos.getInF() - 1);
+        repos.setPTAL(repos.getPTAL() + 1);
+
+        if(repos.getInF() == 0){
+            repos.setArrivedAtDest(false);
+            repos.setEmptyPlaneDest(true);
+        }
+
+
+        pass[passengerID].setCurrentState(PassengerStates.AT_DESTINATION);
+        repos.setPassengerState(passengerID, PassengerStates.AT_DESTINATION);
+
+        notifyAll();
     }
 }

@@ -89,9 +89,10 @@ public class Passenger extends Thread{
                     break;
                 case IN_FLIGHT:
                     plane.waitForEndOfFlight();
+                    plane.leaveThePlane();
                     break;
                 case AT_DESTINATION:
-                    destAir.leaveThePlane();
+                    endOfLife = true;
                     break;
             }
         }
@@ -107,7 +108,7 @@ public class Passenger extends Thread{
     private void travelToAirport()
     {
         try {
-            sleep ((long) (1 + 40 * Math.random ()));
+            sleep ((long) (1 + 200 * Math.random ()));
         } catch (InterruptedException e) {}
 
     }

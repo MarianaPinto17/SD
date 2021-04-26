@@ -99,6 +99,6 @@ public class MemFIFO<R> extends MemObject<R>
    }
 
    public boolean isEmpty() {
-       return empty;
+       return inPnt==outPnt;
    }
 }

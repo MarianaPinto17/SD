@@ -205,6 +205,20 @@ public class GeneralRepository {
     public synchronized void setPilotState (PilotStates state)
     {
         this.pilotState = state;
+
+        String lineStatus;
+        try {
+            FileWriter fw = new FileWriter(logFileName, true);
+
+            try (PrintWriter pw = new PrintWriter(fw)) {
+                lineStatus = state.toString();
+                pw.println();
+                pw.println("PILOT: "+lineStatus);
+
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         reportStatus ();
     }
 
@@ -217,6 +231,20 @@ public class GeneralRepository {
     public synchronized void setHostessState (HostessStates state)
     {
         this.hostessState = state;
+
+        String lineStatus;
+        try {
+            FileWriter fw = new FileWriter(logFileName, true);
+
+            try (PrintWriter pw = new PrintWriter(fw)) {
+                lineStatus = state.toString();
+                pw.println();
+                pw.println("Hostess: "+lineStatus);
+
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         reportStatus ();
     }
     /**
@@ -229,6 +257,20 @@ public class GeneralRepository {
     public synchronized void setPassengerState (int id, PassengerStates state)
     {
         this.passengerStates[id] = state;
+
+        String lineStatus;
+        try {
+            FileWriter fw = new FileWriter(logFileName, true);
+
+            try (PrintWriter pw = new PrintWriter(fw)) {
+                lineStatus = state.toString();
+                pw.println();
+                pw.println("PASS_"+id+": "+lineStatus);
+
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         reportStatus ();
     }
 
