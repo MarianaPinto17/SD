@@ -167,7 +167,6 @@ public class DepartureAirport {
                 wait();
             } catch (InterruptedException e){}
         }
-        System.out.println(nPassengers);
 
         nPassengers--;
         repo.setInQ(repo.getInQ() - 1);
@@ -181,14 +180,11 @@ public class DepartureAirport {
             checkDocID = -1;
             System.exit(1);
         }
-        System.out.println("CHECK DOC ID: "+checkDocID);
         this.checkedPass[checkDocID] = true;
 
         notifyAll();
 
         while (!docShow){
-            System.out.println("[HOSTESS]DOCSHOW:"+docShow);
-            System.out.println("[HOSTESS]CANBOARD:"+docShow);
             try{
                 wait();
             } catch (InterruptedException e){}
@@ -201,7 +197,6 @@ public class DepartureAirport {
      * Passenger function - passenger shows documents to hostess.
      */
     public synchronized void showDocuments() {
-        System.out.println("PASS_"+((Passenger) Thread.currentThread()).getID());
         while (!this.checkedPass[((Passenger) Thread.currentThread()).getID()]){
             try{
                 wait();
@@ -235,13 +230,14 @@ public class DepartureAirport {
 
         int passInDep = (SimulPar.N - repo.getPTAL());
 
+        notifyAll();
         while(passengersAtQueue.isEmpty() && passInDep >=5 || nCheckedPassengers != passInDep && (passInDep < 5)){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
 
-        if((nCheckedPassengers <= 10 && nCheckedPassengers >= 5) || passInDep < 5){
+        if((nCheckedPassengers >= 5 && passengersAtQueue.isEmpty()) || nCheckedPassengers == 10 || passInDep < 5){
             informPlane = true;
             planeAtDeparture = false;
         }
