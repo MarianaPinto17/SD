@@ -231,7 +231,6 @@ public class DepartureAirport {
         this.canBoard = true;
         nCheckedPassengers++;
 
-
         notifyAll();
 
         int passInDep = (SimulPar.N - repo.getPTAL());
@@ -249,8 +248,6 @@ public class DepartureAirport {
 
     }
 
-
-
     /**
      * Passenger function - passenger boards the plane.
      */
@@ -261,13 +258,11 @@ public class DepartureAirport {
         pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
         repo.setPassengerState(passengerID, PassengerStates.IN_FLIGHT);
 
-
-
         notifyAll();
     }
 
     /**
-     * Hostess function
+     * Hostess function - hostess waits for the next flight of the day.
      */
 
     public synchronized void waitForNextFlight() {
@@ -286,10 +281,8 @@ public class DepartureAirport {
     }
 
     /**
-     * Pilot function
+     * Pilot function - when the pilot parks the plane at the Transfer gate.
      */
-
-
     public synchronized void parkAtTransferGate() {
         planeAtDeparture = true;
 
@@ -306,7 +299,7 @@ public class DepartureAirport {
     }
 
     /**
-     * Getters and setters
+     * Getters and setters.
      */
 
     /**

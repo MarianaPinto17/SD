@@ -159,6 +159,9 @@ public class Plane {
 
     }
 
+    /**
+     * Passenger function - when the plane arrives at destination the passenger exits the plane.
+     */
     public synchronized void leaveThePlane(){
         int passengerID = ((Passenger) Thread.currentThread()).getID();
 

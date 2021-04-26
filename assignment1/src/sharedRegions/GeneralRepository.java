@@ -274,51 +274,87 @@ public class GeneralRepository {
         reportStatus ();
     }
 
+    /**
+     * Getters and setters.
+     */
+
+    /**
+     * checks if a plane is ready to fly
+     * @return true if the plane is ready to fly
+     */
     public boolean isReadyToFly() {
         return readyToFly;
     }
 
+    /**
+     * Sets the plane ready to fly.
+     * @param readyToFly changes status of readyToFly.
+     */
     public void setReadyToFly(boolean readyToFly) {
         this.readyToFly = readyToFly;
     }
 
+    /**
+     * checks the number of passengers in queue.
+     * @return the number of passengers in queue.
+     */
     public int getInQ() {
         return InQ;
     }
 
+    /**
+     * sets the number of passengers in queue.
+     * @param inQ changes status of inQ.
+     */
     public void setInQ(int inQ) {
         InQ = inQ;
     }
 
+    /**
+     * Number of passengers in flight.
+     * @return number of passengers inside the plane.
+     */
     public int getInF() {
         return InF;
     }
 
+    /**
+     * sets the number of passengers inside de plane.
+     * @param inF changes status of inF.
+     */
     public void setInF(int inF) {
         InF = inF;
     }
 
+    /**
+     * checks the number of passengers that arrived at the destination airport.
+     * @return the number of passengers that arrived at the destination airport.
+     */
     public int getPTAL() {
         return PTAL;
     }
 
+    /**
+     * sets the number of passengers that arrived at the destination airport.
+     * @param PTAL changes status of PTAL.
+     */
     public void setPTAL(int PTAL) {
         this.PTAL = PTAL;
     }
 
+    /**
+     * checks if the plane is at destination.
+     * @return true if the plane is at destination.
+     */
     public boolean isArrivedAtDest() {
         return arrivedAtDest;
     }
 
+    /**
+     * sets the status of the plane to Arrived at destination or not.
+     * @param arrivedAtDest changes status of arrivedAtDest.
+     */
     public void setArrivedAtDest(boolean arrivedAtDest) {
         this.arrivedAtDest = arrivedAtDest;
-    }
-
-    public boolean isEmptyPlaneDest() {
-        return emptyPlaneDest;
-    }
-
-    public void setEmptyPlaneDest(boolean emptyPlaneDest) {
-        this.emptyPlaneDest = emptyPlaneDest;
     }
 }
