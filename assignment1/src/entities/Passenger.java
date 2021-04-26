@@ -84,9 +84,7 @@ public class Passenger extends Thread{
                     depAir.waitInQueue();
                     break;
                 case IN_QUEUE:
-                    while(! docChecked){
-                        depAir.showDocuments();
-                    }
+                    depAir.showDocuments();
                     depAir.boardThePlane();
                     break;
                 case IN_FLIGHT:

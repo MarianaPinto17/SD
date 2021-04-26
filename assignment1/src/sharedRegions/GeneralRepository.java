@@ -75,6 +75,12 @@ public class GeneralRepository {
     private boolean arrivedAtDest;
 
     /**
+     * Plane empty in destination airport
+     */
+
+    private boolean emptyPlaneDest;
+
+    /**
      *
      */
     public GeneralRepository(String logFileName){
@@ -89,6 +95,8 @@ public class GeneralRepository {
         InQ = 0;
         InF = 0;
         PTAL = 0;
+        emptyPlaneDest = false;
+        arrivedAtDest = false;
         readyToFly = false;
 
         reportInitialStatus();
@@ -262,5 +270,13 @@ public class GeneralRepository {
 
     public void setArrivedAtDest(boolean arrivedAtDest) {
         this.arrivedAtDest = arrivedAtDest;
+    }
+
+    public boolean isEmptyPlaneDest() {
+        return emptyPlaneDest;
+    }
+
+    public void setEmptyPlaneDest(boolean emptyPlaneDest) {
+        this.emptyPlaneDest = emptyPlaneDest;
     }
 }

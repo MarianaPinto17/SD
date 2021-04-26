@@ -11,12 +11,6 @@ import main.*;
 public class Plane {
 
     /**
-     * checks if a plane is at the destination airport.
-     */
-
-    private boolean arrivedAtDest;
-
-    /**
      * Reference to Passenger threads.
      */
 
@@ -66,8 +60,6 @@ public class Plane {
             waitingPassenger = null;
             System.exit (1);
         }
-
-        arrivedAtDest = false;
         this.repos = repos;
 
     }
@@ -90,11 +82,12 @@ public class Plane {
      * Passenger function - passenger waits for the flight to end.
      */
     public synchronized void waitForEndOfFlight(){
-        while(!arrivedAtDest){
+        while(!repos.isArrivedAtDest()){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
+        repos.setArrivedAtDest(false);
     }
 
 
@@ -109,6 +102,8 @@ public class Plane {
             } catch (InterruptedException e){}
         }
 
+        repos.setReadyToFly(false);
+
         pi.setCurrentState(PilotStates.FLYING_FORWARD);
         repos.setPilotState(PilotStates.FLYING_FORWARD);
 
@@ -122,26 +117,20 @@ public class Plane {
      * Pilot function - Pilot flies back to departure.
      */
     public synchronized void flyToDeparturePoint(){
+        while(!repos.isEmptyPlaneDest()){
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
 
+        repos.setEmptyPlaneDest(false);
 
-    }
-    /**
-     * Setters and Getters.
-     */
+        pi.setCurrentState(PilotStates.FLYING_BACK);
+        repos.setPilotState(PilotStates.FLYING_BACK);
 
-    /**
-     * Checks if a plane arrived at the destination.
-     * @return true if the plane it's at the destination gate.
-     */
-    public boolean isArrivedAtDest() {
-        return arrivedAtDest;
-    }
+        try {
+            pi.sleep ((long) (1 + 100 * Math.random ()));
+        } catch (InterruptedException e) {}
 
-    /**
-     * Sets the current state of the plane (arrived or not).
-     * @param arrivedAtDest new state of arrivedAtDest
-     */
-    public void setArrivedAtDest(boolean arrivedAtDest) {
-        this.arrivedAtDest = arrivedAtDest;
     }
 }

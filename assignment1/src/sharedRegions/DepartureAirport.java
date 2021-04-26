@@ -90,6 +90,11 @@ public class DepartureAirport {
     private boolean informPlane;
 
     /**
+     *
+     */
+    private int checkDocID;
+
+    /**
      * Departure Airport constructor
      * @param repo general repository of information
      */
@@ -115,6 +120,9 @@ public class DepartureAirport {
         canBoard = false;
         informPlane = false;
 
+        planeAtDeparture = true;
+        checkDocID = 22;
+
         this.repo = repo;
     }
 
@@ -125,6 +133,7 @@ public class DepartureAirport {
         pi = (Pilot) Thread.currentThread();
         // pilot is at transfer gate and ready for boarding
         pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
+        repo.setPilotState(PilotStates.READY_FOR_BOARDING);
         System.out.println("Plane ready for boarding.");
         // hostess can start boarding
         setReadyForBoarding(true);
@@ -158,17 +167,12 @@ public class DepartureAirport {
         repo.setPassengerState(passengerID, PassengerStates.IN_QUEUE);
         // number of passengers in queue increases
         nPassengers++;
-        repo.setInQ(nPassengers);
         try{
             passengersAtQueue.write(passengerID);
         }catch (MemException e){
             System.out.println("Insertion of customer id in FIFO failed: " +e.getMessage());
             System.exit(1);
         }
-        try{
-            pass[passengerID].wait();
-        } catch (InterruptedException e){}
-
         notifyAll();
     }
 
@@ -176,18 +180,25 @@ public class DepartureAirport {
      * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents.
      */
     public synchronized void checkDocuments(){
-        int passengerID;
+        while(nPassengers == 0){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
+        System.out.println(nPassengers);
+
+        repo.setInQ(nPassengers);
         ho.setCurrentState(HostessStates.CHECK_PASSENGER);
         repo.setHostessState(HostessStates.CHECK_PASSENGER);
         try{
-            passengerID = passengersAtQueue.read();
+            checkDocID = passengersAtQueue.read();
         }catch (MemException e){
             System.out.println("Retrieval of passsenger ID from wainting FIFO failed." +e.getMessage());
-            passengerID = -1;
+            checkDocID = -1;
             System.exit(1);
         }
 
-        this.checkedPass[passengerID] = true;
+        this.checkedPass[checkDocID] = true;
 
         notifyAll();
 
@@ -202,6 +213,13 @@ public class DepartureAirport {
      * Passenger function - passenger shows documents to hostess.
      */
     public synchronized void showDocuments() {
+        int passengerID = ((Passenger) Thread.currentThread()).getID();
+        while (!docShow || passengerID != checkDocID){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
+
         docShow = true;
 
         notifyAll();
@@ -222,6 +240,7 @@ public class DepartureAirport {
 
         this.canBoard = true;
         nCheckedPassengers++;
+        repo.setInQ(repo.getInQ() - 1);
 
         notifyAll();
 
@@ -235,6 +254,7 @@ public class DepartureAirport {
 
         if((nCheckedPassengers <= 10 && nCheckedPassengers > 5) || passInDep < 5){
             informPlane = true;
+            planeAtDeparture = false;
         }
 
     }
@@ -257,19 +277,7 @@ public class DepartureAirport {
         notifyAll();
     }
 
-    /**
-     * Hostess function - hostess informs next Flight.
-     */
-    public synchronized void informNextFlight(){
-        try{
-            while(!planeAtDeparture){
-                System.out.println("Plane not at departure gate.");
-                wait();
-            }
-        }catch (InterruptedException exc){
-            System.out.println("Plane at departure gate, start boarding.");
-        }
-    }
+
 
     /**
      * Passenger function - passenger boards the plane.
@@ -289,6 +297,39 @@ public class DepartureAirport {
         repo.setInF(repo.getInF() + 1);
 
         notifyAll();
+    }
+
+    /**
+     * Hostess function
+     */
+
+    public synchronized void waitForNextFlight() {
+        while(!planeAtDeparture){
+            try{
+                wait();
+            } catch (InterruptedException e){}
+        }
+
+        ho.setCurrentState(HostessStates.WAIT_FOR_FLIGHT);
+        repo.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
+
+        notifyAll();
+
+    }
+
+    /**
+     * Pilot function
+     */
+
+
+    public synchronized void parkAtTransferGate() {
+        planeAtDeparture = true;
+
+        pi.setCurrentState(PilotStates.AT_TRANSFER_GATE);
+        repo.setPilotState(PilotStates.AT_TRANSFER_GATE);
+
+        notifyAll();
+
     }
 
     /**

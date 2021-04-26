@@ -82,6 +82,7 @@ public class Hostess extends Thread{
                     depAir.waitForNextPassenger();
                     break;
                 case READY_TO_FLY:
+                    depAir.waitForNextFlight();
                     break;
             }
         }

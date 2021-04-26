@@ -86,6 +86,7 @@ public class Pilot extends Thread{
                     plane.flyToDeparturePoint();
                     break;
                 case FLYING_BACK:
+                    depAir.parkAtTransferGate();
                     break;
             }
         }

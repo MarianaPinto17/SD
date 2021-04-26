@@ -32,16 +32,16 @@ public class AirLift {
 
         System.out.println ("\n" + "      Problem of Air Lift\n");
         do {
-            System.out.print ("Logging file name? ");
-            fileName = System.console().readLine();
+            System.out.println ("Logging file name? ");
+            fileName = "log.txt";//System.console().readLine();
             if( Files.exists(Path.of(fileName))) {
                 do{
                     System.out.print ("There is already a file with this name. Delete it (y - yes; n - no)? ");
-                    opt = System.console().readLine().charAt(0);
+                    opt = 'y';//System.console().readLine().charAt(0);
                 } while ((opt != 'y') && (opt != 'n'));
                 success = opt == 'y';
             } else success = true;
-        } while (success);
+        } while (!success);
 
         /* problem initialization */
 
@@ -58,12 +58,13 @@ public class AirLift {
 
 
         /* START OF SIMULATION */
-
+        pilot.start();
+        hostess.start();
         for (int i = 0; i < SimulPar.N; i++) {
             passengers[i].start();
         }
-        hostess.start();
-        pilot.start();
+
+
 
         /* WAITING FOR END OF SIMULATION */
 
