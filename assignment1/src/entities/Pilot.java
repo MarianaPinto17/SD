@@ -80,7 +80,7 @@ public class Pilot extends Thread{
                     plane.flyToDestinationPoint();
                     break;
                 case FLYING_FORWARD:
-                    plane.announceArrival();
+                    destAir.announceArrival();
                     break;
                 case DEBOARDING:
                     plane.flyToDeparturePoint();

@@ -29,10 +29,15 @@ public class AirLift {
         char opt;                                               // selected option
         boolean success;                                        // end of operation flag
 
+        String filename_args = "log.txt";
+        if (args.length >= 1)
+            filename_args = args[0];
+
+
         System.out.println ("\n" + "      Problem of Air Lift\n");
         do {
             System.out.println ("Logging file name? ");
-            fileName = "log.txt";//System.console().readLine();
+            fileName = filename_args; //System.console().readLine();
             if( Files.exists(Path.of(fileName))) {
                 do{
                     System.out.print ("There is already a file with this name. Delete it (y - yes; n - no)? ");

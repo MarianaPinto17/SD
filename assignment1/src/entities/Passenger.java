@@ -89,7 +89,7 @@ public class Passenger extends Thread{
                     break;
                 case IN_FLIGHT:
                     plane.waitForEndOfFlight();
-                    plane.leaveThePlane();
+                    destAir.leaveThePlane();
                     break;
                 case AT_DESTINATION:
                     endOfLife = true;

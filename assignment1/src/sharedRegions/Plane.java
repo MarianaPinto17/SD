@@ -107,6 +107,8 @@ public class Plane {
             pi.sleep ((long) (1 + 150 * Math.random ()));
         } catch (InterruptedException e) {}
 
+        repos.setArrivedAtDest(true);
+
     }
 
     /**
@@ -135,49 +137,6 @@ public class Plane {
         repos.setHostessState(HostessStates.READY_TO_FLY);
 
         repos.setReadyToFly(true);
-
-        notifyAll();
-    }
-
-
-    /**
-     * Pilot function - pilot announces that the plane arrived at destination
-     */
-    public synchronized void announceArrival(){
-        Pilot pi = (Pilot) Thread.currentThread();
-        pi.setCurrentState(PilotStates.DEBOARDING);
-        repos.setPilotState(PilotStates.DEBOARDING);
-        repos.setArrivedAtDest(true);
-
-        notifyAll();
-
-        while (repos.getInF() > 0){
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
-
-    }
-
-    /**
-     * Passenger function - when the plane arrives at destination the passenger exits the plane.
-     */
-    public synchronized void leaveThePlane(){
-        int passengerID = ((Passenger) Thread.currentThread()).getID();
-
-        pass[passengerID] = (Passenger) Thread.currentThread();
-
-        repos.setInF(repos.getInF() - 1);
-        repos.setPTAL(repos.getPTAL() + 1);
-
-        if(repos.getInF() == 0){
-            repos.setArrivedAtDest(false);
-            repos.setEmptyPlaneDest(true);
-        }
-
-
-        pass[passengerID].setCurrentState(PassengerStates.AT_DESTINATION);
-        repos.setPassengerState(passengerID, PassengerStates.AT_DESTINATION);
 
         notifyAll();
     }
