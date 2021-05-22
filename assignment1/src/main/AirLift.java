@@ -58,7 +58,7 @@ public class AirLift {
             passengers[i] = new Passenger(i, departureAirport, destinationAirport, plane);
         }
         hostess = new Hostess("Hospedeira", departureAirport, destinationAirport, plane);
-        pilot = new Pilot("Piloto", departureAirport, destinationAirport, plane);
+        pilot = new Pilot("Piloto", departureAirport, destinationAirport, plane, repos);
 
 
         /* START OF SIMULATION */

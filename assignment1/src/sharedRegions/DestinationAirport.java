@@ -22,10 +22,6 @@ public class DestinationAirport {
      *
      */
     private final GeneralRepository repos;
-    /**
-     *
-     */
-    private boolean arrivedDestination;
 
     /**
      * Destination Airport constructor
@@ -44,8 +40,7 @@ public class DestinationAirport {
         pi = (Pilot) Thread.currentThread();
         pi.setCurrentState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
-
-        System.out.println(repos.getInF());
+        pi.setNpassengers(repos.getnFlights(),repos.getInF());
 
         notifyAll();
 
@@ -64,7 +59,6 @@ public class DestinationAirport {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
 
         pass[passengerID] = (Passenger) Thread.currentThread();
-
         repos.setInF(repos.getInF() - 1);
         repos.setPTAL(repos.getPTAL() + 1);
 

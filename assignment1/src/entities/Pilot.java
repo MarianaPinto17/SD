@@ -1,8 +1,7 @@
 package entities;
 
-import sharedRegions.DepartureAirport;
-import sharedRegions.DestinationAirport;
-import sharedRegions.Plane;
+import main.SimulPar;
+import sharedRegions.*;
 
 /**
  * Pilot thread and life cycle
@@ -45,6 +44,20 @@ public class Pilot extends Thread{
     private final Plane plane;
 
     /**
+     * number of flights
+     */
+    private int nflights;
+
+    /**
+     * number of passengers in each flight
+     */
+    private int npassengers[];
+
+    /**
+     *
+     */
+    private final GeneralRepository repos;
+    /**
      * Pilot Constructor.
      * Initiates a new Pilot that drives a plane
      *
@@ -53,14 +66,18 @@ public class Pilot extends Thread{
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Pilot (String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
+    public Pilot (String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane, GeneralRepository repos){
         super(name);
+
         this.depAir = depAir;
         this.destAir = destAir;
         this.plane = plane;
         this.endOfLife = false;
         this.asleep = false;
         this.currentState = PilotStates.AT_TRANSFER_GATE;
+        this.nflights=0;
+        this.npassengers=new int[5];
+        this.repos=repos;
     }
 
     /**
@@ -87,6 +104,9 @@ public class Pilot extends Thread{
                     break;
                 case FLYING_BACK:
                     depAir.parkAtTransferGate();
+                    if(SimulPar.N == repos.getPTAL()) {
+                        repos.sumUp(npassengers);
+                    }
                     break;
             }
         }
@@ -138,5 +158,21 @@ public class Pilot extends Thread{
      */
     public void setAsleep(boolean newAsleep){
         this.asleep = newAsleep;
+    }
+
+    public int[] getNpassengers() {
+        return npassengers;
+    }
+
+    public void setNpassengers(int index, int npassengers) {
+        this.npassengers[index] = npassengers;
+    }
+
+    public int getNflights() {
+        return nflights;
+    }
+
+    public void setNflights(int nflights) {
+        this.nflights = nflights;
     }
 }

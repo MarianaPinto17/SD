@@ -284,6 +284,27 @@ public class GeneralRepository {
         }
         reportStatus ();
     }
+
+    /**
+     *
+     *
+     */
+    public synchronized void sumUp(int[] npassFlight){
+        try {
+            FileWriter fw = new FileWriter(logFileName, true);
+
+            try (PrintWriter pw = new PrintWriter(fw)) {
+                pw.println();
+                for(int i=0;i<npassFlight.length;i++){
+                    if(npassFlight[i]!=0){
+                        pw.println("Flight "+ i + " transported "+ npassFlight[i]  +" passengers");
+                    }
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     /**
      *   Set Passenger state.
      *
