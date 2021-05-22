@@ -134,6 +134,7 @@ public class Plane {
         ho = (Hostess) Thread.currentThread();
 
         ho.setCurrentState(HostessStates.READY_TO_FLY);
+        System.out.println();
         repos.setHostessState(HostessStates.READY_TO_FLY);
 
         repos.setReadyToFly(true);

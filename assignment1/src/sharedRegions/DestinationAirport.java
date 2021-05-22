@@ -72,8 +72,6 @@ public class DestinationAirport {
             repos.setArrivedAtDest(false);
             repos.setEmptyPlaneDest(true);
         }
-
-        System.out.println("Pass"+passengerID+" saiu");
         pass[passengerID].setCurrentState(PassengerStates.AT_DESTINATION);
         repos.setPassengerState(passengerID, PassengerStates.AT_DESTINATION);
 

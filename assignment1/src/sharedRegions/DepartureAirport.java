@@ -243,12 +243,12 @@ public class DepartureAirport {
         this.canBoard = true;
         nCheckedPassengers++;
 
-        notifyAll();
+//        notifyAll();
 
         int passInDep = (SimulPar.N - repos.getPTAL());
 
         notifyAll();
-        while(passengersAtQueue.isEmpty() && passInDep >=5 || nCheckedPassengers != passInDep && (passInDep < 5)){
+        while(passengersAtQueue.isEmpty() && passInDep >=5 || (nCheckedPassengers != passInDep) && (passInDep < 5)){
             try{
                 wait();
             } catch (InterruptedException e){}
