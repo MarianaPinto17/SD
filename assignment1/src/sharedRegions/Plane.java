@@ -108,12 +108,9 @@ public class Plane {
 
         while(!repos.isArrivedAtDest()){
             try{
-                System.out.println(" PASSENGER sleeping");
-                System.out.println(repos.isArrivedAtDest());
                 wait();
 
             } catch (InterruptedException e){}
-            System.out.println("Arrived at dest PLANE: " +repos.isArrivedAtDest());
         }
     }
 
