@@ -41,9 +41,9 @@ public class DestinationAirport {
         pi.setCurrentState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
         pi.setNpassengers(repos.getnFlights(),repos.getInF());
-
+        System.out.println("Aqui announce INF DESTINATION: "+ repos.getInF());
+        System.out.println("PLANE ARRIVED: " + repos.isArrivedAtDest());
         notifyAll();
-
         while (repos.getInF() > 0){
             try {
                 wait();
@@ -61,7 +61,7 @@ public class DestinationAirport {
         pass[passengerID] = (Passenger) Thread.currentThread();
         repos.setInF(repos.getInF() - 1);
         repos.setPTAL(repos.getPTAL() + 1);
-
+        System.out.println("AQUI: "+repos.getInF());
         if(repos.getInF() == 0){
             repos.setArrivedAtDest(false);
             repos.setEmptyPlaneDest(true);

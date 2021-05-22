@@ -294,12 +294,12 @@ public class GeneralRepository {
             FileWriter fw = new FileWriter(logFileName, true);
 
             try (PrintWriter pw = new PrintWriter(fw)) {
-                pw.println();
-                for(int i=0;i<npassFlight.length;i++){
-                    if(npassFlight[i]!=0){
-                        pw.println("Flight "+ i + " transported "+ npassFlight[i]  +" passengers");
+                for (int i = 0; i < npassFlight.length; i++) {
+                    if (npassFlight[i] != 0) {
+                        pw.print("\nFlight " + i + " transported " + npassFlight[i] + " passengers");
                     }
                 }
+                pw.print(".");
             }
         } catch (IOException e){
             e.printStackTrace();

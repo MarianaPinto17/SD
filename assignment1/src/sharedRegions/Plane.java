@@ -76,18 +76,6 @@ public class Plane {
     }
 
     /**
-     * Passenger function - passenger waits for the flight to end.
-     */
-    public synchronized void waitForEndOfFlight(){
-        while(!repos.isArrivedAtDest()){
-            try{
-                wait();
-            } catch (InterruptedException e){}
-        }
-    }
-
-
-    /**
      * Pilot function - Pilot flies to destination.
      */
 
@@ -108,8 +96,28 @@ public class Plane {
         } catch (InterruptedException e) {}
 
         repos.setArrivedAtDest(true);
+        notifyAll();
 
     }
+
+
+    /**
+     * Passenger function - passenger waits for the flight to end.
+     */
+    public synchronized void waitForEndOfFlight(){
+
+        while(!repos.isArrivedAtDest()){
+            try{
+                System.out.println(" PASSENGER sleeping");
+                System.out.println(repos.isArrivedAtDest());
+                wait();
+
+            } catch (InterruptedException e){}
+            System.out.println("Arrived at dest PLANE: " +repos.isArrivedAtDest());
+        }
+    }
+
+
 
     /**
      * Pilot function - Pilot flies back to departure.
