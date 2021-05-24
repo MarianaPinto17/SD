@@ -50,20 +50,223 @@ public class DepartureAirportStub {
         }
 
         ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
-        // Output message instantiation
-        outputMessage = new Message(MessageTypes.INFORM_PLANE_READY_FOR_BOARDING);
-        outputMessage.setrAttributesSize(1);
-        outputMessage.setrAttributesType(new int[]{ParameterTypes.INTEGER});
-        outputMessage.setrAttributes(new Object[]{((Pilot) Thread.currentThread()).getPilotState()});
-        com.writeObject(outputMessage);
-        inputMessage = (Message) com.readObject(); // check receiving message
 
-        if (inputMessage.getMessageType() != MessageTypes.RETURN || inputMessage.getrAttributesSize() != 1 || inputMessage.getrAttributesType()[0] != ParameterTypes.INTEGER) {
+        com.close();
+    }
+
+    public void prepareForPassBoarding() {
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.PREPARE_FOR_PASS_BOARDING);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_PFPB){
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setPilotState((int) inputMessage.getrAttributes()[0]);
-        com.close();    // close the connection
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void waitInQueue(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.WAIT_IN_QUEUE);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_WIQ){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void checkDocuments(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.CHECK_DOCUMENTS);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_CD){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void showDocuments(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.SHOW_DOCUMENTS);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_SD){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void waitForNextPassenger(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.WAIT_FOR_NEXT_PASSENGER);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_WFNP){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void boardThePlane(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.BOARD_THE_PLANE);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_BTP){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void waitForNextFlight(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.WAIT_FOR_NEXT_FLIGHT);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_WFNF){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void parkAtTransferGate(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.PARK_AT_TRANSFER_GATE);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_PATG){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
     }
 }

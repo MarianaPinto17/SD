@@ -122,6 +122,14 @@ public class Pilot extends Thread{
 
     /**
      * Set current state
+     * @param newState new state of a pilot (int)
+     */
+    public void setCurrentState(int newState){
+        this.currentState.setValue(newState);
+    }
+
+    /**
+     * Set current state
      * @param newState new state of a pilot
      */
     public void setCurrentState(PilotStates newState){

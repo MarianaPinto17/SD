@@ -1,6 +1,6 @@
 package ClientSide.entities;
 
-import ServerSide.sharedRegions.*;
+import ClientSide.stub.*;
 
 /**
  * Hostess thread and life cycle
@@ -13,19 +13,19 @@ public class Hostess extends Thread{
      * Reference to Departure Airport
      */
 
-    private final DepartureAirport depAir;
+    private final DepartureAirportStub depAir;
 
     /**
      * Reference to Destination Airport
      */
 
-    private final DestinationAirport destAir;
+    private final DestinationAirportStub destAir;
 
     /**
      * Reference to Plane
      */
 
-    private final Plane plane;
+    private final PlaneStub plane;
 
     /**
      * The current state of the Hostess
@@ -50,7 +50,7 @@ public class Hostess extends Thread{
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Hostess(String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
+    public Hostess(String name, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane){
         super(name);
         this.depAir = depAir;
         this.destAir = destAir;

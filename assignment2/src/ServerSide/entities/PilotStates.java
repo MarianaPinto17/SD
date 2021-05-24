@@ -13,9 +13,13 @@ public enum PilotStates {
     FLYING_BACK(5);
 
 
-    public final int value;
+    public int value;
 
     PilotStates(int value) {
+        this.value = value;
+    }
+
+    public void setValue(int value){
         this.value = value;
     }
 }
