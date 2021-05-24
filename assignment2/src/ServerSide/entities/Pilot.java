@@ -116,8 +116,8 @@ public class Pilot extends Thread{
      * Get current state
      * @return the current state of a pilot
      */
-    public PilotStates getCurrentState(){
-        return currentState;
+    public int getCurrentState(){
+        return currentState.value;
     }
 
     /**

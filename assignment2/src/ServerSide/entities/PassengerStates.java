@@ -6,8 +6,14 @@ package ServerSide.entities;
  */
 
 public enum PassengerStates {
-    GOING_TO_AIRPORT,
-    IN_QUEUE,
-    IN_FLIGHT,
-    AT_DESTINATION
+    GOING_TO_AIRPORT(0),
+    IN_QUEUE(1),
+    IN_FLIGHT(2),
+    AT_DESTINATION(3);
+
+    public final int value;
+
+    PassengerStates(int value) {
+        this.value = value;
+    }
 }

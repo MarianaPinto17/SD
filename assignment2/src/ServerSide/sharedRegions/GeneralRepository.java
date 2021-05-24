@@ -286,6 +286,19 @@ public class GeneralRepository {
     }
 
     /**
+     *   Set Passenger state.
+     *
+     *     @param id passenger id
+     *     @param state passenger state
+     */
+
+    public synchronized void setPassengerState (int id, PassengerStates state)
+    {
+        this.passengerStates[id] = state;
+        reportStatus ();
+    }
+
+    /**
      *
      *
      */
@@ -304,18 +317,6 @@ public class GeneralRepository {
         } catch (IOException e){
             e.printStackTrace();
         }
-    }
-    /**
-     *   Set Passenger state.
-     *
-     *     @param id passenger id
-     *     @param state passenger state
-     */
-
-    public synchronized void setPassengerState (int id, PassengerStates state)
-    {
-        this.passengerStates[id] = state;
-        reportStatus ();
     }
 
     /**

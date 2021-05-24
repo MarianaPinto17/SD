@@ -1,7 +1,7 @@
 package ClientSide.entities;
 
 import ClientSide.main.SimulPar;
-import ServerSide.sharedRegions.*;
+import ClientSide.stub.*;
 
 /**
  * Pilot thread and life cycle
@@ -29,19 +29,19 @@ public class Pilot extends Thread{
      * Reference to Departure Airport
      */
 
-    private final DepartureAirport depAir;
+    private final DepartureAirportStub depAir;
 
     /**
      * Reference to Destination Airport
      */
 
-    private final DestinationAirport destAir;
+    private final DestinationAirportStub destAir;
 
     /**
      * Reference to Plane
      */
 
-    private final Plane plane;
+    private final PlaneStub plane;
 
     /**
      * number of flights
@@ -56,7 +56,7 @@ public class Pilot extends Thread{
     /**
      *
      */
-    private final GeneralRepository repos;
+    private final GeneralRepositoryStub repos;
     /**
      * Pilot Constructor.
      * Initiates a new Pilot that drives a plane
@@ -66,7 +66,7 @@ public class Pilot extends Thread{
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Pilot (String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane, GeneralRepository repos){
+    public Pilot (String name, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane, GeneralRepositoryStub repos){
         super(name);
 
         this.depAir = depAir;
@@ -116,16 +116,16 @@ public class Pilot extends Thread{
      * Get current state
      * @return the current state of a pilot
      */
-    public PilotStates getCurrentState(){
-        return currentState;
+    public int getCurrentState(){
+        return currentState.value;
     }
 
     /**
      * Set current state
      * @param newState new state of a pilot
      */
-    public void setCurrentState(PilotStates newState){
-        this.currentState = newState;
+    public void setCurrentState(int newState){
+        this.currentState.setValue(newState);
     }
 
     /**
