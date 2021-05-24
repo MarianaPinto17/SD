@@ -143,16 +143,16 @@ public class Message {
      * Getting Hostess State
      * @return hostess state
      */
-    public HostessStates getHostessState() {
-        return hostessState;
+    public int getHostessState() {
+        return hostessState.value;
     }
 
     /**
      * Getting Passenger state
      * @return
      */
-    public PassengerStates getPassengerState() {
-        return passengerState;
+    public int getPassengerState() {
+        return passengerState.value;
     }
 
     /**

@@ -11,9 +11,14 @@ public enum PassengerStates {
     IN_FLIGHT(2),
     AT_DESTINATION(3);
 
-    public final int value;
+
+    public int value;
 
     PassengerStates(int value) {
+        this.value = value;
+    }
+
+    public void setValue(int value){
         this.value = value;
     }
 }

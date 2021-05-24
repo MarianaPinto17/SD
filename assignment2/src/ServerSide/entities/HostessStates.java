@@ -10,9 +10,13 @@ public enum HostessStates {
     CHECK_PASSENGER(2),
     READY_TO_FLY(3);
 
-    public final int value;
+    public int value;
 
     HostessStates(int value) {
+        this.value = value;
+    }
+
+    public void setValue(int value){
         this.value = value;
     }
 }
