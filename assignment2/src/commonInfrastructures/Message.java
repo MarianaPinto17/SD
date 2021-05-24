@@ -38,6 +38,11 @@ public class Message {
     private int[] npassFlight;
 
     /**
+     * if a plane is ready to take off.
+     */
+    private boolean informPlane;
+
+    /**
      *  Message instantiation (form 1).
      *
      *  @param msgType message type
@@ -108,6 +113,17 @@ public class Message {
     }
 
     /**
+     * Message instantiation (form 7).
+     *
+     * @param msgType message type
+     * @param informPlane if a plane is ready to take off.
+     */
+    public Message(MessageType msgType, boolean informPlane) {
+        this.msgType = msgType;
+        this.informPlane = informPlane;
+    }
+
+    /**
      * Getting MessageType
      * @return message type
      */
@@ -153,5 +169,13 @@ public class Message {
      */
     public int[] getNpassFlight() {
         return npassFlight;
+    }
+
+    /**
+     * Getting if a plane is ready to take off.
+     * @return if a plane is ready to take off.
+     */
+    public boolean isInformPlane() {
+        return informPlane;
     }
 }
