@@ -5,12 +5,16 @@ import ServerSide.entities.PassengerStates;
 import ServerSide.entities.PilotStates;
 
 public class Message {
-
     /**
      *  Message type.
      */
 
     private MessageType msgType;
+
+    /**
+     * File Name
+     */
+    private String filename;
 
     /**
      * Pilot State
@@ -41,6 +45,11 @@ public class Message {
      * if a plane is ready to take off.
      */
     private boolean informPlane;
+
+    /**
+     * state number (can be for Pilot, Hostess or Passenger)
+     */
+    private int state;
 
     /**
      *  Message instantiation (form 1).
@@ -124,6 +133,41 @@ public class Message {
     }
 
     /**
+     * Messafe instantiation (form 8).
+     *
+     * @param msgType message type
+     * @param fileName file name of log file
+     */
+    public Message(MessageType msgType, String fileName) {
+        this.msgType = msgType;
+        this.filename = fileName;
+    }
+
+    /**
+     * Messafe instantiation (form 9).
+     *
+     * @param msgType message type
+     * @param state state number (can be for Pilot, Hostess or Passenger)
+     */
+    public Message(MessageType msgType, int state) {
+        this.msgType = msgType;
+        this.state = state;
+    }
+
+    /**
+     * Messafe instantiation (form 10).
+     *
+     * @param msgType message type
+     * @param state state number (can be for Pilot, Hostess or Passenger)
+     * @param Id number corresponding to passenger
+     */
+    public Message(MessageType msgType, int state, int Id) {
+        this.msgType = msgType;
+        this.state = state;
+        this.passId = Id;
+    }
+
+    /**
      * Getting MessageType
      * @return message type
      */
@@ -177,5 +221,21 @@ public class Message {
      */
     public boolean isInformPlane() {
         return informPlane;
+    }
+
+    /**
+     * Getting file name of log
+     * @return file name of logfile
+     */
+    public String getFilename() {
+        return filename;
+    }
+
+    /**
+     * Getting number corresponding to state
+     * @return number corresponding to state
+     */
+    public int getState() {
+        return state;
     }
 }

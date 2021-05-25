@@ -76,7 +76,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
 
         com.close();
     }
@@ -103,7 +103,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
+        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
 
         com.close();
     }
@@ -130,7 +130,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
 
         com.close();
     }
@@ -157,7 +157,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
+        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
 
         com.close();
     }
@@ -184,7 +184,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
 
         com.close();
     }
@@ -211,7 +211,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
+        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
 
         com.close();
     }
@@ -238,7 +238,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
 
         com.close();
     }

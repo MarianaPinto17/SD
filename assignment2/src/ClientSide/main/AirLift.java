@@ -1,6 +1,7 @@
 package ClientSide.main;
 
 import ClientSide.entities.*;
+import ClientSide.stub.*;
 import ServerSide.sharedRegions.*;
 
 import java.nio.file.*;
@@ -19,11 +20,11 @@ public class AirLift {
         Hostess hostess;                                        // Hostess thread
         Passenger[] passengers = new Passenger[SimulPar.N];     // Array of Passenger threads
 
-        DepartureAirport departureAirport;                      // reference to DepartureAirport
-        DestinationAirport destinationAirport;                  // reference to DestinationAirport
-        Plane plane;                                            // reference to Plane
+        DepartureAirportStub departureAirport;                      // reference to DepartureAirport
+        DestinationAirportStub destinationAirport;                  // reference to DestinationAirport
+        PlaneStub plane;                                            // reference to Plane
 
-        GeneralRepository repos;                                // reference to General Repository
+        GeneralRepositoryStub repos;                                // reference to General Repository
 
         String fileName;                                        // logging file name
         char opt;                                               // selected option
@@ -49,7 +50,8 @@ public class AirLift {
 
         /* problem initialization */
 
-        repos = new GeneralRepository (fileName);
+//        repos = new GeneralRepository(fileName);
+        repos = new GeneralRepositoryStub();
         departureAirport = new DepartureAirport(repos);
         destinationAirport = new DestinationAirport(repos);
         plane = new Plane(repos);

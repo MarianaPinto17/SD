@@ -23,7 +23,7 @@ public class GeneralRepository {
      *  Name of the logging file.
      */
 
-    private final String logFileName;
+    private String logFileName;
 
     /**
      * Current state of the pilot.
@@ -85,13 +85,17 @@ public class GeneralRepository {
 
     private boolean emptyPlaneDest;
 
+
+    /**
+     *   Number of entity groups requesting the shutdown.
+     */
+    private int nEntities;
+
     /**
      *
      */
-    public GeneralRepository(String logFileName){
-        if ((logFileName == null) || Objects.equals (logFileName, ""))
-            this.logFileName = "logger";
-        else this.logFileName = logFileName;
+    public GeneralRepository(){
+        this.logFileName = "logger";
         pilotState = PilotStates.AT_TRANSFER_GATE;
         hostessState = HostessStates.WAIT_FOR_FLIGHT;
         passengerStates = new PassengerStates[SimulPar.N];
@@ -107,6 +111,31 @@ public class GeneralRepository {
 
         reportInitialStatus();
     }
+
+    /**
+     *   Operation initialization of simulation.
+     *
+     *     @param logFileName name of the logging file
+     */
+
+    public synchronized void initSimul (String logFileName)
+    {
+        if (!Objects.equals (logFileName, ""))
+            this.logFileName = logFileName;
+        reportInitialStatus ();
+    }
+
+    /**
+     *   Operation server shutdown.
+     */
+
+    public synchronized void shutdown ()
+    {
+        nEntities = 1;
+        if (nEntities >= SimulPar.E)
+            ServerGeneralRepos.waitConnection = false;
+    }
+
 
     /**
      *  Write the header to the logging file.
@@ -300,7 +329,7 @@ public class GeneralRepository {
 
     /**
      *
-     *
+     * @param npassFlight
      */
     public synchronized void sumUp(int[] npassFlight){
         try {

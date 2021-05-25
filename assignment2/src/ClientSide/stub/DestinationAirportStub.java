@@ -76,7 +76,7 @@ public class DestinationAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
+        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
 
         com.close();
     }

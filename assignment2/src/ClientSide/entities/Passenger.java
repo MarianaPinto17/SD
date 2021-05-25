@@ -138,6 +138,14 @@ public class Passenger extends Thread{
     }
 
     /**
+     * Set current state
+     * @param newState int representing the new state of a passenger
+     */
+    public void setCurrentState(int newState){
+        this.currentState.setValue(newState);
+    }
+
+    /**
      * Get end of life
      * @return true if passenger arrived at the destination airport
      */

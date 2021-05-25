@@ -103,6 +103,14 @@ public class Hostess extends Thread{
     }
 
     /**
+     * Set current state
+     * @param newState int representing new state of a hostess
+     */
+    public void setCurrentState(int newState){
+        this.currentState.setValue(newState);
+    }
+
+    /**
      * Get end of life
      * @return true if Hostess don't have passengers in queue
      */

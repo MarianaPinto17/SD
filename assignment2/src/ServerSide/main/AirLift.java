@@ -49,7 +49,8 @@ public class AirLift {
 
         /* problem initialization */
 
-        repos = new GeneralRepository (fileName);
+//        repos = new GeneralRepository(fileName);
+        repos = new GeneralRepository();
         departureAirport = new DepartureAirport(repos);
         destinationAirport = new DestinationAirport(repos);
         plane = new Plane(repos);

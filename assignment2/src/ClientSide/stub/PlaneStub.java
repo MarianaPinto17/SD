@@ -54,4 +54,112 @@ public class PlaneStub {
 
         com.close();
     }
+
+    public void flyToDestinationPoint(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.FLY_TO_DESTINATION_POINT);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_FTDesP){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void waitForEndOfFlight(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.WAIT_FOR_END_OF_FLIGHT);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_WFEOF){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        com.close();
+    }
+
+    public void flyToDeparturePoint(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.FLY_TO_DEPARTURE_POINT);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_FTDepP){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+        com.close();
+    }
+
+    public void informPlaneReadyToTakeOff(){
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.INFORM_PLANE_READY_TO_TAKEOFF);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_IPRTT){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+
+        com.close();
+    }
+
+
 }
