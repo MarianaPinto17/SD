@@ -9,47 +9,47 @@ public class Message {
      *  Message type.
      */
 
-    private MessageType msgType;
+    private MessageType msgType = null;
 
     /**
      * File Name
      */
-    private String filename;
+    private String filename = null;
 
     /**
      * Pilot State
      */
-    private PilotStates pilotState;
+    private PilotStates pilotState = null;
 
     /**
      * Hostess State
      */
-    private HostessStates hostessState;
+    private HostessStates hostessState = null;
 
     /**
      * Passenger State
      */
-    private PassengerStates passengerState;
+    private PassengerStates passengerState = null;
 
     /**
      * Passenger Id
      */
-    private int passId;
+    private int passId = -1;
 
     /**
      * Number os passenger per flight
      */
-    private int[] npassFlight;
+    private int[] npassFlight = null;
 
     /**
      * if a plane is ready to take off.
      */
-    private boolean informPlane;
+    private boolean informPlane = false;
 
     /**
      * state number (can be for Pilot, Hostess or Passenger)
      */
-    private int state;
+    private int state = -1;
 
     /**
      *  Message instantiation (form 1).

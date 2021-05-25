@@ -72,7 +72,7 @@ public class Plane {
 
         // Pilot is inside the plane ready for boarding
         pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
-        repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
+        repos.setPilotState(PilotStates.WAIT_FOR_BOARDING.value);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Plane {
         repos.setReadyToFly(false);
 
         pi.setCurrentState(PilotStates.FLYING_FORWARD);
-        repos.setPilotState(PilotStates.FLYING_FORWARD);
+        repos.setPilotState(PilotStates.FLYING_FORWARD.value);
 
         try {
             pi.sleep ((long) (1 + 150 * Math.random ()));
@@ -124,7 +124,7 @@ public class Plane {
         repos.setEmptyPlaneDest(false);
 
         pi.setCurrentState(PilotStates.FLYING_BACK);
-        repos.setPilotState(PilotStates.FLYING_BACK);
+        repos.setPilotState(PilotStates.FLYING_BACK.value);
 
         try {
             pi.sleep ((long) (1 + 150 * Math.random ()));
@@ -140,7 +140,7 @@ public class Plane {
 
         ho.setCurrentState(HostessStates.READY_TO_FLY);
         System.out.println();
-        repos.setHostessState(HostessStates.READY_TO_FLY);
+        repos.setHostessState(HostessStates.READY_TO_FLY.value);
 
         repos.setReadyToFly(true);
 

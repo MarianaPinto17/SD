@@ -121,7 +121,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.CHECK_DOCUMENTS);
+            outMessage = new Message(MessageType.CHECK_DOCUMENTS);
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 

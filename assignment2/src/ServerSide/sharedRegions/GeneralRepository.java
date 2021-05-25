@@ -94,8 +94,8 @@ public class GeneralRepository {
     /**
      *
      */
-    public GeneralRepository(){
-        this.logFileName = "logger";
+    public GeneralRepository(String logFileName){
+        this.logFileName = logFileName;
         pilotState = PilotStates.AT_TRANSFER_GATE;
         hostessState = HostessStates.WAIT_FOR_FLIGHT;
         passengerStates = new PassengerStates[SimulPar.N];
@@ -237,13 +237,13 @@ public class GeneralRepository {
      *     @param state pilot state
      */
 
-    public synchronized void setPilotState (PilotStates state)
+    public synchronized void setPilotState (int state)
     {
-        this.pilotState = state;
+        this.pilotState.setValue(state);
 
-        if(state == PilotStates.DEBOARDING || state == PilotStates.READY_FOR_BOARDING || state == PilotStates.FLYING_BACK){
+        if(state == PilotStates.DEBOARDING.value || state == PilotStates.READY_FOR_BOARDING.value || state == PilotStates.FLYING_BACK.value){
             String lineStatus;
-            switch (state){
+            switch (pilotState){
                 case DEBOARDING:
                     lineStatus = "arrived.";
                     break;
@@ -276,10 +276,10 @@ public class GeneralRepository {
      *     @param state hostess state
      */
 
-    public synchronized void setHostessState (HostessStates state)
+    public synchronized void setHostessState (int state)
     {
-        this.hostessState = state;
-        if (state == HostessStates.READY_TO_FLY) {
+        this.hostessState.setValue(state);
+        if (state == HostessStates.READY_TO_FLY.value) {
             String lineStatus = "departed with "+InF+" passengers.";
             try {
                 FileWriter fw = new FileWriter(logFileName, true);
@@ -295,10 +295,10 @@ public class GeneralRepository {
         reportStatus ();
     }
 
-    public synchronized void setHostessState (HostessStates state, int id)
+    public synchronized void setHostessState (int state, int id)
     {
-        this.hostessState = state;
-        if (state == HostessStates.CHECK_PASSENGER) {
+        this.hostessState.setValue(state);
+        if (state == HostessStates.CHECK_PASSENGER.value) {
             String lineStatus = "passenger " + id + " checked.";
             try {
                 FileWriter fw = new FileWriter(logFileName, true);
@@ -321,9 +321,9 @@ public class GeneralRepository {
      *     @param state passenger state
      */
 
-    public synchronized void setPassengerState (int id, PassengerStates state)
+    public synchronized void setPassengerState (int id, int state)
     {
-        this.passengerStates[id] = state;
+        this.passengerStates[id].setValue(state);
         reportStatus ();
     }
 

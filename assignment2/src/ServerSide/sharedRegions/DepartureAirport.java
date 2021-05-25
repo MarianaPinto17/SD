@@ -119,7 +119,7 @@ public class DepartureAirport {
         // pilot is at transfer gate and ready for boarding
         repos.setnFlights(repos.getnFlights()+1);
         pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
-        repos.setPilotState(PilotStates.READY_FOR_BOARDING);
+        repos.setPilotState(PilotStates.READY_FOR_BOARDING.value);
         System.out.println("Plane ready for boarding.");
 
         // hostess can start boarding
@@ -139,7 +139,7 @@ public class DepartureAirport {
         }
         nCheckedPassengers = 0;
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
-        repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
+        repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
 
         waitPassengers = true;
 
@@ -161,7 +161,7 @@ public class DepartureAirport {
         nPassengers++;
         repos.setInQ(nPassengers);
         pass[passengerID].setCurrentState(PassengerStates.IN_QUEUE);
-        repos.setPassengerState(passengerID, PassengerStates.IN_QUEUE);
+        repos.setPassengerState(passengerID, PassengerStates.IN_QUEUE.value);
         // number of passengers in queue increases
 
         try{
@@ -195,7 +195,7 @@ public class DepartureAirport {
         nPassengers--;
         repos.setInQ(repos.getInQ() - 1);
         ho.setCurrentState(HostessStates.CHECK_PASSENGER);
-        repos.setHostessState(HostessStates.CHECK_PASSENGER, checkDocID);
+        repos.setHostessState(HostessStates.CHECK_PASSENGER.value, checkDocID);
 
         this.checkedPass[checkDocID] = true;
 
@@ -238,7 +238,7 @@ public class DepartureAirport {
      */
     public synchronized void waitForNextPassenger(){
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
-        repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
+        repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
 
         this.canBoard = true;
         nCheckedPassengers++;
@@ -269,7 +269,7 @@ public class DepartureAirport {
 
         repos.setInF(repos.getInF() + 1);
         pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
-        repos.setPassengerState(passengerID, PassengerStates.IN_FLIGHT);
+        repos.setPassengerState(passengerID, PassengerStates.IN_FLIGHT.value);
 
         notifyAll();
     }
@@ -280,7 +280,7 @@ public class DepartureAirport {
 
     public synchronized void waitForNextFlight() {
         ho.setCurrentState(HostessStates.WAIT_FOR_FLIGHT);
-        repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
+        repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT.value);
 
         informPlane = false;
         while(!planeAtDeparture){
@@ -300,7 +300,7 @@ public class DepartureAirport {
         planeAtDeparture = true;
 
         pi.setCurrentState(PilotStates.AT_TRANSFER_GATE);
-        repos.setPilotState(PilotStates.AT_TRANSFER_GATE);
+        repos.setPilotState(PilotStates.AT_TRANSFER_GATE.value);
 
         if(SimulPar.N == repos.getPTAL()){
             pi.setEndOfLife(true);
