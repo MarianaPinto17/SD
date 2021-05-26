@@ -1,6 +1,6 @@
 package ServerSide.sharedRegions;
 
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.*;
 
 import java.io.*;
@@ -94,8 +94,8 @@ public class GeneralRepository {
     /**
      *
      */
-    public GeneralRepository(String logFileName){
-        this.logFileName = logFileName;
+    public GeneralRepository(){
+        this.logFileName = "log.txt";
         pilotState = PilotStates.AT_TRANSFER_GATE;
         hostessState = HostessStates.WAIT_FOR_FLIGHT;
         passengerStates = new PassengerStates[SimulPar.N];
@@ -133,7 +133,7 @@ public class GeneralRepository {
     {
         nEntities = 1;
         if (nEntities >= SimulPar.E)
-            ServerGeneralRepos.waitConnection = false;
+            GeneralRepositoryMain.waitConnection = false;
     }
 
 

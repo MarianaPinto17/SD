@@ -2,7 +2,7 @@ package ServerSide.sharedRegions;
 
 import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.SimulPar;
 
 /**
@@ -133,7 +133,7 @@ public class DepartureAirport {
         pi = (Pilot) Thread.currentThread();
         // pilot is at transfer gate and ready for boarding
         pi.setNflights(pi.getNflights()+1);
-        pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
+        pi.setCurrentState(PilotStates.READY_FOR_BOARDING.value);
         repos.setPilotState(PilotStates.READY_FOR_BOARDING.value);
         System.out.println("Plane ready for boarding.");
 
@@ -147,6 +147,13 @@ public class DepartureAirport {
      */
     public synchronized void prepareForPassBoarding(){
         ho = (Hostess) Thread.currentThread();
+
+        if(SimulPar.N == nCheckedPassengersTotal){
+            ho.setEndOfLife(true);
+
+            return;
+        }
+
         while(!readyForBoarding){
             try {
                 wait();
@@ -318,14 +325,14 @@ public class DepartureAirport {
      * Pilot function - when the pilot parks the plane at the Transfer gate.
      */
     public synchronized void parkAtTransferGate() {
+        pi = (Pilot) Thread.currentThread();
         planeAtDeparture = true;
 
-        pi.setCurrentState(PilotStates.AT_TRANSFER_GATE);
+        pi.setCurrentState(PilotStates.AT_TRANSFER_GATE.value);
         repos.setPilotState(PilotStates.AT_TRANSFER_GATE.value);
 
         if(SimulPar.N == nCheckedPassengersTotal){
             pi.setEndOfLife(true);
-            ho.setEndOfLife(true);
         }
 
         notifyAll();

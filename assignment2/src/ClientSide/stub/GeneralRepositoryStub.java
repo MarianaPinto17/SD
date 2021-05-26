@@ -176,6 +176,30 @@ public class GeneralRepositoryStub {
         com.close ();
     }
 
+    public void sumUp(int[] npassengers){
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message(MessageType.SUM_UP, npassengers);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_SU) {
+            System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        com.close ();
+    }
+
+
     /**
      *   Operation server shutdown.
      *

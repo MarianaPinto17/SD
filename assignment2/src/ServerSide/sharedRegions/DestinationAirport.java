@@ -1,6 +1,6 @@
 package ServerSide.sharedRegions;
 
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.SimulPar;
 
 /**
@@ -38,7 +38,7 @@ public class DestinationAirport {
      */
     public synchronized void announceArrival(){
         pi = (Pilot) Thread.currentThread();
-        pi.setCurrentState(PilotStates.DEBOARDING);
+        pi.setCurrentState(PilotStates.DEBOARDING.value);
         repos.setPilotState(PilotStates.DEBOARDING.value);
         pi.setNpassengers(repos.getnFlights(),repos.getInF());
 

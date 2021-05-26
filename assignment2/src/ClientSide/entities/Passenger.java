@@ -1,10 +1,7 @@
 package ClientSide.entities;
 
 import ClientSide.stub.*;
-import ServerSide.entities.PassengerStates;
-import ServerSide.sharedRegions.DepartureAirport;
-import ServerSide.sharedRegions.DestinationAirport;
-import ServerSide.sharedRegions.Plane;
+import ClientSide.entities.*;
 
 /**
  * Passenger thread and life cycle
@@ -20,7 +17,7 @@ public class Passenger extends Thread{
     /**
      * The current state of a passenger
      */
-    private ServerSide.entities.PassengerStates currentState;
+    private PassengerStates currentState;
 
     /**
      * True if passenger arrived to the destination
@@ -42,19 +39,19 @@ public class Passenger extends Thread{
      */
     private boolean docChecked;
 
-    private final DepartureAirport depAir;
+    private final DepartureAirportStub depAir;
 
     /**
      * Reference to Destination Airport
      */
 
-    private final DestinationAirport destAir;
+    private final DestinationAirportStub destAir;
 
     /**
      * Reference to Plane
      */
 
-    private final Plane plane;
+    private final PlaneStub plane;
 
     /**
      * Passenger Constructor.
@@ -65,9 +62,9 @@ public class Passenger extends Thread{
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Passenger(int id, DepartureAirport depAir, DestinationAirport destAir, Plane plane) {
+    public Passenger(int id, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane) {
         this.id = id;
-        this.currentState = ServerSide.entities.PassengerStates.GOING_TO_AIRPORT;
+        this.currentState = PassengerStates.GOING_TO_AIRPORT;
         this.endOfLife = false;
         this.asleep = false;
         this.depAir = depAir;

@@ -1,6 +1,6 @@
 package ServerSide.sharedRegions;
 import ServerSide.main.*;
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import commonInfrastructures.*;
 
 /**
@@ -69,7 +69,11 @@ public class GeneralRepositoryInterface {
                 else if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
                     throw new MessageException ("Invalid passenger state!", inMessage);
                 break;
-
+            case SUM_UP:
+                if (inMessage.getNpassFlight() == null){
+                    throw new MessageException ("Invalid message, no passengers array found", inMessage);
+                }
+                break;
             case SHUT:     // check nothing
                 break;
             default:
@@ -100,6 +104,10 @@ public class GeneralRepositoryInterface {
                 repos.setPassengerState(inMessage.getPassId(), inMessage.getState());
                 outMessage = new Message (MessageType.DONE_SPaS);
                 break;
+            case SUM_UP:
+                repos.sumUp(inMessage.getNpassFlight());
+                outMessage = new Message(MessageType.DONE_SU);
+            break;
             case SHUT:
                 repos.shutdown ();
                 outMessage = new Message (MessageType.DONE_S);

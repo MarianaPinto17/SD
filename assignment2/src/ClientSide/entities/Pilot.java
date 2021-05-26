@@ -104,12 +104,20 @@ public class Pilot extends Thread{
                     break;
                 case FLYING_BACK:
                     depAir.parkAtTransferGate();
-                    if(SimulPar.N == repos.getPTAL()) {
+                    if(SimulPar.N == getPTAL()) {
                         repos.sumUp(npassengers);
                     }
                     break;
             }
         }
+    }
+
+    public int getPTAL(){
+        int total=0;
+        for (int i: this.npassengers) {
+            total+= i;
+        }
+        return total;
     }
 
     /**
