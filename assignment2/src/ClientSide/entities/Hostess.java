@@ -40,11 +40,6 @@ public class Hostess extends Thread{
     private boolean endOfLife;
 
     /**
-     * True if the hostess is asleep.
-     */
-    private boolean asleep;
-
-    /**
      * Hosstess Constructor.
      * Initiates a new Hostess that checks passengers aboard.
      * @param name hostess name.
@@ -58,7 +53,6 @@ public class Hostess extends Thread{
         this.destAir = destAir;
         this.plane = plane;
         this.endOfLife = false;
-        this.asleep = false;
         this.currentState = HostessStates.WAIT_FOR_FLIGHT;
     }
 
@@ -116,7 +110,7 @@ public class Hostess extends Thread{
      * Get end of life.
      * @return true if Hostess don't have passengers in queue
      */
-    public boolean getEndOfLife(){
+    public boolean getHEndOfLife(){
         return endOfLife;
     }
 
@@ -124,24 +118,8 @@ public class Hostess extends Thread{
      * Set end of life state of a hostess.
      * @param newEndOfLife changes status of endOfLife
      */
-    public void setEndOfLife(boolean newEndOfLife){
+    public void setHEndOfLife(boolean newEndOfLife){
         this.endOfLife = newEndOfLife;
-    }
-
-    /**
-     * Get if the hostess is asleep.
-     * @return True if is asleep
-     */
-    public boolean getAsleep() {
-        return asleep;
-    }
-
-    /**
-     * Set a hostess to sleep or wakes her up.
-     * @param newAsleep new state of asleep
-     */
-    public void setAsleep(boolean newAsleep){
-        this.asleep = newAsleep;
     }
 
 }

@@ -234,4 +234,152 @@ public class GeneralRepositoryStub {
         }
         com.close ();
     }
+
+    public int getInF() {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.GET_INF);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_GINF)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        if (inMessage.getState() < 0){
+            System.out.println("Error getting INF!");
+        }
+        com.close ();
+
+        return inMessage.getState();
+    }
+
+    public int getPTAL() {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.GET_PTAL);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_GPTAL)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        if (inMessage.getState() < 0){
+            System.out.println("Error getting PTAL!");
+        }
+        com.close ();
+
+        return inMessage.getState();
+    }
+
+    public void setInF(int inf) {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.SET_INF, inf);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_SINF)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        com.close ();
+    }
+
+    public void setPTAL(int ptal) {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.SET_PTAL, ptal);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_SPTAL)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        com.close ();
+    }
+
+    public void setArrivedAtDest(boolean b) {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.SET_ARRIVED_AT_DEST, b);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_SAAD)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        com.close ();
+    }
+
+    public void setEmptyPlaneDest(boolean b) {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.SET_EMPTY_PLANE_DEST, b);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_SEPD)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        com.close ();
+    }
 }

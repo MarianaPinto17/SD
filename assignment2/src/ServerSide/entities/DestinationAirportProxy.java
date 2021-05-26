@@ -11,7 +11,7 @@ import commonInfrastructures.*;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class DepartureAirportProxy extends Thread implements PilotInterface, HostessInterface, PassengerInterface {
+public class DestinationAirportProxy extends Thread implements PilotInterface, PassengerInterface {
     /**
      *  Number of instantiayed threads.
      */
@@ -25,10 +25,10 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
     private ServerCom sconi;
 
     /**
-     *  Interface to the Departure Airport.
+     *  Interface to the Destination Airport.
      */
 
-    private DepartureAirportInterface depAirInt;
+    private DestinationAirportInterface desAirInt;
 
     /**
      *  Passenger identification.
@@ -47,17 +47,7 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
      */
 
     private int pilotState;
-
-    /**
-     *  Hostess state.
-     */
-
-    private int hostessState;
-
-    /**
-     * End of life of the hostess
-     */
-    private boolean hEndOfLife;
+    
     /**
      * End of life of the pilot
      */
@@ -81,14 +71,14 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
      *  Instantiation of a client proxy.
      *
      *     @param sconi communication channel
-     *     @param depAirInt interface to the barber shop
+     *     @param desAirInt interface to the barber shop
      */
 
-    public DepartureAirportProxy (ServerCom sconi, DepartureAirportInterface depAirInt)
+    public DestinationAirportProxy (ServerCom sconi, DestinationAirportInterface desAirInt)
     {
-        super ("BarberShopProxy_" + DepartureAirportProxy.getProxyId ());
+        super ("BarberShopProxy_" + DestinationAirportProxy.getProxyId ());
         this.sconi = sconi;
-        this.depAirInt = depAirInt;
+        this.desAirInt = desAirInt;
     }
 
     /**
@@ -103,10 +93,10 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
         int proxyId;                                                   // instantiation identifier
 
         try
-        { cl = Class.forName ("ServerSide.entities.DepartureAirportProxy");
+        { cl = Class.forName ("ServerSide.entities.DestinationAirportProxy");
         }
         catch (ClassNotFoundException e)
-        { System.out.println("Data type DepartureAirportProxy was not found!");
+        { System.out.println("Data type DestinationAirportProxy was not found!");
             e.printStackTrace ();
             System.exit (1);
         }
@@ -183,56 +173,6 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
     @Override
     public void setPilotState(int newState) {
         pilotState = newState;
-    }
-
-    /**
-     * Get current state.
-     *
-     * @return the current state of a hostess
-     */
-    @Override
-    public int getHostessState() {
-        return hostessState;
-    }
-
-    /**
-     * Set current state.
-     *
-     * @param newState new state of a hostess
-     */
-    @Override
-    public void setHostessState(HostessStates newState) {
-        hostessState = newState.value;
-    }
-
-    /**
-     * Set current state.
-     *
-     * @param newState int representing new state of a hostess
-     */
-    @Override
-    public void setHostessState(int newState) {
-        hostessState = newState;
-    }
-
-    /**
-     * Get end of life
-     *
-     * @return true if hostess don't have more flights
-     */
-    @Override
-    public boolean getHEndOfLife() {
-        return hEndOfLife;
-    }
-
-    /**
-     * Set end of life state
-     *
-     * @param newEndOfLife changes status of hEndOfLife
-     */
-    @Override
-    public void setHEndOfLife(boolean newEndOfLife) {
-        hEndOfLife = newEndOfLife;
     }
 
     /**
@@ -326,7 +266,7 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
 
         inMessage = (Message) sconi.readObject ();                     // get service request
         try
-        { outMessage = depAirInt.processAndReply (inMessage);         // process it
+        { outMessage = desAirInt.processAndReply (inMessage);         // process it
         }
         catch (MessageException e)
         { System.out.println("Thread " + getName () + ": " + e.getMessage () + "!");

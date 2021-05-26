@@ -25,11 +25,6 @@ public class Passenger extends Thread {
     private boolean endOfLife;
 
     /**
-     * checks if passenger is asleep.
-     */
-    private boolean asleep;
-
-    /**
      * Documents checked.
      * True if documents are checked.
      */
@@ -63,7 +58,6 @@ public class Passenger extends Thread {
         this.id = id;
         this.currentState = PassengerStates.GOING_TO_AIRPORT;
         this.endOfLife = false;
-        this.asleep = false;
         this.depAir = depAir;
         this.destAir = destAir;
         this.plane = plane;
@@ -155,7 +149,7 @@ public class Passenger extends Thread {
      * Get end of life.
      * @return true if passenger arrived at the destination airport
      */
-    public boolean getEndOfLife(){
+    public boolean getPaEndOfLife(){
         return endOfLife;
     }
 
@@ -163,23 +157,7 @@ public class Passenger extends Thread {
      * Set end of life state.
      * @param newEndOfLife changes status of endOfLife
      */
-    public void setEndOfLife(boolean newEndOfLife){
+    public void setPaEndOfLife(boolean newEndOfLife){
         this.endOfLife = newEndOfLife;
-    }
-
-    /**
-     * Get if the passenger is asleep.
-     * @return True if is asleep
-     */
-    public boolean getAsleep() {
-        return asleep;
-    }
-
-    /**
-     * Set a passenger to sleep or wakes her up.
-     * @param newAsleep new state of asleep
-     */
-    public void setAsleep(boolean newAsleep){
-        this.asleep = newAsleep;
     }
 }

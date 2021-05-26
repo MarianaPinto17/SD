@@ -41,26 +41,12 @@ public interface PassengerInterface {
      *
      * @return true if passenger arrived at the destination airport
      */
-    boolean getEndOfLife();
+    boolean getPaEndOfLife();
 
     /**
      * Set end of life state.
      *
      * @param newEndOfLife changes status of endOfLife
      */
-    void setEndOfLife(boolean newEndOfLife);
-
-    /**
-     * Get if the passenger is asleep.
-     *
-     * @return True if is asleep
-     */
-    boolean getAsleep();
-
-    /**
-     * Set a passenger to sleep or wakes her up.
-     *
-     * @param newAsleep new state of asleep
-     */
-    void setAsleep(boolean newAsleep);
+    void setPaEndOfLife(boolean newEndOfLife);
 }

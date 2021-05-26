@@ -1,6 +1,7 @@
 package ServerSide.sharedRegions;
 
 import ClientSide.entities.*;
+import ClientSide.stub.*;
 import ServerSide.main.SimulPar;
 
 /**
@@ -21,13 +22,13 @@ public class DestinationAirport {
     /**
      * Reference to the General Repository.
      */
-    private final GeneralRepository repos;
+    private final GeneralRepositoryStub repos;
 
     /**
      * Destination Airport constructor.
      * @param repos general repository of information
      */
-    public DestinationAirport(GeneralRepository repos){
+    public DestinationAirport(GeneralRepositoryStub repos){
         pass = new Passenger[SimulPar.N];
         this.repos = repos;
     }
@@ -39,7 +40,7 @@ public class DestinationAirport {
         pi = (Pilot) Thread.currentThread();
         pi.setPilotState(PilotStates.DEBOARDING.value);
         repos.setPilotState(PilotStates.DEBOARDING.value);
-        pi.setNpassengers(repos.getnFlights(),repos.getInF());
+        pi.setNpassengers(pi.getNflights(), repos.getInF());
 
         notifyAll();
         while (repos.getInF() > 0){

@@ -2,13 +2,6 @@ package ClientSide.entities;
 
 public interface PilotInterface {
     /**
-     * Get the number of passengers that already arrived at destination.
-     *
-     * @return number of passengers that already arrived at destination
-     */
-    int getPTAL();
-
-    /**
      * Get current state
      *
      * @return the current state of a pilot
@@ -27,28 +20,14 @@ public interface PilotInterface {
      *
      * @return true if pilot don't have more flights
      */
-    boolean getEndOfLife();
+    boolean getPiEndOfLife();
 
     /**
      * Set end of life state
      *
      * @param newEndOfLife changes status of endOfLife
      */
-    void setEndOfLife(boolean newEndOfLife);
-
-    /**
-     * Get if the pilot is asleep
-     *
-     * @return True if is asleep
-     */
-    boolean getAsleep();
-
-    /**
-     * Set a pilot to sleep or wakes her up
-     *
-     * @param newAsleep new state of asleep
-     */
-    void setAsleep(boolean newAsleep);
+    void setPiEndOfLife(boolean newEndOfLife);
 
     /**
      * Checks the number of passengers in each flight.

@@ -74,7 +74,15 @@ public class GeneralRepositoryInterface {
                     throw new MessageException ("Invalid message, no passengers array found", inMessage);
                 }
                 break;
-            case SHUT:     // check nothing
+            case SET_INF: case SET_PTAL:
+                if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
+                    throw new MessageException ("Invalid InF or PTAL value!", inMessage);
+                break;
+            case SHUT: case GET_INF: case GET_PTAL:     // check nothing
+                break;
+            case SET_ARRIVED_AT_DEST: case SET_EMPTY_PLANE_DEST:
+                if (inMessage.isInformPlane() != false && inMessage.isInformPlane() != true)
+                    throw new MessageException ("Invalid boolean value!", inMessage);
                 break;
             default:
                 throw new MessageException ("Invalid message type!", inMessage);
@@ -111,6 +119,28 @@ public class GeneralRepositoryInterface {
             case SHUT:
                 repos.shutdown ();
                 outMessage = new Message (MessageType.DONE_S);
+                break;
+            case GET_INF:
+                outMessage = new Message(MessageType.DONE_GINF, repos.getInF());
+                break;
+            case GET_PTAL:
+                outMessage = new Message(MessageType.DONE_GPTAL, repos.getPTAL());
+                break;
+            case SET_INF:
+                repos.setInF(inMessage.getState());
+                outMessage = new Message(MessageType.DONE_SINF);
+                break;
+            case SET_PTAL:
+                repos.setPTAL(inMessage.getState());
+                outMessage = new Message(MessageType.DONE_SPTAL);
+                break;
+            case SET_ARRIVED_AT_DEST:
+                repos.setArrivedAtDest(inMessage.isInformPlane());
+                outMessage = new Message(MessageType.DONE_SAAD);
+                break;
+            case SET_EMPTY_PLANE_DEST:
+                repos.setEmptyPlaneDest(inMessage.isInformPlane());
+                outMessage = new Message(MessageType.DONE_SEPD);
                 break;
         }
 

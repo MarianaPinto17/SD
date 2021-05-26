@@ -149,7 +149,7 @@ public class DepartureAirport {
         ho = (Hostess) Thread.currentThread();
 
         if(SimulPar.N == nCheckedPassengersTotal){
-            ho.setEndOfLife(true);
+            ho.setHEndOfLife(true);
 
             return;
         }
@@ -331,7 +331,7 @@ public class DepartureAirport {
         repos.setPilotState(PilotStates.AT_TRANSFER_GATE.value);
 
         if(SimulPar.N == nCheckedPassengersTotal){
-            pi.setEndOfLife(true);
+            pi.setPiEndOfLife(true);
         }
 
         notifyAll();

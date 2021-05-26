@@ -29,24 +29,12 @@ public interface HostessInterface {
      * Get end of life.
      * @return true if Hostess don't have passengers in queue
      */
-    public boolean getEndOfLife();
+    public boolean getHEndOfLife();
 
     /**
      * Set end of life state of a hostess.
      * @param newEndOfLife changes status of endOfLife
      */
-    public void setEndOfLife(boolean newEndOfLife);
-
-    /**
-     * Get if the hostess is asleep.
-     * @return True if is asleep
-     */
-    public boolean getAsleep();
-
-    /**
-     * Set a hostess to sleep or wakes her up.
-     * @param newAsleep new state of asleep
-     */
-    public void setAsleep(boolean newAsleep);
+    public void setHEndOfLife(boolean newEndOfLife);
 
 }

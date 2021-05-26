@@ -31,6 +31,11 @@ public class Message {
      * state number (can be for Pilot, Hostess or Passenger)
      */
     private int state = -1;
+
+    /**
+     * boolean
+     */
+    private boolean boolState = false;
     /**
      *  Message instantiation (form 1).
      *

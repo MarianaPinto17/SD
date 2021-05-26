@@ -1,10 +1,10 @@
 package ServerSide.main;
 
-import ServerSide.entities.*;
-import ServerSide.sharedRegions.*;
-import ClientSide.stub.*;
-import commonInfrastructures.*;
-import java.net.*;
+import ClientSide.stub.GeneralRepositoryStub;
+import ServerSide.entities.DestinationAirportProxy;
+import ServerSide.sharedRegions.DestinationAirport;
+import ServerSide.sharedRegions.DestinationAirportInterface;
+import commonInfrastructures.ServerCom;
 
 /**
  *    Server side of the General Repository of Information.
@@ -13,7 +13,7 @@ import java.net.*;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class DepartureAirportMain {
+public class DestinationAirportMain {
     /**
      *  Flag signaling the service is active.
      */
@@ -31,8 +31,8 @@ public class DepartureAirportMain {
 
     public static void main (String [] args)
     {
-        DepartureAirport depAir;                                              // departure airport (service to be rendered)
-        DepartureAirportInterface depAirInter;                                // interface to the departure airport
+        DestinationAirport desAir;                                              // desarture airport (service to be rendered)
+        DestinationAirportInterface desAirInter;                                // interface to the desarture airport
         GeneralRepositoryStub reposStub;                                    // stub to the general repository
         ServerCom scon, sconi;                                         // communication channels
         int portNumb = -1;                                             // port number for listening to service requests
@@ -70,8 +70,8 @@ public class DepartureAirportMain {
         /* service is established */
 
         reposStub = new GeneralRepositoryStub (reposServerName, reposPortNumb);       // communication to the general repository is instantiated
-        depAir = new DepartureAirport(reposStub);                                      // service is instantiated
-        depAirInter = new DepartureAirportInterface(depAir);                            // interface to the service is instantiated
+        desAir = new DestinationAirport(reposStub);                                      // service is instantiated
+        desAirInter = new DestinationAirportInterface(desAir);                            // interface to the service is instantiated
         scon = new ServerCom (portNumb);                                         // listening channel at the public port is established
         scon.start ();
         System.out.println("Service is established!");
@@ -79,12 +79,12 @@ public class DepartureAirportMain {
 
         /* service request processing */
 
-        DepartureAirportProxy cliProxy;                                // service provider agent
+        DestinationAirportProxy cliProxy;                                // service provider agent
 
         waitConnection = true;
         while (waitConnection) {
             sconi = scon.accept ();                                    // enter listening procedure
-            cliProxy = new DepartureAirportProxy (sconi, depAirInter);    // start a service provider agent to address
+            cliProxy = new DestinationAirportProxy (sconi, desAirInter);    // start a service provider agent to address
             cliProxy.start ();                                         //   the request of service
         }
         scon.end ();                                                   // operations termination

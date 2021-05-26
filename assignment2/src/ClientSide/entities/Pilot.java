@@ -21,11 +21,6 @@ public class Pilot extends Thread {
     private boolean endOfLife;
 
     /**
-     * True if the pilot is asleep.
-     */
-    private boolean asleep;
-
-    /**
      * Reference to Departure Airport.
      */
     private final DepartureAirportStub depAir;
@@ -71,7 +66,6 @@ public class Pilot extends Thread {
         this.destAir = destAir;
         this.plane = plane;
         this.endOfLife = false;
-        this.asleep = false;
         this.currentState = PilotStates.AT_TRANSFER_GATE;
         this.nflights=0;
         this.npassengers=new int[5];
@@ -142,7 +136,7 @@ public class Pilot extends Thread {
      * Get end of life
      * @return true if pilot don't have more flights
      */
-    public boolean getEndOfLife(){
+    public boolean getPiEndOfLife(){
         return endOfLife;
     }
 
@@ -150,24 +144,8 @@ public class Pilot extends Thread {
      * Set end of life state
      * @param newEndOfLife changes status of endOfLife
      */
-    public void setEndOfLife(boolean newEndOfLife){
+    public void setPiEndOfLife(boolean newEndOfLife){
         this.endOfLife = newEndOfLife;
-    }
-
-    /**
-     * Get if the pilot is asleep
-     * @return True if is asleep
-     */
-    public boolean getAsleep() {
-        return asleep;
-    }
-
-    /**
-     * Set a pilot to sleep or wakes her up
-     * @param newAsleep new state of asleep
-     */
-    public void setAsleep(boolean newAsleep){
-        this.asleep = newAsleep;
     }
 
     /**
