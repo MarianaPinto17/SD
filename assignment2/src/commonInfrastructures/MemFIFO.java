@@ -12,19 +12,16 @@ public class MemFIFO<R> extends MemObject<R>
   /**
    *   Pointer to the first empty location.
    */
-
    private int inPnt;
 
   /**
    *   Pointer to the first occupied location.
    */
-
    private int outPnt;
 
   /**
    *   Signaling FIFO empty state.
    */
-
    private boolean empty;
 
   /**
@@ -35,7 +32,6 @@ public class MemFIFO<R> extends MemObject<R>
    *     @param storage memory to be used
    *     @throws MemException when the memory does not exist
    */
-
    public MemFIFO (R [] storage) throws MemException
    {
      super (storage);
@@ -51,7 +47,6 @@ public class MemFIFO<R> extends MemObject<R>
    *    @param val parametric object to be written
    *    @throws MemException when the FIFO is full
    */
-
    @Override
    public void write (R val) throws MemException
    {
@@ -71,7 +66,6 @@ public class MemFIFO<R> extends MemObject<R>
    *    @return first parametric object that was written
    *    @throws MemException when the FIFO is empty
    */
-
    @Override
    public R read () throws MemException
    {
@@ -92,12 +86,16 @@ public class MemFIFO<R> extends MemObject<R>
    *    @return true, if FIFO is full -
    *            false, otherwise
    */
-
    public boolean full ()
    {
      return !((inPnt != outPnt) || empty);
    }
 
+    /**
+     * Test FIFO current empty status.
+     *
+     * @return true if FIFO is Empty
+     */
    public boolean isEmpty() {
        return inPnt==outPnt;
    }

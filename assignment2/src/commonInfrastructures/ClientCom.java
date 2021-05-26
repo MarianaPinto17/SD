@@ -18,31 +18,26 @@ public class ClientCom
   /**
    *  Communication socket.
    */
-
    private Socket commSocket = null;
 
   /**
    *  Name of the computational system where the server is located.
    */
-
    private String serverHostName;
 
   /**
    *  Number of the listening port at the computational system where the server is located.
    */
-
    private int serverPortNumb;
 
   /**
    *  Input stream of the communication channel.
    */
-
    private ObjectInputStream in = null;
 
   /**
    *  Output stream of the communication channel.
    */
-
    private ObjectOutputStream out = null;
 
   /**
@@ -51,7 +46,6 @@ public class ClientCom
    *    @param hostName name of the computational system where the server is located
    *    @param portNumb number of the listening port at the computational system where the server is located
    */
-
    public ClientCom (String hostName, int portNumb)
    {
       serverHostName = hostName;
@@ -67,7 +61,6 @@ public class ClientCom
    *    @return true, if the communication channel is opened -
    *            false, otherwise
    */
-
    public boolean open ()
    {
       boolean success = true;                                                                      // flag signaling
@@ -147,7 +140,6 @@ public class ClientCom
    *  The socket input and output streams are closed.
    *  The communication socket is closed.
    */
-
    public void close ()
    {
       try
@@ -186,7 +178,6 @@ public class ClientCom
    *
    *    @return reference to the object that was read
    */
-
    public Object readObject ()
    {
       Object fromServer = null;                            // object that is read
@@ -221,7 +212,6 @@ public class ClientCom
    *
    *    @param toServer reference to the object to be written
    */
-
    public void writeObject (Object toServer)
    {
       try

@@ -5,6 +5,11 @@ import sharedRegions.*;
 
 import java.nio.file.*;
 
+/**
+ *
+ * @author André Alves
+ * @author Mariana Pinto
+ */
 public class AirLift {
 
     /**
@@ -12,7 +17,6 @@ public class AirLift {
      *
      *    @param args runtime arguments
      */
-
     public static void main (String[] args){
 
         Pilot pilot;                                            // Pilot thread

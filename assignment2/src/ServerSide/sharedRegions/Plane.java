@@ -7,47 +7,39 @@ import ServerSide.main.*;
 
 /**
  * Shared Region Plane
+ *
  */
 public class Plane {
 
     /**
      * Reference to Passenger threads.
      */
-
     private final Passenger[] pass;
 
     /**
      * Reference to pilot.
      */
-
     private Pilot pi;
-
 
     /**
      * Reference to hostess.
      */
-
     private Hostess ho;
-
 
     /**
      *  Waiting passengers in departure airport.
      */
-
     private MemFIFO<Integer> waitingPassenger;
-
 
     /**
      * Reference to general repository.
      */
-
     private final GeneralRepository repos;
 
     /**
      * Plane instantiation.
      * @param repos reference to general repository.
      */
-
     public Plane(GeneralRepository repos) {
         pass = new Passenger[SimulPar.N];
         for (int i = 0; i < SimulPar.N; i++)
@@ -78,7 +70,6 @@ public class Plane {
     /**
      * Pilot function - Pilot flies to destination.
      */
-
     public synchronized void flyToDestinationPoint(){
         while (!repos.isReadyToFly()){
             try{

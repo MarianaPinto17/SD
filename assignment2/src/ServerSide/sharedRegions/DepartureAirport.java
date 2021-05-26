@@ -297,7 +297,6 @@ public class DepartureAirport {
     /**
      * Hostess function - hostess waits for the next flight of the day.
      */
-
     public synchronized void waitForNextFlight() {
         ho = (Hostess) Thread.currentThread();
         ho.setCurrentState(HostessStates.WAIT_FOR_FLIGHT);

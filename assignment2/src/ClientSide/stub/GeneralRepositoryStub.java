@@ -6,6 +6,11 @@ import ClientSide.entities.PassengerStates;
 import ClientSide.entities.PilotStates;
 import commonInfrastructures.*;
 
+/**
+ *
+ * @author Mariana Pinto
+ * @author André Alves
+ */
 public class GeneralRepositoryStub {
 
     /**

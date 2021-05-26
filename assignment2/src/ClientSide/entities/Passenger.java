@@ -7,58 +7,57 @@ import ServerSide.sharedRegions.DestinationAirport;
 import ServerSide.sharedRegions.Plane;
 
 /**
- * Passenger thread and life cycle
+ * Passenger thread and life cycle.
  * @author Mariana Pinto
  * @author André Alves
  */
 public class Passenger extends Thread{
     /**
-     * The Passenger's ID
+     * The Passenger's ID.
      */
     private int id;
 
     /**
-     * The current state of a passenger
+     * The current state of a passenger.
      */
     private ServerSide.entities.PassengerStates currentState;
 
     /**
-     * True if passenger arrived to the destination
+     * True if passenger arrived to the destination.
      */
     private boolean endOfLife;
 
     /**
-     * checks if passenger is asleep
+     * checks if passenger is asleep.
      */
     private boolean asleep;
 
     /**
-     * Reference to Departure Airport
-     */
-
-    /**
-     * Documents checked
-     * True if documents are checked
+     * Documents checked.
+     * True if documents are checked.
      */
     private boolean docChecked;
 
+    /**
+     * Reference to Departure Airport.
+     */
     private final DepartureAirport depAir;
 
     /**
-     * Reference to Destination Airport
+     * Reference to Destination Airport.
      */
 
     private final DestinationAirport destAir;
 
     /**
-     * Reference to Plane
+     * Reference to Plane.
      */
 
     private final Plane plane;
 
     /**
      * Passenger Constructor.
-     * Initiates a new Passenger that flies on a plane
+     * Initiates a new Passenger that flies on a plane.
      *
      * @param id Passenger's ID
      * @param depAir departure Airport.
@@ -77,7 +76,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Passenger life cycle
+     * Passenger life cycle.
      */
     @Override
     public void run(){
@@ -118,7 +117,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Get the passenger's ID
+     * Get the passenger's ID.
      * @return Passenger's ID
      */
     public int getID(){
@@ -134,7 +133,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Get current state
+     * Get current state.
      * @return the current state of a passenger
      */
     public int getCurrentState(){
@@ -142,7 +141,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Set current state
+     * Set current state.
      * @param newState new state of a passenger
      */
     public void setCurrentState(PassengerStates newState){
@@ -150,7 +149,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Set current state
+     * Set current state.
      * @param newState new state of a passenger
      */
     public void setCurrentState(int newState){
@@ -158,7 +157,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Get end of life
+     * Get end of life.
      * @return true if passenger arrived at the destination airport
      */
     public boolean getEndOfLife(){
@@ -166,7 +165,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Set end of life state
+     * Set end of life state.
      * @param newEndOfLife changes status of endOfLife
      */
     public void setEndOfLife(boolean newEndOfLife){
@@ -174,7 +173,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Get if the passenger is asleep
+     * Get if the passenger is asleep.
      * @return True if is asleep
      */
     public boolean getAsleep() {
@@ -182,7 +181,7 @@ public class Passenger extends Thread{
     }
 
     /**
-     * Set a passenger to sleep or wakes her up
+     * Set a passenger to sleep or wakes her up.
      * @param newAsleep new state of asleep
      */
     public void setAsleep(boolean newAsleep){

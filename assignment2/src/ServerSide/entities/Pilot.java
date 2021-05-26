@@ -8,7 +8,7 @@ import ServerSide.sharedRegions.*;
  * @author Mariana Pinto
  * @author André Alves
  */
-public class Pilot extends Thread{
+public class Pilot extends Thread {
     /**
      * current state of the pilot
      */
@@ -57,16 +57,17 @@ public class Pilot extends Thread{
      *
      */
     private final GeneralRepository repos;
+
     /**
      * Pilot Constructor.
      * Initiates a new Pilot that drives a plane
      *
-     * @param name name of the pilot
-     * @param depAir departure Airport.
+     * @param name    name of the pilot
+     * @param depAir  departure Airport.
      * @param destAir destination Airport
-     * @param plane plane that is flying
+     * @param plane   plane that is flying
      */
-    public Pilot (String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane, GeneralRepository repos){
+    public Pilot(String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane, GeneralRepository repos) {
         super(name);
 
         this.depAir = depAir;
@@ -75,18 +76,18 @@ public class Pilot extends Thread{
         this.endOfLife = false;
         this.asleep = false;
         this.currentState = PilotStates.AT_TRANSFER_GATE;
-        this.nflights=0;
-        this.npassengers=new int[5];
-        this.repos=repos;
+        this.nflights = 0;
+        this.npassengers = new int[5];
+        this.repos = repos;
     }
 
     /**
      * Pilot life cycle.
      */
     @Override
-    public void run(){
-        while(!endOfLife){
-            switch(currentState){
+    public void run() {
+        while (!endOfLife) {
+            switch (currentState) {
                 case AT_TRANSFER_GATE:
                     depAir.informPlaneReadyForBoarding();
                     break;
@@ -104,7 +105,7 @@ public class Pilot extends Thread{
                     break;
                 case FLYING_BACK:
                     depAir.parkAtTransferGate();
-                    if(SimulPar.N == repos.getPTAL()) {
+                    if (SimulPar.N == repos.getPTAL()) {
                         repos.sumUp(npassengers);
                     }
                     break;
@@ -114,46 +115,52 @@ public class Pilot extends Thread{
 
     /**
      * Get current state
+     *
      * @return the current state of a pilot
      */
-    public int getCurrentState(){
+    public int getCurrentState() {
         return currentState.value;
     }
 
     /**
      * Set current state
+     *
      * @param newState new state of a pilot (int)
      */
-    public void setCurrentState(int newState){
+    public void setCurrentState(int newState) {
         this.currentState.setValue(newState);
     }
 
     /**
      * Set current state
+     *
      * @param newState new state of a pilot
      */
-    public void setCurrentState(PilotStates newState){
+    public void setCurrentState(PilotStates newState) {
         this.currentState = newState;
     }
 
     /**
      * Get end of life
+     *
      * @return true if pilot don't have more flights
      */
-    public boolean getEndOfLife(){
+    public boolean getEndOfLife() {
         return endOfLife;
     }
 
     /**
      * Set end of life state
+     *
      * @param newEndOfLife changes status of endOfLife
      */
-    public void setEndOfLife(boolean newEndOfLife){
+    public void setEndOfLife(boolean newEndOfLife) {
         this.endOfLife = newEndOfLife;
     }
 
     /**
      * Get if the pilot is asleep
+     *
      * @return True if is asleep
      */
     public boolean getAsleep() {
@@ -162,24 +169,46 @@ public class Pilot extends Thread{
 
     /**
      * Set a pilot to sleep or wakes her up
+     *
      * @param newAsleep new state of asleep
      */
-    public void setAsleep(boolean newAsleep){
+    public void setAsleep(boolean newAsleep) {
         this.asleep = newAsleep;
     }
 
+    /**
+     * Checks the number of passengers in each flight.
+     *
+     * @return number of passengers in each flight.
+     */
     public int[] getNpassengers() {
         return npassengers;
     }
 
+    /**
+     * sets the number of passengers in each flight.
+     *
+     * @param index       index of the flight
+     * @param npassengers number the passenger of the flight
+     */
     public void setNpassengers(int index, int npassengers) {
         this.npassengers[index] = npassengers;
     }
 
+    /**
+     * Checks number of flights made.
+     *
+     * @return number of flights
+     */
     public int getNflights() {
         return nflights;
     }
 
+    /**
+     * Sets numbers of flights made.
+     *
+     * @param nflights
+     */
     public void setNflights(int nflights) {
         this.nflights = nflights;
     }

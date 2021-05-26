@@ -14,19 +14,16 @@ public class Hostess extends Thread{
     /**
      * Reference to Departure Airport
      */
-
     private final DepartureAirport depAir;
 
     /**
      * Reference to Destination Airport
      */
-
     private final DestinationAirport destAir;
 
     /**
      * Reference to Plane
      */
-
     private final Plane plane;
 
     /**

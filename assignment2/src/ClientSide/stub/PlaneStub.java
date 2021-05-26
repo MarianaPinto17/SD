@@ -3,18 +3,21 @@ package ClientSide.stub;
 import commonInfrastructures.*;
 import ClientSide.entities.*;
 
+/**
+ *
+ * @author Mariana Pinto
+ * @author André Alves
+ */
 public class PlaneStub {
 
     /**
      *  Name of the platform where is located the Departure Airport server.
      */
-
     private String serverHostName;
 
     /**
      *  Port number for listening to service requests.
      */
-
     private int serverPortNumb;
 
     /**
@@ -28,6 +31,9 @@ public class PlaneStub {
         this.serverPortNumb = serverPortNumb;
     }
 
+    /**
+     * Pilot function - waits for all passengers get on board.
+     */
     public void waitForAllInBoard(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -55,6 +61,9 @@ public class PlaneStub {
         com.close();
     }
 
+    /**
+     * Pilot function - Pilot flies to destination.
+     */
     public void flyToDestinationPoint(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -82,6 +91,9 @@ public class PlaneStub {
         com.close();
     }
 
+    /**
+     * Passenger function - passenger waits for the flight to end.
+     */
     public void waitForEndOfFlight(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -107,6 +119,9 @@ public class PlaneStub {
         com.close();
     }
 
+    /**
+     * Pilot function - Pilot flies back to departure.
+     */
     public void flyToDeparturePoint(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -134,6 +149,9 @@ public class PlaneStub {
         com.close();
     }
 
+    /**
+     * Hostess Function - if no passenger at queue or plane is full awakes pilot.
+     */
     public void informPlaneReadyToTakeOff(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -160,6 +178,4 @@ public class PlaneStub {
 
         com.close();
     }
-
-
 }

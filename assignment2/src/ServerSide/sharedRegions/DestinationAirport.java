@@ -9,32 +9,31 @@ import ServerSide.main.SimulPar;
 public class DestinationAirport {
 
     /**
-     *
+     * Reference to the passenger threads.
      */
     private final Passenger[] pass;
 
     /**
-     *
+     * Reference to the Pilot.
      */
     private Pilot pi;
 
     /**
-     *
+     * Reference to the General Repository.
      */
     private final GeneralRepository repos;
 
     /**
-     * Destination Airport constructor
+     * Destination Airport constructor.
      * @param repos general repository of information
      */
-
     public DestinationAirport(GeneralRepository repos){
         pass = new Passenger[SimulPar.N];
         this.repos = repos;
     }
 
     /**
-     * Pilot function - pilot announces that the plane arrived at destination
+     * Pilot function - pilot announces that the plane arrived at destination.
      */
     public synchronized void announceArrival(){
         pi = (Pilot) Thread.currentThread();
