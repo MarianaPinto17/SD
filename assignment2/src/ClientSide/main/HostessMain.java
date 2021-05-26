@@ -1,9 +1,11 @@
 package ClientSide.main;
 
-import ClientSide.entities.*;
-import ClientSide.stub.*;
-import ServerSide.main.*;
-import commonInfrastructures.*;
+import ClientSide.entities.Hostess;
+import ClientSide.entities.Pilot;
+import ClientSide.stub.DepartureAirportStub;
+import ClientSide.stub.DestinationAirportStub;
+import ClientSide.stub.GeneralRepositoryStub;
+import ClientSide.stub.PlaneStub;
 
 /**
  *    Client side of the Sleeping Pilots (pilots).
@@ -12,7 +14,7 @@ import commonInfrastructures.*;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class PilotMain {
+public class HostessMain {
     /**
      *  Main method.
      *
@@ -27,19 +29,13 @@ public class PilotMain {
     {
         int depAirPortNumb = -1;
         int planePortNumb = -1;
-        int desAirPortNumb = -1;
-        int genReposPortNumb = -1;
 
         String depAirHostName;
-        String desAirHostName;
         String planeHostName;
-        String genReposHostName;
 
-        Pilot pilot;                    // array of pilot threads
+        Hostess hostess;                    // array of pilot threads
         DepartureAirportStub depAir;
-        DestinationAirportStub desAir;
         PlaneStub plane;
-        GeneralRepositoryStub genReposStub;                                 // remote reference to the general repository
 
 
         /* getting problem runtime parameters */
@@ -60,69 +56,42 @@ public class PilotMain {
         { System.out.println("args[1] is not a valid port number!");
             System.exit (1);
         }
-        desAirHostName = args[2];
+        planeHostName = args[2];
         try
-        { desAirPortNumb = Integer.parseInt (args[3]);
+        { planePortNumb = Integer.parseInt (args[3]);
         }
         catch (NumberFormatException e)
         { System.out.println("args[3] is not a number!");
             System.exit (1);
         }
-        if ((desAirPortNumb < 4000) || (desAirPortNumb >= 65536))
-        { System.out.println("args[3] is not a valid port number!");
-            System.exit (1);
-        }
-        planeHostName = args[4];
-        try
-        { planePortNumb = Integer.parseInt (args[5]);
-        }
-        catch (NumberFormatException e)
-        { System.out.println("args[5] is not a number!");
-            System.exit (1);
-        }
         if ((planePortNumb < 4000) || (planePortNumb >= 65536))
-        { System.out.println("args[5] is not a valid port number!");
-            System.exit (1);
-        }
-        genReposHostName = args[6];
-        try
-        { genReposPortNumb = Integer.parseInt (args[7]);
-        }
-        catch (NumberFormatException e)
-        { System.out.println("args[7] is not a number!");
-            System.exit (1);
-        }
-        if ((genReposPortNumb < 4000) || (genReposPortNumb >= 65536))
-        { System.out.println("args[7] is not a valid port number!");
+        { System.out.println("args[3] is not a valid port number!");
             System.exit (1);
         }
 
         /* problem initialization */
 
         depAir = new DepartureAirportStub(depAirHostName, depAirPortNumb);
-        desAir = new DestinationAirportStub(desAirHostName, desAirPortNumb);
         plane = new PlaneStub(planeHostName, planePortNumb);
-        genReposStub = new GeneralRepositoryStub (genReposHostName, genReposPortNumb);
 
-        pilot = new Pilot("Piloto", depAir, desAir, plane, genReposStub);
+        hostess = new Hostess("Hospedeira", depAir, plane);
 
         /* start of the simulation */
-        pilot.start();
+        hostess.start();
 
 
         /* waiting for the end of the simulation */
 
         System.out.println();
 
-        while (pilot.isAlive ()) {
+        while (hostess.isAlive ()) {
             Thread.yield ();
         }
         try {
-            pilot.join ();
+            hostess.join ();
         } catch (InterruptedException e) {}
         System.out.println("The pilot has terminated.");
 
         System.out.println();
-        genReposStub.shutdown();
     }
 }

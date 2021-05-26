@@ -18,12 +18,6 @@ public class Hostess extends Thread{
     private final DepartureAirportStub depAir;
 
     /**
-     * Reference to Destination Airport.
-     */
-
-    private final DestinationAirportStub destAir;
-
-    /**
      * Reference to Plane.
      */
 
@@ -44,13 +38,11 @@ public class Hostess extends Thread{
      * Initiates a new Hostess that checks passengers aboard.
      * @param name hostess name.
      * @param depAir departure Airport.
-     * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Hostess(String name, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane){
+    public Hostess(String name, DepartureAirportStub depAir, PlaneStub plane){
         super(name);
         this.depAir = depAir;
-        this.destAir = destAir;
         this.plane = plane;
         this.endOfLife = false;
         this.currentState = HostessStates.WAIT_FOR_FLIGHT;
