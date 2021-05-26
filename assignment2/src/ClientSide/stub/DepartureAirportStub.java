@@ -40,16 +40,16 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.INFORM_PLANE_READY_FOR_BOARDING);
+        outMessage = new Message(MessageType.INFORM_PLANE_READY_FOR_BOARDING, ((Pilot) Thread.currentThread()).getCurrentState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
-        if (inMessage.getMsgType() != MessageType.DONE_IPRFB){
+        if (inMessage.getMsgType() != MessageType.DONE_IPRFB || inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -71,12 +71,12 @@ public class DepartureAirportStub {
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
-        if (inMessage.getMsgType() != MessageType.DONE_PFPB){
+        if (inMessage.getMsgType() != MessageType.DONE_PFPB || inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value || inMessage.getState() > HostessStates.READY_TO_FLY.value) {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -94,7 +94,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_IN_QUEUE);
+        outMessage = new Message(MessageType.WAIT_IN_QUEUE, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -102,8 +102,16 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
+        if (inMessage.getPassId() != ((Passenger) Thread.currentThread()).getID()){
+            System.out.println("Invalid return passenger id!!");
+            System.exit(1);
+        }
+        if (inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value || inMessage.getState() > PassengerStates.AT_DESTINATION.value){
+            System.out.println("Invalid return passenger state!!");
+            System.exit(1);
+        }
 
-        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
+        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -121,7 +129,7 @@ public class DepartureAirportStub {
             }
         }
 
-            outMessage = new Message(MessageType.CHECK_DOCUMENTS);
+        outMessage = new Message(MessageType.CHECK_DOCUMENTS, ((Hostess) Thread.currentThread()).getCurrentState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -129,8 +137,12 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
+        if (inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value || inMessage.getState() > HostessStates.READY_TO_FLY.value){
+            System.out.println("Invalid return hostess state!!");
+            System.exit(1);
+        }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -148,7 +160,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.SHOW_DOCUMENTS);
+        outMessage = new Message(MessageType.SHOW_DOCUMENTS, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -156,9 +168,6 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
-
-        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
-
         com.close();
     }
 
@@ -175,7 +184,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_FOR_NEXT_PASSENGER);
+        outMessage = new Message(MessageType.WAIT_FOR_NEXT_PASSENGER, ((Hostess) Thread.currentThread()).getCurrentState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -183,8 +192,12 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
+        if (inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value || inMessage.getState() > HostessStates.READY_TO_FLY.value){
+            System.out.println("Invalid return hostess state!!");
+            System.exit(1);
+        }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -202,7 +215,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.BOARD_THE_PLANE);
+        outMessage = new Message(MessageType.BOARD_THE_PLANE,  ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -210,8 +223,16 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
+        if (inMessage.getPassId() != ((Passenger) Thread.currentThread()).getID()){
+            System.out.println("Invalid return passenger id!!");
+            System.exit(1);
+        }
+        if (inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value || inMessage.getState() > PassengerStates.AT_DESTINATION.value){
+            System.out.println("Invalid return passenger state!!");
+            System.exit(1);
+        }
 
-        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getPassengerState());
+        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -229,7 +250,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_FOR_NEXT_FLIGHT);
+        outMessage = new Message(MessageType.WAIT_FOR_NEXT_FLIGHT, ((Hostess) Thread.currentThread()).getCurrentState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -237,8 +258,12 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
+        if (inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value || inMessage.getState() > HostessStates.READY_TO_FLY.value){
+            System.out.println("Invalid return hostess state!!");
+            System.exit(1);
+        }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }
@@ -256,7 +281,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.PARK_AT_TRANSFER_GATE);
+        outMessage = new Message(MessageType.PARK_AT_TRANSFER_GATE, ((Pilot) Thread.currentThread()).getCurrentState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -264,8 +289,14 @@ public class DepartureAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+            System.out.println("Invalid return pilot state!!");
+            System.exit(1);
+        }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+
+
+        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
 
         com.close();
     }

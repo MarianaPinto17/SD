@@ -67,7 +67,7 @@ public class GeneralRepositoryStub {
      *
      * @param state pilot state
      */
-    public void setPilotState(PilotStates state){
+    public void setPilotState(int state){
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message
                 inMessage;                                             // incoming message
@@ -79,7 +79,7 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
-        outMessage = new Message(MessageType.SET_PILOT_STATE, state.value);
+        outMessage = new Message(MessageType.SET_PILOT_STATE, state);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
         if (inMessage.getMsgType() != MessageType.DONE_SPiS)
@@ -95,7 +95,7 @@ public class GeneralRepositoryStub {
      *
      * @param state hostess state
      */
-    public void setHostessState(HostessStates state){
+    public void setHostessState(int state){
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message
                 inMessage;                                             // incoming message
@@ -107,7 +107,7 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
-        outMessage = new Message(MessageType.SET_HOSTESS_STATE, state.value);
+        outMessage = new Message(MessageType.SET_HOSTESS_STATE, state);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
         if (inMessage.getMsgType() != MessageType.DONE_SHS)
@@ -124,7 +124,7 @@ public class GeneralRepositoryStub {
      * @param state hostess state
      * @param pid passenger id
      */
-    public void setHostessState(HostessStates state, int pid){
+    public void setHostessState(int state, int pid){
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message
                 inMessage;                                             // incoming message
@@ -136,8 +136,8 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
-        outMessage = new Message(MessageType.SET_HOSTESS_STATE, state.value, pid);
-        com.writeObject (outMessage);
+        outMessage = new Message(MessageType.SET_HOSTESS_STATE, state, pid);
+        com.writeObject(outMessage);
         inMessage = (Message) com.readObject ();
         if (inMessage.getMsgType() != MessageType.DONE_SHS)
         { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
@@ -153,7 +153,7 @@ public class GeneralRepositoryStub {
      * @param state passenger state
      * @param pid passenger id
      */
-    public void setPassengerState(PassengerStates state, int pid){
+    public void setPassengerState(int state, int pid){
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message
                 inMessage;                                             // incoming message
@@ -165,7 +165,7 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
-        outMessage = new Message(MessageType.SET_PASSENGER_STATE, state.value, pid);
+        outMessage = new Message(MessageType.SET_PASSENGER_STATE, state, pid);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
         if (inMessage.getMsgType() != MessageType.DONE_SPaS)

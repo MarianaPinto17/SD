@@ -47,15 +47,20 @@ public class DepartureAirportInterface {
         /* validation of the incoming message */
 
         switch (inMessage.getMsgType ()) {
-            case INFORM_PLANE_READY_FOR_BOARDING:
-            case PREPARE_FOR_PASS_BOARDING:
-            case WAIT_IN_QUEUE:
-            case CHECK_DOCUMENTS:
-            case SHOW_DOCUMENTS:
-            case WAIT_FOR_NEXT_PASSENGER:
-            case BOARD_THE_PLANE:
-            case WAIT_FOR_NEXT_FLIGHT:
-            case PARK_AT_TRANSFER_GATE:
+            case INFORM_PLANE_READY_FOR_BOARDING: case PARK_AT_TRANSFER_GATE:
+                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value) || (inMessage.getState() > PilotStates.FLYING_BACK.value))
+                    throw new MessageException ("Invalid Pilot state!", inMessage);
+                break;
+            case PREPARE_FOR_PASS_BOARDING: case CHECK_DOCUMENTS: case WAIT_FOR_NEXT_PASSENGER: case WAIT_FOR_NEXT_FLIGHT:
+                if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value) || (inMessage.getState() > HostessStates.READY_TO_FLY.value))
+                    throw new MessageException ("Invalid Hostess state!", inMessage);
+                break;
+            case WAIT_IN_QUEUE: case SHOW_DOCUMENTS: case BOARD_THE_PLANE:
+                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
+                    throw new MessageException ("Invalid Passenger state!", inMessage);
+                if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
+                    throw new MessageException ("Invalid Passenger id!", inMessage);
+                break;
             case IS_INFORM_PLANE:
                 break;
             default:
@@ -65,41 +70,53 @@ public class DepartureAirportInterface {
         /* processing */
 
         switch (inMessage.getMsgType ()) {
-            case SETNFIC:
-                repos.initSimul(inMessage.getFilename());
-                outMessage = new Message (MessageType.DONE_NFIC);
+            case INFORM_PLANE_READY_FOR_BOARDING:
+                ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.informPlaneReadyForBoarding();
+                outMessage = new Message(MessageType.DONE_IPRFB, ((Pilot) Thread.currentThread()).getCurrentState());
                 break;
-            case SET_PILOT_STATE:
-
-                repos.setPilotState(inMessage.getState());
-                outMessage = new Message (MessageType.DONE_SPiS);
+            case PREPARE_FOR_PASS_BOARDING:
+                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.prepareForPassBoarding();
+                outMessage = new Message(MessageType.DONE_PFPB, ((Hostess) Thread.currentThread()).getCurrentState());
                 break;
-
-            case SET_HOSTESS_STATE:
-                if(inMessage.getPassId() >= 0)
-                    repos.setHostessState(inMessage.getState(), inMessage.getPassId());
-                else
-                    repos.setHostessState(inMessage.getState());
-                outMessage = new Message (MessageType.DONE_SHS);
+            case WAIT_IN_QUEUE:
+                ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
+                ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.waitInQueue();
+                outMessage = new Message(MessageType.DONE_WIQ, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
                 break;
-            case SET_PASSENGER_STATE:
-                repos.setPassengerState(inMessage.getPassId(), inMessage.getState());
-                outMessage = new Message (MessageType.DONE_SPaS);
+            case CHECK_DOCUMENTS:
+                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.checkDocuments();
+                outMessage = new Message (MessageType.DONE_CD, ((Hostess) Thread.currentThread()).getCurrentState());
                 break;
-            case SHUT:
-                repos.shutdown ();
-                outMessage = new Message (MessageType.DONE_S);
-                break;
-
             case SHOW_DOCUMENTS:
+                ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
+                ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.showDocuments();
+                outMessage = new Message(MessageType.DONE_SD);
                 break;
             case WAIT_FOR_NEXT_PASSENGER:
+                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.waitForNextPassenger();
+                outMessage = new Message (MessageType.DONE_WFNP, ((Hostess) Thread.currentThread()).getCurrentState());
                 break;
             case BOARD_THE_PLANE:
+                ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
+                ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.boardThePlane();
+                outMessage = new Message(MessageType.DONE_BTP, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
                 break;
             case WAIT_FOR_NEXT_FLIGHT:
+                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.waitForNextFlight();
+                outMessage = new Message (MessageType.DONE_WFNF, ((Hostess) Thread.currentThread()).getCurrentState());
                 break;
             case PARK_AT_TRANSFER_GATE:
+                ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
+                depAir.parkAtTransferGate();
+                outMessage = new Message(MessageType.DONE_PATG, ((Pilot) Thread.currentThread()).getCurrentState());
                 break;
             case IS_INFORM_PLANE:
                 break;

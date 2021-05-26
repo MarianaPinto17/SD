@@ -1,5 +1,6 @@
 package ServerSide.sharedRegions;
 
+import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
 import ServerSide.entities.*;
 import ServerSide.main.SimulPar;
@@ -34,10 +35,21 @@ public class DepartureAirport {
     private int nCheckedPassengers;
 
     /**
+     * number of checked passengers in total.
+     */
+    private int nCheckedPassengersTotal;
+
+    /**
+     * number of passengers in flight.
+     */
+    private int InF;
+
+
+    /**
      * General repossitory of information
      * @serialField repos
      */
-    private GeneralRepository repos ;
+    private GeneralRepositoryStub repos ;
 
     /**
      * Reference to passenger threads.
@@ -83,9 +95,12 @@ public class DepartureAirport {
      * Departure Airport constructor
      * @param repos general repository of information
      */
-    public DepartureAirport(GeneralRepository repos){
+    public DepartureAirport(GeneralRepositoryStub repos){
+        readyForBoarding = false;
         nPassengers = 0;
         nCheckedPassengers = 0;
+        nCheckedPassengersTotal = 0;
+        InF = 0;
         pass = new Passenger[SimulPar.N];
 
         try{
@@ -117,13 +132,13 @@ public class DepartureAirport {
     public synchronized void informPlaneReadyForBoarding(){
         pi = (Pilot) Thread.currentThread();
         // pilot is at transfer gate and ready for boarding
-        repos.setnFlights(repos.getnFlights()+1);
+        pi.setNflights(pi.getNflights()+1);
         pi.setCurrentState(PilotStates.READY_FOR_BOARDING);
         repos.setPilotState(PilotStates.READY_FOR_BOARDING.value);
         System.out.println("Plane ready for boarding.");
 
         // hostess can start boarding
-        setReadyForBoarding(true);
+        readyForBoarding = true;
         notifyAll();
     }
 
@@ -132,12 +147,13 @@ public class DepartureAirport {
      */
     public synchronized void prepareForPassBoarding(){
         ho = (Hostess) Thread.currentThread();
-        while(!isReadyForBoarding()){
+        while(!readyForBoarding){
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
         nCheckedPassengers = 0;
+        InF = 0;
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
 
@@ -159,7 +175,6 @@ public class DepartureAirport {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
         pass[passengerID] = (Passenger) Thread.currentThread();
         nPassengers++;
-        repos.setInQ(nPassengers);
         pass[passengerID].setCurrentState(PassengerStates.IN_QUEUE);
         repos.setPassengerState(passengerID, PassengerStates.IN_QUEUE.value);
         // number of passengers in queue increases
@@ -177,6 +192,7 @@ public class DepartureAirport {
      * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents.
      */
     public synchronized void checkDocuments(){
+        ho = (Hostess) Thread.currentThread();
         while(nPassengers == 0){
             try{
                 wait();
@@ -193,7 +209,6 @@ public class DepartureAirport {
         }
 
         nPassengers--;
-        repos.setInQ(repos.getInQ() - 1);
         ho.setCurrentState(HostessStates.CHECK_PASSENGER);
         repos.setHostessState(HostessStates.CHECK_PASSENGER.value, checkDocID);
 
@@ -214,7 +229,9 @@ public class DepartureAirport {
      * Passenger function - passenger shows documents to hostess.
      */
     public synchronized void showDocuments() {
-        while (!this.checkedPass[((Passenger) Thread.currentThread()).getID()]){
+        int passengerID = ((Passenger) Thread.currentThread()).getID();
+        pass[passengerID] = (Passenger) Thread.currentThread();
+        while (!this.checkedPass[passengerID]){
             try{
                 wait();
             } catch (InterruptedException e){}
@@ -237,6 +254,7 @@ public class DepartureAirport {
      *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue.
      */
     public synchronized void waitForNextPassenger(){
+        ho = (Hostess) Thread.currentThread();
         ho.setCurrentState(HostessStates.WAIT_FOR_PASSENGER);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
 
@@ -245,7 +263,7 @@ public class DepartureAirport {
 
 //        notifyAll();
 
-        int passInDep = (SimulPar.N - repos.getPTAL());
+        int passInDep = (SimulPar.N - (nCheckedPassengersTotal- InF));
 
         notifyAll();
         while(passengersAtQueue.isEmpty() && passInDep >=5 || (nCheckedPassengers != passInDep) && (passInDep < 5)){
@@ -266,8 +284,10 @@ public class DepartureAirport {
      */
     public synchronized void boardThePlane() {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
+        pass[passengerID] = (Passenger) Thread.currentThread();
 
-        repos.setInF(repos.getInF() + 1);
+        InF++;
+        nCheckedPassengersTotal++;
         pass[passengerID].setCurrentState(PassengerStates.IN_FLIGHT);
         repos.setPassengerState(passengerID, PassengerStates.IN_FLIGHT.value);
 
@@ -279,6 +299,7 @@ public class DepartureAirport {
      */
 
     public synchronized void waitForNextFlight() {
+        ho = (Hostess) Thread.currentThread();
         ho.setCurrentState(HostessStates.WAIT_FOR_FLIGHT);
         repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT.value);
 
@@ -302,7 +323,7 @@ public class DepartureAirport {
         pi.setCurrentState(PilotStates.AT_TRANSFER_GATE);
         repos.setPilotState(PilotStates.AT_TRANSFER_GATE.value);
 
-        if(SimulPar.N == repos.getPTAL()){
+        if(SimulPar.N == nCheckedPassengersTotal){
             pi.setEndOfLife(true);
             ho.setEndOfLife(true);
         }
@@ -315,21 +336,21 @@ public class DepartureAirport {
      * Getters and setters.
      */
 
-    /**
-     * Checks if a plane is ready for boarding.
-     * @return true if is ready.
-     */
-    public boolean isReadyForBoarding() {
-        return readyForBoarding;
-    }
-
-    /**
-     * Sets a plane ready for boarding.
-     * @param readyForBoarding changes status of readyForBoarding.
-     */
-    public void setReadyForBoarding(boolean readyForBoarding) {
-        this.readyForBoarding = readyForBoarding;
-    }
+//    /**
+//     * Checks if a plane is ready for boarding.
+//     * @return true if is ready.
+//     */
+//    public boolean isReadyForBoarding() {
+//        return readyForBoarding;
+//    }
+//
+//    /**
+//     * Sets a plane ready for boarding.
+//     * @param readyForBoarding changes status of readyForBoarding.
+//     */
+//    public void setReadyForBoarding(boolean readyForBoarding) {
+//        this.readyForBoarding = readyForBoarding;
+//    }
 
     /**
      * Checks if a plane is ready for flying.

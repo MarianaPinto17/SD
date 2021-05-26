@@ -92,8 +92,8 @@ public class Hostess extends Thread{
      * Get current state
      * @return the current state of a hostess
      */
-    public HostessStates getCurrentState(){
-        return currentState;
+    public int getCurrentState(){
+        return currentState.value;
     }
 
     /**
