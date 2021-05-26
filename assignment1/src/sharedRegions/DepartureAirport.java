@@ -5,7 +5,7 @@ import entities.*;
 import main.SimulPar;
 
 /**
- * Shared Region Departure Airport
+ * Shared Region Departure Airport.
  */
 public class DepartureAirport {
     /**
@@ -34,7 +34,7 @@ public class DepartureAirport {
     private int nCheckedPassengers;
 
     /**
-     * General repossitory of information
+     * General repossitory of information.
      * @serialField repos
      */
     private GeneralRepository repos ;
@@ -80,7 +80,7 @@ public class DepartureAirport {
     private boolean waitPassengers;
 
     /**
-     * Departure Airport constructor
+     * Departure Airport constructor.
      * @param repos general repository of information
      */
     public DepartureAirport(GeneralRepository repos){

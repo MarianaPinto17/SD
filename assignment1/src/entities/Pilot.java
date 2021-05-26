@@ -4,52 +4,52 @@ import main.SimulPar;
 import sharedRegions.*;
 
 /**
- * Pilot thread and life cycle
+ * Pilot thread and life cycle.
  * @author Mariana Pinto
  * @author André Alves
  */
 public class Pilot extends Thread{
     /**
-     * current state of the pilot
+     * current state of the pilot.
      */
     private PilotStates currentState;
 
     /**
-     * True if the pilot doesn't have more flights
+     * True if the pilot doesn't have more flights.
      */
     private boolean endOfLife;
 
     //
     /**
-     * True if the pilot is asleep
+     * True if the pilot is asleep.
      */
     private boolean asleep;
 
     /**
-     * Reference to Departure Airport
+     * Reference to Departure Airport.
      */
 
     private final DepartureAirport depAir;
 
     /**
-     * Reference to Destination Airport
+     * Reference to Destination Airport.
      */
 
     private final DestinationAirport destAir;
 
     /**
-     * Reference to Plane
+     * Reference to Plane.
      */
 
     private final Plane plane;
 
     /**
-     * number of flights
+     * number of flights.
      */
     private int nflights;
 
     /**
-     * number of passengers in each flight
+     * number of passengers in each flight.
      */
     private int npassengers[];
 
@@ -113,7 +113,7 @@ public class Pilot extends Thread{
     }
 
     /**
-     * Get current state
+     * Get current state.
      * @return the current state of a pilot
      */
     public PilotStates getCurrentState(){
@@ -121,7 +121,7 @@ public class Pilot extends Thread{
     }
 
     /**
-     * Set current state
+     * Set current state.
      * @param newState new state of a pilot
      */
     public void setCurrentState(PilotStates newState){
@@ -129,7 +129,7 @@ public class Pilot extends Thread{
     }
 
     /**
-     * Get end of life
+     * Get end of life.
      * @return true if pilot don't have more flights
      */
     public boolean getEndOfLife(){
@@ -137,7 +137,7 @@ public class Pilot extends Thread{
     }
 
     /**
-     * Set end of life state
+     * Set end of life state.
      * @param newEndOfLife changes status of endOfLife
      */
     public void setEndOfLife(boolean newEndOfLife){
@@ -145,7 +145,7 @@ public class Pilot extends Thread{
     }
 
     /**
-     * Get if the pilot is asleep
+     * Get if the pilot is asleep.
      * @return True if is asleep
      */
     public boolean getAsleep() {
@@ -153,25 +153,42 @@ public class Pilot extends Thread{
     }
 
     /**
-     * Set a pilot to sleep or wakes her up
+     * Set a pilot to sleep or wakes her up.
      * @param newAsleep new state of asleep
      */
     public void setAsleep(boolean newAsleep){
         this.asleep = newAsleep;
     }
 
+    /**
+     * Checks the number of passengers in each flight.
+     * @return number of passengers in each flight.
+     */
     public int[] getNpassengers() {
         return npassengers;
     }
 
+    /**
+     * sets the number of passengers in each flight.
+     * @param index index of the flight
+     * @param npassengers number the passenger of the flight
+     */
     public void setNpassengers(int index, int npassengers) {
         this.npassengers[index] = npassengers;
     }
 
+    /**
+     * Checks number of flights made.
+     * @return number of flights
+     */
     public int getNflights() {
         return nflights;
     }
 
+    /**
+     * Sets numbers of flights made.
+     * @param nflights
+     */
     public void setNflights(int nflights) {
         this.nflights = nflights;
     }

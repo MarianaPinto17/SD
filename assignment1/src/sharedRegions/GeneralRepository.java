@@ -131,6 +131,10 @@ public class GeneralRepository {
         reportStatus ();
     }
 
+    /**
+     * Writes on the logging file the changes of status of each entity
+     */
+
     private void reportStatus(){
         String lineStatus = "";
         try {
@@ -266,6 +270,11 @@ public class GeneralRepository {
         reportStatus ();
     }
 
+    /**
+     * Set Hostess state
+     * @param state hostess state
+     * @param id of passenger
+     */
     public synchronized void setHostessState (HostessStates state, int id)
     {
         this.hostessState = state;
@@ -287,7 +296,7 @@ public class GeneralRepository {
 
     /**
      *
-     *
+     * Sums up the flights and passengers of the day
      */
     public synchronized void sumUp(int[] npassFlight){
         try {
@@ -410,14 +419,27 @@ public class GeneralRepository {
         this.emptyPlaneDest = emptyPlaneDest;
     }
 
+    /**
+     * checks if the plane is empty at the destination airport
+     * @return true if the plane is empty
+     */
     public boolean isEmptyPlaneDest() {
         return emptyPlaneDest;
     }
 
+    /**
+     * sets the number of flights made by the company
+     * @param nFlights changes number to nFlights
+     */
     public void setnFlights(int nFlights) {
         this.nFlights = nFlights;
     }
 
+
+    /**
+     * checks the number of flights made by the campony
+     * @return number of flights made
+     */
     public int getnFlights() {
         return nFlights;
     }

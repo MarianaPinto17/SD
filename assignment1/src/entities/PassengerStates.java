@@ -1,6 +1,6 @@
 package entities;
 /**
- * Passenger life states
+ * Passenger life states.
  * @author Mariana Pinto
  * @author André Alves
  */
