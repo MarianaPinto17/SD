@@ -1,10 +1,8 @@
 package ClientSide.main;
 
-import ClientSide.entities.Hostess;
-import ClientSide.entities.Pilot;
+import ClientSide.entities.Passenger;
 import ClientSide.stub.DepartureAirportStub;
 import ClientSide.stub.DestinationAirportStub;
-import ClientSide.stub.GeneralRepositoryStub;
 import ClientSide.stub.PlaneStub;
 
 /**
@@ -14,7 +12,7 @@ import ClientSide.stub.PlaneStub;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class HostessMain {
+public class PassengerMain {
     /**
      *  Main method.
      *
@@ -29,18 +27,22 @@ public class HostessMain {
     {
         int depAirPortNumb = -1;
         int planePortNumb = -1;
+        int desAirPortNumb = -1;
+
 
         String depAirHostName;
         String planeHostName;
+        String desAirHostName;
 
-        Hostess hostess;                    // array of pilot threads
+        Passenger passenger[] = new Passenger[SimulPar.N];                    // array of pilot threads
         DepartureAirportStub depAir;
+        DestinationAirportStub desAir;
         PlaneStub plane;
 
 
         /* getting problem runtime parameters */
 
-        if (args.length != 4)
+        if (args.length != 6)
         { System.out.println("Wrong number of parameters!");
             System.exit (1);
         }
@@ -56,38 +58,56 @@ public class HostessMain {
         { System.out.println("args[1] is not a valid port number!");
             System.exit (1);
         }
-        planeHostName = args[2];
+        desAirHostName = args[2];
         try
-        { planePortNumb = Integer.parseInt (args[3]);
+        { desAirPortNumb = Integer.parseInt (args[3]);
         }
         catch (NumberFormatException e)
         { System.out.println("args[3] is not a number!");
             System.exit (1);
         }
-        if ((planePortNumb < 4000) || (planePortNumb >= 65536))
+        if ((desAirPortNumb < 4000) || (desAirPortNumb >= 65536))
         { System.out.println("args[3] is not a valid port number!");
+            System.exit (1);
+        }
+        planeHostName = args[4];
+        try
+        { planePortNumb = Integer.parseInt (args[5]);
+        }
+        catch (NumberFormatException e)
+        { System.out.println("args[5] is not a number!");
+            System.exit (1);
+        }
+        if ((planePortNumb < 4000) || (planePortNumb >= 65536))
+        { System.out.println("args[5] is not a valid port number!");
             System.exit (1);
         }
 
         /* problem initialization */
 
         depAir = new DepartureAirportStub(depAirHostName, depAirPortNumb);
+        desAir = new DestinationAirportStub(desAirHostName, desAirPortNumb);
         plane = new PlaneStub(planeHostName, planePortNumb);
 
-        hostess = new Hostess("Hospedeira", depAir, plane);
+        for (int i = 0; i < SimulPar.N; i++)
+            passenger[i] = new Passenger(i, depAir, desAir, plane);
 
         /* start of the simulation */
-        hostess.start();
+        for (int i = 0; i < SimulPar.N; i++)
+            passenger[i].start();
 
 
         /* waiting for the end of the simulation */
 
         System.out.println();
 
-        try {
-            hostess.join ();
-        } catch (InterruptedException e) {}
-        System.out.println("The pilot has terminated.");
+        System.out.println();
+        for (int i = 0; i < SimulPar.N; i++) {
+            try {
+                passenger[i].join ();
+            } catch (InterruptedException e) {}
+            System.out.println("The passenger " + (i+1) + " has terminated.");
+        }
 
         System.out.println();
     }

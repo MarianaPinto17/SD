@@ -44,7 +44,7 @@ public class PilotMain {
 
         /* getting problem runtime parameters */
 
-        if (args.length != 4)
+        if (args.length != 8)
         { System.out.println("Wrong number of parameters!");
             System.exit (1);
         }
