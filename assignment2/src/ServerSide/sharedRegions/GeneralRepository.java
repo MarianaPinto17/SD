@@ -129,11 +129,8 @@ public class GeneralRepository {
      *   Operation server shutdown.
      */
 
-    public synchronized void shutdown ()
-    {
-        nEntities = 1;
-        if (nEntities >= SimulPar.E)
-            GeneralRepositoryMain.waitConnection = false;
+    public synchronized void shutdown () {
+        GeneralRepositoryMain.waitConnection = false;
     }
 
 

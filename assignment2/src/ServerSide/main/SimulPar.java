@@ -12,11 +12,6 @@ public final class SimulPar {
     public static final int N = 21;
 
     /**
-     *   Number of entities requesting shutdown.
-     */
-
-    public static final int E = 3;
-    /**
      *   It can not be instantiated.
      */
 

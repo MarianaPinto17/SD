@@ -117,7 +117,7 @@ public class GeneralRepositoryInterface {
                 outMessage = new Message(MessageType.DONE_SU);
             break;
             case SHUT:
-                repos.shutdown ();
+                repos.shutdown();
                 outMessage = new Message (MessageType.DONE_S);
                 break;
             case GET_INF:
