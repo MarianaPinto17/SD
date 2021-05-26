@@ -1,7 +1,7 @@
 package ServerSide.sharedRegions;
 
 import commonInfrastructures.*;
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.*;
 
 
@@ -63,7 +63,7 @@ public class Plane {
         pi = (Pilot) Thread.currentThread();
 
         // Pilot is inside the plane ready for boarding
-        pi.setCurrentState(PilotStates.WAIT_FOR_BOARDING);
+        pi.setPilotState(PilotStates.WAIT_FOR_BOARDING.value);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING.value);
     }
 
@@ -79,7 +79,7 @@ public class Plane {
 
         repos.setReadyToFly(false);
 
-        pi.setCurrentState(PilotStates.FLYING_FORWARD);
+        pi.setPilotState(PilotStates.FLYING_FORWARD.value);
         repos.setPilotState(PilotStates.FLYING_FORWARD.value);
 
         try {
@@ -114,7 +114,7 @@ public class Plane {
 
         repos.setEmptyPlaneDest(false);
 
-        pi.setCurrentState(PilotStates.FLYING_BACK);
+        pi.setPilotState(PilotStates.FLYING_BACK.value);
         repos.setPilotState(PilotStates.FLYING_BACK.value);
 
         try {
@@ -129,7 +129,7 @@ public class Plane {
     public synchronized void informPlaneReadyToTakeOff(){
         ho = (Hostess) Thread.currentThread();
 
-        ho.setCurrentState(HostessStates.READY_TO_FLY);
+        ho.setHostessState(HostessStates.READY_TO_FLY);
         System.out.println();
         repos.setHostessState(HostessStates.READY_TO_FLY.value);
 

@@ -46,7 +46,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.INFORM_PLANE_READY_FOR_BOARDING, ((Pilot) Thread.currentThread()).getCurrentState());
+        outMessage = new Message(MessageType.INFORM_PLANE_READY_FOR_BOARDING, ((Pilot) Thread.currentThread()).getPilotState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -55,7 +55,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
 
         com.close();
     }
@@ -85,7 +85,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
 
         com.close();
     }
@@ -106,7 +106,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_IN_QUEUE, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
+        outMessage = new Message(MessageType.WAIT_IN_QUEUE, ((Passenger) Thread.currentThread()).getPassengerState(), ((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -123,7 +123,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
 
         com.close();
     }
@@ -144,7 +144,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.CHECK_DOCUMENTS, ((Hostess) Thread.currentThread()).getCurrentState());
+        outMessage = new Message(MessageType.CHECK_DOCUMENTS, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -157,7 +157,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
 
         com.close();
     }
@@ -178,7 +178,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.SHOW_DOCUMENTS, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
+        outMessage = new Message(MessageType.SHOW_DOCUMENTS, ((Passenger) Thread.currentThread()).getPassengerState(), ((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -205,7 +205,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_FOR_NEXT_PASSENGER, ((Hostess) Thread.currentThread()).getCurrentState());
+        outMessage = new Message(MessageType.WAIT_FOR_NEXT_PASSENGER, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -218,7 +218,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
 
         com.close();
     }
@@ -239,7 +239,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.BOARD_THE_PLANE,  ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
+        outMessage = new Message(MessageType.BOARD_THE_PLANE,  ((Passenger) Thread.currentThread()).getPassengerState(), ((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -256,7 +256,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
 
         com.close();
     }
@@ -277,7 +277,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_FOR_NEXT_FLIGHT, ((Hostess) Thread.currentThread()).getCurrentState());
+        outMessage = new Message(MessageType.WAIT_FOR_NEXT_FLIGHT, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -290,7 +290,7 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
 
         com.close();
     }
@@ -311,7 +311,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.PARK_AT_TRANSFER_GATE, ((Pilot) Thread.currentThread()).getCurrentState());
+        outMessage = new Message(MessageType.PARK_AT_TRANSFER_GATE, ((Pilot) Thread.currentThread()).getPilotState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
@@ -326,7 +326,7 @@ public class DepartureAirportStub {
 
 
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
+        ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
 
         com.close();
     }

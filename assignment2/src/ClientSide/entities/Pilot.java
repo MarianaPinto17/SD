@@ -8,7 +8,7 @@ import ClientSide.stub.*;
  * @author Mariana Pinto
  * @author André Alves
  */
-public class Pilot extends Thread{
+public class Pilot extends Thread {
 
     /**
      * current state of the pilot.
@@ -67,7 +67,6 @@ public class Pilot extends Thread{
      */
     public Pilot (String name, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane, GeneralRepositoryStub repos){
         super(name);
-
         this.depAir = depAir;
         this.destAir = destAir;
         this.plane = plane;
@@ -111,6 +110,10 @@ public class Pilot extends Thread{
         }
     }
 
+    /**
+     * Get the number of passengers that already arrived at destination.
+     * @return number of passengers that already arrived at destination
+     */
     public int getPTAL(){
         int total=0;
         for (int i: this.npassengers) {
@@ -123,7 +126,7 @@ public class Pilot extends Thread{
      * Get current state
      * @return the current state of a pilot
      */
-    public int getCurrentState(){
+    public int getPilotState(){
         return currentState.value;
     }
 
@@ -131,7 +134,7 @@ public class Pilot extends Thread{
      * Set current state
      * @param newState new state of a pilot
      */
-    public void setCurrentState(int newState){
+    public void setPilotState(int newState){
         this.currentState.setValue(newState);
     }
 

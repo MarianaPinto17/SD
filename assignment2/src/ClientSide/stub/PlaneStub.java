@@ -56,7 +56,7 @@ public class PlaneStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+        ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
 
         com.close();
     }
@@ -86,7 +86,7 @@ public class PlaneStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+        ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
 
         com.close();
     }
@@ -144,7 +144,7 @@ public class PlaneStub {
             System.exit(1);
         }
 
-        ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getPilotState());
+        ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
 
         com.close();
     }
@@ -174,7 +174,7 @@ public class PlaneStub {
             System.exit(1);
         }
 
-        ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getHostessState());
+        ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
 
         com.close();
     }

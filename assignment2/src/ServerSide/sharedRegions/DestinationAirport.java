@@ -37,7 +37,7 @@ public class DestinationAirport {
      */
     public synchronized void announceArrival(){
         pi = (Pilot) Thread.currentThread();
-        pi.setCurrentState(PilotStates.DEBOARDING.value);
+        pi.setPilotState(PilotStates.DEBOARDING.value);
         repos.setPilotState(PilotStates.DEBOARDING.value);
         pi.setNpassengers(repos.getnFlights(),repos.getInF());
 
@@ -64,7 +64,7 @@ public class DestinationAirport {
             repos.setArrivedAtDest(false);
             repos.setEmptyPlaneDest(true);
         }
-        pass[passengerID].setCurrentState(PassengerStates.AT_DESTINATION);
+        pass[passengerID].setPassengerState(PassengerStates.AT_DESTINATION);
         repos.setPassengerState(passengerID, PassengerStates.AT_DESTINATION.value);
 
         notifyAll();

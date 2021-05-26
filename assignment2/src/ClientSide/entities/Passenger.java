@@ -8,7 +8,7 @@ import ClientSide.entities.*;
  * @author Mariana Pinto
  * @author André Alves
  */
-public class Passenger extends Thread{
+public class Passenger extends Thread {
     /**
      * The Passenger's ID.
      */
@@ -131,7 +131,7 @@ public class Passenger extends Thread{
      * Get current state.
      * @return the current state of a passenger
      */
-    public int getCurrentState(){
+    public int getPassengerState(){
         return currentState.value;
     }
 
@@ -139,7 +139,7 @@ public class Passenger extends Thread{
      * Set current state.
      * @param newState new state of a passenger
      */
-    public void setCurrentState(PassengerStates newState){
+    public void setPassengerState(PassengerStates newState){
         this.currentState = newState;
     }
 
@@ -147,7 +147,7 @@ public class Passenger extends Thread{
      * Set current state.
      * @param newState new state of a passenger
      */
-    public void setCurrentState(int newState){
+    public void setPassengerState(int newState){
         this.currentState.setValue(newState);
     }
 

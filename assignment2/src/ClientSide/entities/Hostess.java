@@ -92,7 +92,7 @@ public class Hostess extends Thread{
      * Get current state.
      * @return the current state of a hostess
      */
-    public int getCurrentState(){
+    public int getHostessState(){
         return currentState.value;
     }
 
@@ -100,7 +100,7 @@ public class Hostess extends Thread{
      * Set current state.
      * @param newState new state of a hostess
      */
-    public void setCurrentState(HostessStates newState){
+    public void setHostessState(HostessStates newState){
         this.currentState = newState;
     }
 
@@ -108,7 +108,7 @@ public class Hostess extends Thread{
      * Set current state.
      * @param newState int representing new state of a hostess
      */
-    public void setCurrentState(int newState){
+    public void setHostessState(int newState){
         this.currentState.setValue(newState);
     }
 

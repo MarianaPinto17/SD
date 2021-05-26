@@ -71,52 +71,52 @@ public class DepartureAirportInterface {
 
         switch (inMessage.getMsgType ()) {
             case INFORM_PLANE_READY_FOR_BOARDING:
-                ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
                 depAir.informPlaneReadyForBoarding();
-                outMessage = new Message(MessageType.DONE_IPRFB, ((Pilot) Thread.currentThread()).getCurrentState());
+                outMessage = new Message(MessageType.DONE_IPRFB, ((Pilot) Thread.currentThread()).getPilotState());
                 break;
             case PREPARE_FOR_PASS_BOARDING:
-                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
                 depAir.prepareForPassBoarding();
-                outMessage = new Message(MessageType.DONE_PFPB, ((Hostess) Thread.currentThread()).getCurrentState());
+                outMessage = new Message(MessageType.DONE_PFPB, ((Hostess) Thread.currentThread()).getHostessState());
                 break;
             case WAIT_IN_QUEUE:
                 ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
-                ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
                 depAir.waitInQueue();
-                outMessage = new Message(MessageType.DONE_WIQ, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
+                outMessage = new Message(MessageType.DONE_WIQ, ((Passenger) Thread.currentThread()).getPassengerState(), ((Passenger) Thread.currentThread()).getID());
                 break;
             case CHECK_DOCUMENTS:
-                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
                 depAir.checkDocuments();
-                outMessage = new Message (MessageType.DONE_CD, ((Hostess) Thread.currentThread()).getCurrentState());
+                outMessage = new Message (MessageType.DONE_CD, ((Hostess) Thread.currentThread()).getHostessState());
                 break;
             case SHOW_DOCUMENTS:
                 ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
-                ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
                 depAir.showDocuments();
                 outMessage = new Message(MessageType.DONE_SD);
                 break;
             case WAIT_FOR_NEXT_PASSENGER:
-                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
                 depAir.waitForNextPassenger();
-                outMessage = new Message (MessageType.DONE_WFNP, ((Hostess) Thread.currentThread()).getCurrentState());
+                outMessage = new Message (MessageType.DONE_WFNP, ((Hostess) Thread.currentThread()).getHostessState());
                 break;
             case BOARD_THE_PLANE:
                 ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
-                ((Passenger) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
                 depAir.boardThePlane();
-                outMessage = new Message(MessageType.DONE_BTP, ((Passenger) Thread.currentThread()).getCurrentState(), ((Passenger) Thread.currentThread()).getID());
+                outMessage = new Message(MessageType.DONE_BTP, ((Passenger) Thread.currentThread()).getPassengerState(), ((Passenger) Thread.currentThread()).getID());
                 break;
             case WAIT_FOR_NEXT_FLIGHT:
-                ((Hostess) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
                 depAir.waitForNextFlight();
-                outMessage = new Message (MessageType.DONE_WFNF, ((Hostess) Thread.currentThread()).getCurrentState());
+                outMessage = new Message (MessageType.DONE_WFNF, ((Hostess) Thread.currentThread()).getHostessState());
                 break;
             case PARK_AT_TRANSFER_GATE:
-                ((Pilot) Thread.currentThread()).setCurrentState(inMessage.getState());
+                ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
                 depAir.parkAtTransferGate();
-                outMessage = new Message(MessageType.DONE_PATG, ((Pilot) Thread.currentThread()).getCurrentState());
+                outMessage = new Message(MessageType.DONE_PATG, ((Pilot) Thread.currentThread()).getPilotState());
                 break;
             case IS_INFORM_PLANE:
                 break;
