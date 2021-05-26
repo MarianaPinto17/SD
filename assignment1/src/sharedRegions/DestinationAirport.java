@@ -4,27 +4,27 @@ import entities.*;
 import main.SimulPar;
 
 /**
- * Shared Region Destination Airport
+ * Shared Region Destination Airport.
  */
 public class DestinationAirport {
 
     /**
-     *
+     * Reference to passenger threads.
      */
     private final Passenger[] pass;
 
     /**
-     *
+     * Reference to the Pilot.
      */
     private Pilot pi;
 
     /**
-     *
+     * Reference to the General Repository.
      */
     private final GeneralRepository repos;
 
     /**
-     * Destination Airport constructor
+     * Destination Airport constructor.
      * @param repos general repository of information
      */
 
@@ -34,7 +34,7 @@ public class DestinationAirport {
     }
 
     /**
-     * Pilot function - pilot announces that the plane arrived at destination
+     * Pilot function - pilot announces that the plane arrived at destination.
      */
     public synchronized void announceArrival(){
         pi = (Pilot) Thread.currentThread();

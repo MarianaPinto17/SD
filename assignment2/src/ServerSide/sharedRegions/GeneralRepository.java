@@ -92,7 +92,7 @@ public class GeneralRepository {
     private int nEntities;
 
     /**
-     *
+     * General Repository constructor.
      */
     public GeneralRepository(){
         this.logFileName = "log.txt";

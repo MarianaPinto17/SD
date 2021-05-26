@@ -1,6 +1,6 @@
 package ClientSide.entities;
 /**
- * Pilot life states
+ * Pilot life states.
  * @author Mariana Pinto
  * @author André Alves
  */

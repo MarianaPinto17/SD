@@ -13,7 +13,6 @@ public class MemException extends Exception
   /**
    *   Version Id for serialization.
    */
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -21,7 +20,6 @@ public class MemException extends Exception
    *
    *    @param errorMessage pertaining error message
    */
-
    public MemException (String errorMessage)
    {
      super (errorMessage);
@@ -33,7 +31,6 @@ public class MemException extends Exception
    *    @param errorMessage pertaining error message
    *    @param cause underlying exception that generated it
    */
-
    public MemException (String errorMessage, Throwable cause)
    {
      super (errorMessage,  cause);

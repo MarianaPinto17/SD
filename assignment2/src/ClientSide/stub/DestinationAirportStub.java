@@ -3,17 +3,20 @@ package ClientSide.stub;
 import commonInfrastructures.*;
 import ClientSide.entities.*;
 
+/**
+ *
+ * @author Mariana Pinto
+ * @author André Alves
+ */
 public class DestinationAirportStub {
     /**
      *  Name of the platform where is located the Departure Airport server.
      */
-
     private String serverHostName;
 
     /**
      *  Port number for listening to service requests.
      */
-
     private int serverPortNumb;
 
     /**
@@ -27,6 +30,9 @@ public class DestinationAirportStub {
         this.serverPortNumb = serverPortNumb;
     }
 
+    /**
+     * Pilot function - pilot announces that the plane arrived at destination.
+     */
     public void announceArrival(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -54,6 +60,9 @@ public class DestinationAirportStub {
         com.close();
     }
 
+    /**
+     * Passenger function - when the plane arrives at destination the passenger exits the plane.
+     */
     public void leaveThePlane(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message

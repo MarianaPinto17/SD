@@ -3,17 +3,20 @@ package ClientSide.stub;
 import commonInfrastructures.*;
 import ClientSide.entities.*;
 
+/**
+ *
+ * @author Mariana Pinto
+ * @author André Alves
+ */
 public class DepartureAirportStub {
     /**
      *  Name of the platform where is located the Departure Airport server.
      */
-
     private String serverHostName;
 
     /**
      *  Port number for listening to service requests.
      */
-
     private int serverPortNumb;
 
     /**
@@ -27,6 +30,9 @@ public class DepartureAirportStub {
         this.serverPortNumb = serverPortNumb;
     }
 
+    /**
+     * Pilot function - says to hostess boarding can start.
+     */
     public void informPlaneReadyForBoarding() {
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -54,6 +60,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Hostess Function - prepare to start boarding passengers on the plane.
+     */
     public void prepareForPassBoarding() {
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -81,6 +90,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Passenger function - passenger waits in queue to board the plane.
+     */
     public void waitInQueue(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -116,6 +128,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents.
+     */
     public void checkDocuments(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -147,6 +162,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Passenger function - passenger shows documents to hostess.
+     */
     public void showDocuments(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -171,6 +189,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue.
+     */
     public void waitForNextPassenger(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -202,6 +223,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Passenger function - passenger boards the plane.
+     */
     public void boardThePlane(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -237,6 +261,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Hostess function - hostess waits for the next flight of the day.
+     */
     public void waitForNextFlight(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -268,6 +295,9 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Pilot function - when the pilot parks the plane at the Transfer gate.
+     */
     public void parkAtTransferGate(){
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
@@ -301,6 +331,10 @@ public class DepartureAirportStub {
         com.close();
     }
 
+    /**
+     * Checks if a plane is ready for flying.
+     * @return true if the boarding is over.
+     */
     public boolean isInformPlane() {
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message

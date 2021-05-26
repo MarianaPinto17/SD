@@ -5,48 +5,48 @@ import ClientSide.entities.*;
 
 
 /**
- * Hostess thread and life cycle
+ * Hostess thread and life cycle.
  * @author Mariana Pinto
  * @author André Alves
  */
 public class Hostess extends Thread{
 
     /**
-     * Reference to Departure Airport
+     * Reference to Departure Airport.
      */
 
     private final DepartureAirportStub depAir;
 
     /**
-     * Reference to Destination Airport
+     * Reference to Destination Airport.
      */
 
     private final DestinationAirportStub destAir;
 
     /**
-     * Reference to Plane
+     * Reference to Plane.
      */
 
     private final PlaneStub plane;
 
     /**
-     * The current state of the Hostess
+     * The current state of the Hostess.
      */
     private HostessStates currentState;
 
     /**
-     * True if hostess don't have more passengers in Queue
+     * True if hostess don't have more passengers in Queue.
      */
     private boolean endOfLife;
 
     /**
-     * True if the hostess is asleep
+     * True if the hostess is asleep.
      */
     private boolean asleep;
 
     /**
      * Hosstess Constructor.
-     * Initiates a new Hostess that checks passengers aboard
+     * Initiates a new Hostess that checks passengers aboard.
      * @param name hostess name.
      * @param depAir departure Airport.
      * @param destAir destination Airport
@@ -63,7 +63,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Hostess life cycle
+     * Hostess life cycle.
      */
     @Override
     public void run(){
@@ -89,7 +89,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Get current state
+     * Get current state.
      * @return the current state of a hostess
      */
     public int getCurrentState(){
@@ -97,7 +97,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Set current state
+     * Set current state.
      * @param newState new state of a hostess
      */
     public void setCurrentState(HostessStates newState){
@@ -105,7 +105,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Set current state
+     * Set current state.
      * @param newState int representing new state of a hostess
      */
     public void setCurrentState(int newState){
@@ -113,7 +113,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Get end of life
+     * Get end of life.
      * @return true if Hostess don't have passengers in queue
      */
     public boolean getEndOfLife(){
@@ -121,7 +121,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Set end of life state of a hostess
+     * Set end of life state of a hostess.
      * @param newEndOfLife changes status of endOfLife
      */
     public void setEndOfLife(boolean newEndOfLife){
@@ -129,7 +129,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Get if the hostess is asleep
+     * Get if the hostess is asleep.
      * @return True if is asleep
      */
     public boolean getAsleep() {
@@ -137,7 +137,7 @@ public class Hostess extends Thread{
     }
 
     /**
-     * Set a hostess to sleep or wakes her up
+     * Set a hostess to sleep or wakes her up.
      * @param newAsleep new state of asleep
      */
     public void setAsleep(boolean newAsleep){

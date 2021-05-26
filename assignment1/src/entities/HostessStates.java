@@ -1,6 +1,6 @@
 package entities;
 /**
- * Hostess life states
+ * Hostess life states.
  * @author Mariana Pinto
  * @author André Alves
  */
