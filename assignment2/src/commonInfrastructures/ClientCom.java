@@ -1,6 +1,5 @@
 package commonInfrastructures;
 
-import genclass.GenericIO;
 import java.io.*;
 import java.net.*;
 
@@ -72,37 +71,37 @@ public class ClientCom
         commSocket.connect (serverAddress);
       }
       catch (UnknownHostException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the name of the computational system where the server is located, is unknown: " +
                                  serverHostName + "!");
         e.printStackTrace ();
         System.exit (1);
       }
       catch (NoRouteToHostException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the name of the computational system where the server is located, is unreachable: " +
                                  serverHostName + "!");
         e.printStackTrace ();
         System.exit (1);
       }
       catch (ConnectException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the server does not respond at: " + serverHostName + "." + serverPortNumb + "!");
         if (e.getMessage ().equals ("Connection refused"))
            success = false;
-           else { GenericIO.writelnString (e.getMessage () + "!");
+           else { System.out.println(e.getMessage () + "!");
                   e.printStackTrace ();
                   System.exit (1);
                 }
       }
       catch (SocketTimeoutException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - time out has occurred in establishing the connection at: " +
                                  serverHostName + "." + serverPortNumb + "!");
         success = false;
       }
       catch (IOException e)                                // fatal error --- other reasons
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - an indeterminate error has occurred in establishing the connection at: " +
                                  serverHostName + "." + serverPortNumb + "!");
         e.printStackTrace ();
@@ -115,7 +114,7 @@ public class ClientCom
       { out = new ObjectOutputStream (commSocket.getOutputStream ());
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - it was not possible to open the output stream!");
         e.printStackTrace ();
         System.exit (1);
@@ -125,7 +124,7 @@ public class ClientCom
       { in = new ObjectInputStream (commSocket.getInputStream ());
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - it was not possible to open the input stream!");
         e.printStackTrace ();
         System.exit (1);
@@ -146,7 +145,7 @@ public class ClientCom
       { out.close();
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - it was not possible to close the output stream!!");
         e.printStackTrace ();
         System.exit (1);
@@ -156,7 +155,7 @@ public class ClientCom
       { in.close();
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - it was not possible to close the input stream!");
         e.printStackTrace ();
         System.exit (1);
@@ -166,7 +165,7 @@ public class ClientCom
       { commSocket.close();
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - it was not possible to close the communication socket!");
         e.printStackTrace ();
         System.exit (1);
@@ -186,19 +185,19 @@ public class ClientCom
       { fromServer = in.readObject ();
       }
       catch (InvalidClassException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the read object could not be deserialized!");
         e.printStackTrace ();
         System.exit (1);
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - error on reading an object from the input stream!");
         e.printStackTrace ();
         System.exit (1);
       }
       catch (ClassNotFoundException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the read object belongs to an unknown data type!");
         e.printStackTrace ();
         System.exit (1);
@@ -218,19 +217,19 @@ public class ClientCom
       { out.writeObject (toServer);
       }
       catch (InvalidClassException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the object to be written can not be serialized!");
         e.printStackTrace ();
         System.exit (1);
       }
       catch (NotSerializableException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - the object to be written does not implement the Serializable interface!");
         e.printStackTrace ();
         System.exit (1);
       }
       catch (IOException e)
-      { GenericIO.writelnString (Thread.currentThread ().getName () +
+      { System.out.println(Thread.currentThread ().getName () +
                                  " - error on writing an object to the output stream!");
         e.printStackTrace ();
         System.exit (1);
