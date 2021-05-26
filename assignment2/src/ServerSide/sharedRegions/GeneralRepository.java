@@ -299,6 +299,7 @@ public class GeneralRepository {
     {
         this.hostessState.setValue(state);
         if (state == HostessStates.CHECK_PASSENGER.value) {
+            InQ -= 1;
             String lineStatus = "passenger " + id + " checked.";
             try {
                 FileWriter fw = new FileWriter(logFileName, true);
@@ -324,6 +325,18 @@ public class GeneralRepository {
     public synchronized void setPassengerState (int id, int state)
     {
         this.passengerStates[id].setValue(state);
+        switch (passengerStates[id]) {
+            case IN_QUEUE:
+                InQ += 1;
+                break;
+            case IN_FLIGHT:
+                InF += 1;
+                break;
+            case AT_DESTINATION:
+                InF -= 1;
+                PTAL += 1;
+                break;
+        }
         reportStatus ();
     }
 

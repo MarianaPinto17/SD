@@ -122,11 +122,19 @@ public class Passenger extends Thread{
     }
 
     /**
+     * Set the passenger's ID.
+     * @param id passenger's ID.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Get current state
      * @return the current state of a passenger
      */
-    public PassengerStates getCurrentState(){
-        return currentState;
+    public int getCurrentState(){
+        return currentState.value;
     }
 
     /**
@@ -135,6 +143,14 @@ public class Passenger extends Thread{
      */
     public void setCurrentState(PassengerStates newState){
         this.currentState = newState;
+    }
+
+    /**
+     * Set current state
+     * @param newState new state of a passenger
+     */
+    public void setCurrentState(int newState){
+        this.currentState.setValue(newState);
     }
 
     /**

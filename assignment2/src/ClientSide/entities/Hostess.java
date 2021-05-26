@@ -1,6 +1,10 @@
 package ClientSide.entities;
 
 import ClientSide.stub.*;
+import ServerSide.entities.HostessStates;
+import ServerSide.sharedRegions.DepartureAirport;
+import ServerSide.sharedRegions.DestinationAirport;
+import ServerSide.sharedRegions.Plane;
 
 /**
  * Hostess thread and life cycle
@@ -13,24 +17,24 @@ public class Hostess extends Thread{
      * Reference to Departure Airport
      */
 
-    private final DepartureAirportStub depAir;
+    private final DepartureAirport depAir;
 
     /**
      * Reference to Destination Airport
      */
 
-    private final DestinationAirportStub destAir;
+    private final DestinationAirport destAir;
 
     /**
      * Reference to Plane
      */
 
-    private final PlaneStub plane;
+    private final Plane plane;
 
     /**
      * The current state of the Hostess
      */
-    private HostessStates currentState;
+    private ServerSide.entities.HostessStates currentState;
 
     /**
      * True if hostess don't have more passengers in Queue
@@ -50,14 +54,14 @@ public class Hostess extends Thread{
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Hostess(String name, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane){
+    public Hostess(String name, DepartureAirport depAir, DestinationAirport destAir, Plane plane){
         super(name);
         this.depAir = depAir;
         this.destAir = destAir;
         this.plane = plane;
         this.endOfLife = false;
         this.asleep = false;
-        this.currentState = HostessStates.WAIT_FOR_FLIGHT;
+        this.currentState = ServerSide.entities.HostessStates.WAIT_FOR_FLIGHT;
     }
 
     /**
@@ -90,8 +94,8 @@ public class Hostess extends Thread{
      * Get current state
      * @return the current state of a hostess
      */
-    public HostessStates getCurrentState(){
-        return currentState;
+    public int getCurrentState(){
+        return currentState.value;
     }
 
     /**

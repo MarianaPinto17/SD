@@ -1,6 +1,10 @@
 package ClientSide.entities;
 
 import ClientSide.stub.*;
+import ServerSide.entities.PassengerStates;
+import ServerSide.sharedRegions.DepartureAirport;
+import ServerSide.sharedRegions.DestinationAirport;
+import ServerSide.sharedRegions.Plane;
 
 /**
  * Passenger thread and life cycle
@@ -16,7 +20,7 @@ public class Passenger extends Thread{
     /**
      * The current state of a passenger
      */
-    private PassengerStates currentState;
+    private ServerSide.entities.PassengerStates currentState;
 
     /**
      * True if passenger arrived to the destination
@@ -38,19 +42,19 @@ public class Passenger extends Thread{
      */
     private boolean docChecked;
 
-    private final DepartureAirportStub depAir;
+    private final DepartureAirport depAir;
 
     /**
      * Reference to Destination Airport
      */
 
-    private final DestinationAirportStub destAir;
+    private final DestinationAirport destAir;
 
     /**
      * Reference to Plane
      */
 
-    private final PlaneStub plane;
+    private final Plane plane;
 
     /**
      * Passenger Constructor.
@@ -61,9 +65,9 @@ public class Passenger extends Thread{
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Passenger(int id, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane) {
+    public Passenger(int id, DepartureAirport depAir, DestinationAirport destAir, Plane plane) {
         this.id = id;
-        this.currentState = PassengerStates.GOING_TO_AIRPORT;
+        this.currentState = ServerSide.entities.PassengerStates.GOING_TO_AIRPORT;
         this.endOfLife = false;
         this.asleep = false;
         this.depAir = depAir;
@@ -122,11 +126,19 @@ public class Passenger extends Thread{
     }
 
     /**
+     * Set the passenger's ID.
+     * @param id passenger's ID.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Get current state
      * @return the current state of a passenger
      */
-    public PassengerStates getCurrentState(){
-        return currentState;
+    public int getCurrentState(){
+        return currentState.value;
     }
 
     /**
@@ -139,7 +151,7 @@ public class Passenger extends Thread{
 
     /**
      * Set current state
-     * @param newState int representing the new state of a passenger
+     * @param newState new state of a passenger
      */
     public void setCurrentState(int newState){
         this.currentState.setValue(newState);
