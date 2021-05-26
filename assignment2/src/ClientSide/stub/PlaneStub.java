@@ -47,12 +47,17 @@ public class PlaneStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_FOR_ALL_IN_BOARD);
+        outMessage = new Message(MessageType.WAIT_FOR_ALL_IN_BOARD, ((Pilot) Thread.currentThread()).getPilotState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
         if (inMessage.getMsgType() != MessageType.DONE_WFAIB){
             System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+            System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
 
@@ -77,12 +82,16 @@ public class PlaneStub {
             }
         }
 
-        outMessage = new Message(MessageType.FLY_TO_DESTINATION_POINT);
+        outMessage = new Message(MessageType.FLY_TO_DESTINATION_POINT, ((Pilot) Thread.currentThread()).getPilotState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
         if (inMessage.getMsgType() != MessageType.DONE_FTDesP){
             System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+            System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
 
@@ -135,12 +144,17 @@ public class PlaneStub {
             }
         }
 
-        outMessage = new Message(MessageType.FLY_TO_DEPARTURE_POINT);
+        outMessage = new Message(MessageType.FLY_TO_DEPARTURE_POINT, ((Pilot) Thread.currentThread()).getPilotState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
         if (inMessage.getMsgType() != MessageType.DONE_FTDepP){
             System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+            System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
 
@@ -165,12 +179,16 @@ public class PlaneStub {
             }
         }
 
-        outMessage = new Message(MessageType.INFORM_PLANE_READY_TO_TAKEOFF);
+        outMessage = new Message(MessageType.INFORM_PLANE_READY_TO_TAKEOFF, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 
         if (inMessage.getMsgType() != MessageType.DONE_IPRTT){
             System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+        if (inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value || inMessage.getState() > HostessStates.READY_TO_FLY.value){
+            System.out.println("Invalid return hostess state!!");
             System.exit(1);
         }
 

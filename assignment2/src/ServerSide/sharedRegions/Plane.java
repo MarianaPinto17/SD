@@ -1,8 +1,9 @@
 package ServerSide.sharedRegions;
 
+import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
 import ClientSide.entities.*;
-import ServerSide.main.*;
+import ServerSide.main.SimulPar;
 
 
 /**
@@ -27,6 +28,11 @@ public class Plane {
     private Hostess ho;
 
     /**
+     * is plane ready to fly
+     */
+    private boolean readyToFly;
+
+    /**
      *  Waiting passengers in departure airport.
      */
     private MemFIFO<Integer> waitingPassenger;
@@ -34,13 +40,13 @@ public class Plane {
     /**
      * Reference to general repository.
      */
-    private final GeneralRepository repos;
+    private final GeneralRepositoryStub repos;
 
     /**
      * Plane instantiation.
      * @param repos reference to general repository.
      */
-    public Plane(GeneralRepository repos) {
+    public Plane(GeneralRepositoryStub repos) {
         pass = new Passenger[SimulPar.N];
         for (int i = 0; i < SimulPar.N; i++)
                 pass[i] = null;
@@ -71,13 +77,14 @@ public class Plane {
      * Pilot function - Pilot flies to destination.
      */
     public synchronized void flyToDestinationPoint(){
-        while (!repos.isReadyToFly()){
+        pi = (Pilot) Thread.currentThread();
+        while (!readyToFly){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
 
-        repos.setReadyToFly(false);
+        readyToFly = false;
 
         pi.setPilotState(PilotStates.FLYING_FORWARD.value);
         repos.setPilotState(PilotStates.FLYING_FORWARD.value);
@@ -111,6 +118,7 @@ public class Plane {
      * Pilot function - Pilot flies back to departure.
      */
     public synchronized void flyToDeparturePoint(){
+        pi = (Pilot) Thread.currentThread();
 
         repos.setEmptyPlaneDest(false);
 
@@ -133,7 +141,7 @@ public class Plane {
         System.out.println();
         repos.setHostessState(HostessStates.READY_TO_FLY.value);
 
-        repos.setReadyToFly(true);
+        readyToFly = true;
 
         notifyAll();
     }

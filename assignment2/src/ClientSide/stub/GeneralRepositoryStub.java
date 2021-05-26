@@ -360,6 +360,34 @@ public class GeneralRepositoryStub {
         com.close ();
     }
 
+    public boolean isArrivedAtDest() {
+        ClientCom com;                                                 // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        com = new ClientCom (serverHostName, serverPortNumb);
+        while (!com.open ())
+        { try
+        { Thread.sleep ((long) (1000));
+        }
+        catch (InterruptedException e) {}
+        }
+        outMessage = new Message (MessageType.IS_ARRIVED_AT_DEST);
+        com.writeObject (outMessage);
+        inMessage = (Message) com.readObject ();
+        if (inMessage.getMsgType() != MessageType.DONE_IAAD)
+        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+            System.out.println(inMessage.toString ());
+            System.exit (1);
+        }
+        if (!inMessage.isInformPlane() && inMessage.isInformPlane()){
+            System.out.println("Error getting IsArrivedAtDest!");
+        }
+        com.close ();
+
+        return inMessage.isInformPlane();
+    }
+
     public void setEmptyPlaneDest(boolean b) {
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message

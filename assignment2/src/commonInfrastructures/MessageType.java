@@ -64,4 +64,6 @@ public enum MessageType {
     DONE_SAAD,
     SET_EMPTY_PLANE_DEST,
     DONE_SEPD,
+    IS_ARRIVED_AT_DEST,
+    DONE_IAAD,
 }
