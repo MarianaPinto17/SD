@@ -104,24 +104,3 @@ zip -rq passengerDir.zip passengerDir
 echo "  Hostess"
 rm - hostessDir.zip
 zip -rq hostessDir.zip hostessDir
-
-echo "Deploying and decompressing execution environments."
-mkdir -p /home/spiders17/Desktop/SD2021/test/assignment2
-rm -rf /home/spiders17/Desktop/SD2021/test/assignment2
-cp generalRepositoryDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cp departureairportDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cp destinationAirportDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cp planeDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cp pilotDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cp passengerDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cp passengerDir.zip /home/spiders17/Desktop/SD2021/test/assignment2
-cd /home/spiders17/Desktop/SD2021/test/assignment2
-unzip -q generalRepositoryDir.zip
-unzip -q departureairportDir.zip
-unzip -q destinationAirportDir.zip
-unzip -q planeDir.zip
-unzip -q pilotDir.zip
-unzip -q passengerDir.zip
-unzip -q passengerDir.zip
-
-
