@@ -1,12 +1,14 @@
+#!/usr/bin/env bash
+
 echo "Compiling source code."
 javac ClientSide/*/*.java ServerSide/*/*.java commonInfrastructures/*.java
 
 echo "Distributing intermediate code to the different execution environments."
-
+mkdir -p test/AirLift
 echo "  General Repository of Information"
 rm -rf test/AirLift/generalRepositoryDir
 mkdir -p test/AirLift/generalRepositoryDir test/AirLift/generalRepositoryDir/ServerSide test/AirLift/generalRepositoryDir/ServerSide/main test/AirLift/generalRepositoryDir/ServerSide/sharedRegions test/AirLift/generalRepositoryDir/ServerSide/entities \
-         test/AirLift/generalRepositoryDir/ClientSide test/AirLift/generalRepositoryDir/ClientSide/entities test/AirLift/generalRepositoryDir/ClientSide/main test/AirLift/generalRepositoryDir/ClientSide/stub test/AirLift/generalRepositoryDir/commonInfrastructures        
+         test/AirLift/generalRepositoryDir/ClientSide test/AirLift/generalRepositoryDir/ClientSide/entities test/AirLift/generalRepositoryDir/ClientSide/main test/AirLift/generalRepositoryDir/ClientSide/stub test/AirLift/generalRepositoryDir/commonInfrastructures
 cp ServerSide/main/SimulPar.class ServerSide/main/GeneralRepositoryMain.class test/AirLift/generalRepositoryDir/ServerSide/main
 cp ServerSide/entities/GeneralRepositoryProxy.class test/AirLift/generalRepositoryDir/ServerSide/entities
 cp ServerSide/sharedRegions/GeneralRepositoryInterface.class ServerSide/sharedRegions/GeneralRepository.class test/AirLift/generalRepositoryDir/ServerSide/sharedRegions
@@ -16,7 +18,7 @@ cp commonInfrastructures/Message.class commonInfrastructures/MessageType.class c
 echo "  Departure Airport"
 rm -rf test/AirLift/departureairportDir
 mkdir -p test/AirLift/departureairportDir test/AirLift/departureairportDir/ServerSide test/AirLift/departureairportDir/ServerSide/main test/AirLift/departureairportDir/ServerSide/sharedRegions test/AirLift/departureairportDir/ServerSide/entities\
-         test/AirLift/departureairportDir/ClientSide test/AirLift/departureairportDir/ClientSide/entities test/AirLift/departureairportDir/ClientSide/main test/AirLift/departureairportDir/ClientSide/stub test/AirLift/departureairportDir/commonInfrastructures        
+         test/AirLift/departureairportDir/ClientSide test/AirLift/departureairportDir/ClientSide/entities test/AirLift/departureairportDir/ClientSide/main test/AirLift/departureairportDir/ClientSide/stub test/AirLift/departureairportDir/commonInfrastructures
 cp ServerSide/main/SimulPar.class ServerSide/main/DepartureAirportMain.class test/AirLift/departureairportDir/ServerSide/main
 cp ServerSide/entities/DepartureAirportProxy.class test/AirLift/departureairportDir/ServerSide/entities
 cp ServerSide/sharedRegions/DepartureAirportInterface.class ServerSide/sharedRegions/DepartureAirport.class ServerSide/sharedRegions/GeneralRepositoryInterface.class test/AirLift/departureairportDir/ServerSide/sharedRegions
@@ -75,52 +77,55 @@ cp ClientSide/main/HostessMain.class test/AirLift/hostessDir/ClientSide/main
 cp ClientSide/entities/Hostess.class ClientSide/entities/HostessStates.class test/AirLift/hostessDir/ClientSide/entities
 cp ClientSide/stub/GeneralRepositoryStub.class ClientSide/stub/DepartureAirportStub.class ClientSide/stub/PlaneStub.class test/AirLift/hostessDir/ClientSide/stub
 cp commonInfrastructures/Message.class commonInfrastructures/MessageType.class commonInfrastructures/MessageException.class commonInfrastructures/ClientCom.class test/AirLift/hostessDir/commonInfrastructures
-
+  
 echo "Compressing execution environments."
+cd test/AirLift
+mkdir -p ../out
 echo "  General Repository of Information"
-rm -f test/AirLift/generalRepositoryDir.zip
-zip -rq test/AirLift/generalRepositoryDir.zip test/AirLift/generalRepositoryDir
+rm -f ../out/generalRepositoryDir.zip
+zip -rq ../out/generalRepositoryDir.zip generalRepositoryDir
 
 echo "  Departure Airport"
-rm -f test/AirLift/departureairportDir.zip
-zip -rq test/AirLift/departureairportDir.zip test/AirLift/departureairportDir
+rm -f ../out/departureairportDir.zip
+zip -rq ../out/departureairportDir.zip departureairportDir
 
 echo "  Destination Airport"
-rm -f test/AirLift/destinationAirportDir.zip
-zip -rq test/AirLift/destinationAirportDir.zip test/AirLift/destinationAirportDir
+rm -f ../out/destinationAirportDir.zip
+zip -rq ../out/destinationAirportDir.zip destinationAirportDir
 
 echo "  Plane"
-rm -f test/AirLift/planeDir.zip
-zip -rq test/AirLift/planeDir.zip test/AirLift/planeDir
+rm -f ../out/planeDir.zip
+zip -rq ../out/planeDir.zip planeDir
 
 echo "  Pilot"
-rm -f test/AirLift/pilotDir.zip
-zip -rq test/AirLift/pilotDir.zip test/AirLift/pilotDir
+rm -f ../out/pilotDir.zip
+zip -rq ../out/pilotDir.zip pilotDir
 
 echo "  Passenger"
-rm -f test/AirLift/passengerDir.zip
-zip -rq test/AirLift/passengerDir.zip test/AirLift/passengerDir
+rm -f ../out/passengerDir.zip
+zip -rq ../out/passengerDir.zip passengerDir
 
 echo "  Hostess"
-rm -f test/AirLift/hostessDir.zip
-zip -rq test/AirLift/hostessDir.zip test/AirLift/hostessDir
+rm -f ../out/hostessDir.zip
+zip -rq ../out/hostessDir.zip hostessDir
 
 
 echo "Deploying and decompressing execution environments."
-mkdir -p /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-rm -rf /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp generalRepositoryDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp departureairportDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp destinationAirportDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp planeDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp pilotDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp passengerDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cp passengerDir.zip /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
-cd /home/spiders17/Desktop/SD2021/test/assignment2/test/AirLift
+cd ../..
+rm -rf test/out2
+mkdir -p test/out2
+cp test/out/generalRepositoryDir.zip test/out2/
+cp test/out/departureairportDir.zip test/out2/
+cp test/out/destinationAirportDir.zip test/out2/
+cp test/out/planeDir.zip test/out2/
+cp test/out/pilotDir.zip test/out2/
+cp test/out/passengerDir.zip test/out2/
+cp test/out/hostessDir.zip test/out2/
+cd test/out2
 unzip -q generalRepositoryDir.zip
 unzip -q departureairportDir.zip
 unzip -q destinationAirportDir.zip
 unzip -q planeDir.zip
 unzip -q pilotDir.zip
 unzip -q passengerDir.zip
-unzip -q passengerDir.zip
+unzip -q hostessDir.zip
