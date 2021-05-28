@@ -1,6 +1,6 @@
-package ClientSide.entities;
+package ServerSide.entities;
 
-public interface PassengerInterface {
+public interface Passenger {
     /**
      * Get the passenger's ID.
      *
@@ -21,13 +21,6 @@ public interface PassengerInterface {
      * @return the current state of a passenger
      */
     int getPassengerState();
-
-    /**
-     * Set current state.
-     *
-     * @param newState new state of a passenger
-     */
-    void setPassengerState(PassengerStates newState);
 
     /**
      * Set current state.

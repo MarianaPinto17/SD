@@ -1,7 +1,6 @@
 package ServerSide.entities;
 
 import ServerSide.sharedRegions.*;
-import ClientSide.entities.*;
 import commonInfrastructures.*;
 
 /**
@@ -11,7 +10,7 @@ import commonInfrastructures.*;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class DepartureAirportProxy extends Thread implements PilotInterface, HostessInterface, PassengerInterface {
+public class DepartureAirportProxy extends Thread implements Pilot, HostessInterface, Passenger {
     /**
      *  Number of instantiayed threads.
      */
@@ -122,6 +121,7 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
      *
      * @return Passenger's ID
      */
+    @Override
     public int getID() {
         return passId;
     }
@@ -131,6 +131,7 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
      *
      * @param id passenger's ID.
      */
+    @Override
     public void setId(int id) {
         passId=id;
     }
@@ -326,7 +327,7 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
 
         inMessage = (Message) sconi.readObject ();                     // get service request
         try {
-            outMessage = depAirInt.processAndReply (inMessage);         // process it
+            outMessage = depAirInt.processAndReply(inMessage);         // process it
         }
         catch (MessageException e) {
             System.out.println("Thread " + getName () + ": " + e.getMessage () + "!");

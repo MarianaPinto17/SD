@@ -87,12 +87,14 @@ public class Pilot extends Thread {
                     break;
                 case WAIT_FOR_BOARDING:
                     plane.flyToDestinationPoint();
+                    fly();
                     break;
                 case FLYING_FORWARD:
                     destAir.announceArrival();
                     break;
                 case DEBOARDING:
                     plane.flyToDeparturePoint();
+                    fly();
                     break;
                 case FLYING_BACK:
                     depAir.parkAtTransferGate();
@@ -104,6 +106,14 @@ public class Pilot extends Thread {
         }
     }
 
+    /**
+     *
+     */
+    private void fly() {
+        try {
+            sleep((long) (1 + 150 * Math.random()));
+        } catch (InterruptedException e) {}
+    }
     /**
      * Get the number of passengers that already arrived at destination.
      * @return number of passengers that already arrived at destination

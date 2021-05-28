@@ -1,6 +1,6 @@
 package ServerSide.sharedRegions;
 
-import ClientSide.entities.*;
+import ServerSide.entities.*;
 import ClientSide.stub.*;
 import ServerSide.main.SimulPar;
 
@@ -65,7 +65,7 @@ public class DestinationAirport {
             repos.setArrivedAtDest(false);
             repos.setEmptyPlaneDest(true);
         }
-        pass[passengerID].setPassengerState(PassengerStates.AT_DESTINATION);
+        pass[passengerID].setPassengerState(PassengerStates.AT_DESTINATION.value);
         repos.setPassengerState(passengerID, PassengerStates.AT_DESTINATION.value);
 
         notifyAll();

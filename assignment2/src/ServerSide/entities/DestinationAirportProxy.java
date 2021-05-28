@@ -1,7 +1,6 @@
 package ServerSide.entities;
 
 import ServerSide.sharedRegions.*;
-import ClientSide.entities.*;
 import commonInfrastructures.*;
 
 /**
@@ -11,7 +10,7 @@ import commonInfrastructures.*;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class DestinationAirportProxy extends Thread implements PilotInterface, PassengerInterface {
+public class DestinationAirportProxy extends Thread implements Pilot, Passenger {
     /**
      *  Number of instantiayed threads.
      */

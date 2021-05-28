@@ -1,7 +1,7 @@
 package ServerSide.sharedRegions;
 
 import ServerSide.main.*;
-import ClientSide.entities.*;
+import ServerSide.entities.*;
 import commonInfrastructures.*;
 
 /**

@@ -2,7 +2,7 @@ package ServerSide.sharedRegions;
 
 import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
-import ClientSide.entities.*;
+import ServerSide.entities.*;
 import ServerSide.main.SimulPar;
 
 /**
@@ -161,7 +161,7 @@ public class DepartureAirport {
         }
         nCheckedPassengers = 0;
         InF = 0;
-        ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
+        ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
 
         waitPassengers = true;
@@ -182,7 +182,7 @@ public class DepartureAirport {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
         pass[passengerID] = (Passenger) Thread.currentThread();
         nPassengers++;
-        pass[passengerID].setPassengerState(PassengerStates.IN_QUEUE);
+        pass[passengerID].setPassengerState(PassengerStates.IN_QUEUE.value);
         repos.setPassengerState(passengerID, PassengerStates.IN_QUEUE.value);
         // number of passengers in queue increases
 
@@ -216,7 +216,7 @@ public class DepartureAirport {
         }
 
         nPassengers--;
-        ho.setHostessState(HostessStates.CHECK_PASSENGER);
+        ho.setHostessState(HostessStates.CHECK_PASSENGER.value);
         repos.setHostessState(HostessStates.CHECK_PASSENGER.value, checkDocID);
 
         this.checkedPass[checkDocID] = true;
@@ -262,7 +262,7 @@ public class DepartureAirport {
      */
     public synchronized void waitForNextPassenger(){
         ho = (Hostess) Thread.currentThread();
-        ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
+        ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER.value);
 
         this.canBoard = true;
@@ -295,7 +295,7 @@ public class DepartureAirport {
 
         InF++;
         nCheckedPassengersTotal++;
-        pass[passengerID].setPassengerState(PassengerStates.IN_FLIGHT);
+        pass[passengerID].setPassengerState(PassengerStates.IN_FLIGHT.value);
         repos.setPassengerState(passengerID, PassengerStates.IN_FLIGHT.value);
 
         notifyAll();
@@ -306,7 +306,7 @@ public class DepartureAirport {
      */
     public synchronized void waitForNextFlight() {
         ho = (Hostess) Thread.currentThread();
-        ho.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
+        ho.setHostessState(HostessStates.WAIT_FOR_FLIGHT.value);
         repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT.value);
 
         informPlane = false;

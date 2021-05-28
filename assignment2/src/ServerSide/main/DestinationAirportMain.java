@@ -2,8 +2,7 @@ package ServerSide.main;
 
 import ClientSide.stub.GeneralRepositoryStub;
 import ServerSide.entities.DestinationAirportProxy;
-import ServerSide.sharedRegions.DestinationAirport;
-import ServerSide.sharedRegions.DestinationAirportInterface;
+import ServerSide.sharedRegions.*;
 import commonInfrastructures.ServerCom;
 
 /**

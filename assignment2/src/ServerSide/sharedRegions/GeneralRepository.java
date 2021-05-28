@@ -1,6 +1,6 @@
 package ServerSide.sharedRegions;
 
-import ClientSide.entities.*;
+import ServerSide.entities.*;
 import ServerSide.main.*;
 
 import java.io.*;

@@ -2,7 +2,7 @@ package ServerSide.sharedRegions;
 
 import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
-import ClientSide.entities.*;
+import ServerSide.entities.*;
 import ServerSide.main.SimulPar;
 
 
@@ -89,10 +89,6 @@ public class Plane {
         pi.setPilotState(PilotStates.FLYING_FORWARD.value);
         repos.setPilotState(PilotStates.FLYING_FORWARD.value);
 
-        try {
-            pi.sleep ((long) (1 + 150 * Math.random ()));
-        } catch (InterruptedException e) {}
-
         repos.setArrivedAtDest(true);
         notifyAll();
 
@@ -125,10 +121,6 @@ public class Plane {
         pi.setPilotState(PilotStates.FLYING_BACK.value);
         repos.setPilotState(PilotStates.FLYING_BACK.value);
 
-        try {
-            pi.sleep ((long) (1 + 150 * Math.random ()));
-        } catch (InterruptedException e) {}
-
     }
 
     /**
@@ -137,7 +129,7 @@ public class Plane {
     public synchronized void informPlaneReadyToTakeOff(){
         ho = (Hostess) Thread.currentThread();
 
-        ho.setHostessState(HostessStates.READY_TO_FLY);
+        ho.setHostessState(HostessStates.READY_TO_FLY.value);
         System.out.println();
         repos.setHostessState(HostessStates.READY_TO_FLY.value);
 

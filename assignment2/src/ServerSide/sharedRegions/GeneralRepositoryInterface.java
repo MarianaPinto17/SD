@@ -1,7 +1,8 @@
 package ServerSide.sharedRegions;
+
 import ServerSide.main.*;
-import ClientSide.entities.*;
 import commonInfrastructures.*;
+import ServerSide.entities.*;
 
 /**
  *  Interface to the General Repository of Information.

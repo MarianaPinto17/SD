@@ -1,6 +1,6 @@
-package ClientSide.entities;
+package ServerSide.entities;
 
-public interface PilotInterface {
+public interface Pilot {
     /**
      * Get current state
      *

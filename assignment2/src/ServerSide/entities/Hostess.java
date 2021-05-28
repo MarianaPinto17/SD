@@ -1,23 +1,17 @@
-package ClientSide.entities;
+package ServerSide.entities;
 
 /**
  * Hostess thread and life cycle.
  * @author Mariana Pinto
  * @author André Alves
  */
-public interface HostessInterface {
+public interface Hostess {
 
     /**
      * Get current state.
      * @return the current state of a hostess
      */
     public int getHostessState();
-
-    /**
-     * Set current state.
-     * @param newState new state of a hostess
-     */
-    public void setHostessState(HostessStates newState);
 
     /**
      * Set current state.

@@ -1,6 +1,5 @@
 package ServerSide.entities;
 
-import ClientSide.entities.*;
 import ServerSide.sharedRegions.PlaneInterface;
 import commonInfrastructures.Message;
 import commonInfrastructures.MessageException;
@@ -13,7 +12,7 @@ import commonInfrastructures.ServerCom;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class PlaneProxy extends Thread implements PilotInterface, HostessInterface, PassengerInterface {
+public class PlaneProxy extends Thread implements Pilot, HostessInterface, Passenger {
     /**
      *  Number of instantiayed threads.
      */
