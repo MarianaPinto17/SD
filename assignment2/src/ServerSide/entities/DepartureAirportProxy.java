@@ -10,7 +10,7 @@ import commonInfrastructures.*;
  *    Communication is based on a communication channel under the TCP protocol.
  */
 
-public class DepartureAirportProxy extends Thread implements Pilot, HostessInterface, Passenger {
+public class DepartureAirportProxy extends Thread implements Pilot, Hostess, Passenger {
     /**
      *  Number of instantiayed threads.
      */
@@ -152,16 +152,6 @@ public class DepartureAirportProxy extends Thread implements Pilot, HostessInter
      * @param newState new state of a passenger
      */
     @Override
-    public void setPassengerState(PassengerStates newState) {
-        passState = newState.value;
-    }
-
-    /**
-     * Set current state.
-     *
-     * @param newState new state of a passenger
-     */
-    @Override
     public void setPassengerState(int newState) {
         passState = newState;
     }
@@ -196,15 +186,6 @@ public class DepartureAirportProxy extends Thread implements Pilot, HostessInter
         return hostessState;
     }
 
-    /**
-     * Set current state.
-     *
-     * @param newState new state of a hostess
-     */
-    @Override
-    public void setHostessState(HostessStates newState) {
-        hostessState = newState.value;
-    }
 
     /**
      * Set current state.

@@ -140,16 +140,6 @@ public class DestinationAirportProxy extends Thread implements Pilot, Passenger 
      * @param newState new state of a passenger
      */
     @Override
-    public void setPassengerState(PassengerStates newState) {
-        passState = newState.value;
-    }
-
-    /**
-     * Set current state.
-     *
-     * @param newState new state of a passenger
-     */
-    @Override
     public void setPassengerState(int newState) {
         passState = newState;
     }
