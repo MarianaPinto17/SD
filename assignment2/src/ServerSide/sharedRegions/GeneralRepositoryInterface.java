@@ -65,6 +65,7 @@ public class GeneralRepositoryInterface {
                 break;
 
             case SET_PASSENGER_STATE:
+                System.out.println("State: "+ inMessage.getState() + "\nPassId: "+ inMessage.getPassId());
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid passenger id!", inMessage);
                 else if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
@@ -116,7 +117,7 @@ public class GeneralRepositoryInterface {
             case SUM_UP:
                 repos.sumUp(inMessage.getNpassFlight());
                 outMessage = new Message(MessageType.DONE_SU);
-            break;
+                break;
             case SHUT:
                 repos.shutdown();
                 outMessage = new Message (MessageType.DONE_S);

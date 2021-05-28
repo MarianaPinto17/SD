@@ -89,8 +89,10 @@ public class PassengerMain {
         desAir = new DestinationAirportStub(desAirHostName, desAirPortNumb);
         plane = new PlaneStub(planeHostName, planePortNumb);
 
-        for (int i = 0; i < SimulPar.N; i++)
+        for (int i = 0; i < SimulPar.N; i++) {
             passenger[i] = new Passenger(i, depAir, desAir, plane);
+            System.out.println(i);
+        }
 
         /* start of the simulation */
         for (int i = 0; i < SimulPar.N; i++)

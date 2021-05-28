@@ -183,7 +183,7 @@ public class DepartureAirport {
         pass[passengerID] = (Passenger) Thread.currentThread();
         nPassengers++;
         pass[passengerID].setPassengerState(PassengerStates.IN_QUEUE.value);
-        repos.setPassengerState(passengerID, PassengerStates.IN_QUEUE.value);
+        repos.setPassengerState(PassengerStates.IN_QUEUE.value, passengerID);
         // number of passengers in queue increases
 
         try{
@@ -296,7 +296,7 @@ public class DepartureAirport {
         InF++;
         nCheckedPassengersTotal++;
         pass[passengerID].setPassengerState(PassengerStates.IN_FLIGHT.value);
-        repos.setPassengerState(passengerID, PassengerStates.IN_FLIGHT.value);
+        repos.setPassengerState(PassengerStates.IN_FLIGHT.value, passengerID);
 
         notifyAll();
     }

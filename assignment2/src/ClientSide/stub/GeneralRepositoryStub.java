@@ -87,8 +87,8 @@ public class GeneralRepositoryStub {
         outMessage = new Message(MessageType.SET_PILOT_STATE, state);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
-        if (inMessage.getMsgType() != MessageType.DONE_SPiS)
-        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
+        if (inMessage.getMsgType() != MessageType.DONE_SPiS) {
+            System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
             System.out.println(inMessage.toString ());
             System.exit (1);
         }

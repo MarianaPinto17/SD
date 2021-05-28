@@ -66,7 +66,7 @@ public class DestinationAirport {
             repos.setEmptyPlaneDest(true);
         }
         pass[passengerID].setPassengerState(PassengerStates.AT_DESTINATION.value);
-        repos.setPassengerState(passengerID, PassengerStates.AT_DESTINATION.value);
+        repos.setPassengerState(PassengerStates.AT_DESTINATION.value, passengerID);
 
         notifyAll();
     }
