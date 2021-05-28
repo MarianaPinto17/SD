@@ -76,7 +76,7 @@ public class DepartureAirportStub {
             }
         }
 
-        outMessage = new Message(MessageType.PREPARE_FOR_PASS_BOARDING);
+        outMessage = new Message(MessageType.PREPARE_FOR_PASS_BOARDING, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 

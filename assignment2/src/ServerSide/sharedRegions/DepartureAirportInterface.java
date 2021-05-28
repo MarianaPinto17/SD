@@ -52,6 +52,7 @@ public class DepartureAirportInterface {
                     throw new MessageException ("Invalid Pilot state!", inMessage);
                 break;
             case PREPARE_FOR_PASS_BOARDING: case CHECK_DOCUMENTS: case WAIT_FOR_NEXT_PASSENGER: case WAIT_FOR_NEXT_FLIGHT:
+                System.out.println(inMessage.getState());
                 if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value) || (inMessage.getState() > HostessStates.READY_TO_FLY.value))
                     throw new MessageException ("Invalid Hostess state!", inMessage);
                 break;

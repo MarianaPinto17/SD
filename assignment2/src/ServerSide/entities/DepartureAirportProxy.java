@@ -86,7 +86,7 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
 
     public DepartureAirportProxy (ServerCom sconi, DepartureAirportInterface depAirInt)
     {
-        super ("BarberShopProxy_" + DepartureAirportProxy.getProxyId ());
+        super ("DepartureAirportProxy_" + DepartureAirportProxy.getProxyId ());
         this.sconi = sconi;
         this.depAirInt = depAirInt;
     }
@@ -325,11 +325,11 @@ public class DepartureAirportProxy extends Thread implements PilotInterface, Hos
         /* service providing */
 
         inMessage = (Message) sconi.readObject ();                     // get service request
-        try
-        { outMessage = depAirInt.processAndReply (inMessage);         // process it
+        try {
+            outMessage = depAirInt.processAndReply (inMessage);         // process it
         }
-        catch (MessageException e)
-        { System.out.println("Thread " + getName () + ": " + e.getMessage () + "!");
+        catch (MessageException e) {
+            System.out.println("Thread " + getName () + ": " + e.getMessage () + "!");
             System.out.println(e.getMessageVal ().toString ());
             System.exit (1);
         }
