@@ -25,8 +25,6 @@ cp ServerSide/sharedRegions/DepartureAirportInterface.class ServerSide/sharedReg
 cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class\
    ServerSide/entities/Hostess.class ServerSide/entities/Passenger.class\
    ServerSide/entities/Pilot.class test/AirLift/departureairportDir/ServerSide/entities
-cp ClientSide/entities/Hostess.class ClientSide/entities/Passenger.class\
-   ClientSide/entities/Pilot.class ClientSide/entities/Hostess\$1.class ClientSide/entities/Passenger\$1.class ClientSide/entities/Pilot\$1.class test/AirLift/departureairportDir/ClientSide/entities
 cp ClientSide/stub/GeneralRepositoryStub.class test/AirLift/departureairportDir/ClientSide/stub
 cp commonInfrastructures/*.class test/AirLift/departureairportDir/commonInfrastructures
 
@@ -42,8 +40,6 @@ cp ServerSide/sharedRegions/PlaneInterface.class ServerSide/sharedRegions/PlaneI
 cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class\
    ServerSide/entities/Hostess.class ServerSide/entities/Passenger.class\
    ServerSide/entities/Pilot.class test/AirLift/planeDir/ServerSide/entities
-cp ClientSide/entities/Hostess.class ClientSide/entities/Passenger.class ClientSide/entities/Pilot.class\
-   ClientSide/entities/Hostess\$1.class ClientSide/entities/Passenger\$1.class ClientSide/entities/Pilot\$1.class test/AirLift/planeDir/ClientSide/entities
 cp ClientSide/stub/GeneralRepositoryStub.class test/AirLift/planeDir/ClientSide/stub
 cp commonInfrastructures/*.class test/AirLift/planeDir/commonInfrastructures
 
@@ -59,8 +55,6 @@ cp ServerSide/sharedRegions/DestinationAirportInterface.class ServerSide/sharedR
 cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class\
    ServerSide/entities/Hostess.class ServerSide/entities/Passenger.class\
    ServerSide/entities/Pilot.class test/AirLift/destinationAirportDir/ServerSide/entities
-cp ClientSide/entities/Passenger.class ClientSide/entities/Pilot.class\
-   ClientSide/entities/Passenger\$1.class ClientSide/entities/Pilot\$1.class test/AirLift/destinationAirportDir/ClientSide/entities
 cp ClientSide/stub/GeneralRepositoryStub.class test/AirLift/destinationAirportDir/ClientSide/stub
 cp commonInfrastructures/*.class test/AirLift/destinationAirportDir/commonInfrastructures
 
