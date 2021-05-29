@@ -49,11 +49,11 @@ public class DestinationAirportInterface {
 
         switch (inMessage.getMsgType ()) {
             case ANNOUNCE_ARRIVAL:
-                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value) || (inMessage.getState() > PilotStates.FLYING_BACK.value))
+                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE) || (inMessage.getState() > PilotStates.FLYING_BACK))
                     throw new MessageException ("Invalid Pilot state!", inMessage);
                 break;
             case LEAVE_THE_PLANE:
-                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
+                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
                     throw new MessageException ("Invalid Passenger state!", inMessage);
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);

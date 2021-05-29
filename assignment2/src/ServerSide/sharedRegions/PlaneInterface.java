@@ -49,15 +49,15 @@ public class PlaneInterface {
 
         switch (inMessage.getMsgType ()) {
             case WAIT_FOR_ALL_IN_BOARD: case FLY_TO_DESTINATION_POINT: case FLY_TO_DEPARTURE_POINT:
-                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value) || (inMessage.getState() > PilotStates.FLYING_BACK.value))
+                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE) || (inMessage.getState() > PilotStates.FLYING_BACK))
                     throw new MessageException ("Invalid Pilot state!", inMessage);
                 break;
             case INFORM_PLANE_READY_TO_TAKEOFF:
-                if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value) || (inMessage.getState() > HostessStates.READY_TO_FLY.value))
+                if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT) || (inMessage.getState() > HostessStates.READY_TO_FLY))
                     throw new MessageException ("Invalid Hostess state!", inMessage);
                 break;
             case WAIT_FOR_END_OF_FLIGHT:
-                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
+                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
                     throw new MessageException ("Invalid Passenger state!", inMessage);
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);

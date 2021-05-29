@@ -17,7 +17,7 @@ public class Passenger extends Thread {
     /**
      * The current state of a passenger.
      */
-    private PassengerStates currentState;
+    private int currentState;
 
     /**
      * True if passenger arrived to the destination.
@@ -71,19 +71,19 @@ public class Passenger extends Thread {
     public void run(){
         while(!endOfLife){
             switch(currentState){
-                case GOING_TO_AIRPORT:
+                case 0:
                     travelToAirport();
                     depAir.waitInQueue();
                     break;
-                case IN_QUEUE:
+                case 1:
                     depAir.showDocuments();
                     depAir.boardThePlane();
                     break;
-                case IN_FLIGHT:
+                case 2:
                     plane.waitForEndOfFlight();
                     destAir.leaveThePlane();
                     break;
-                case AT_DESTINATION:
+                case 3:
                     endOfLife = true;
                     break;
             }
@@ -126,15 +126,7 @@ public class Passenger extends Thread {
      * @return the current state of a passenger
      */
     public int getPassengerState(){
-        return currentState.value;
-    }
-
-    /**
-     * Set current state.
-     * @param newState new state of a passenger
-     */
-    public void setPassengerState(PassengerStates newState){
-        this.currentState = newState;
+        return currentState;
     }
 
     /**
@@ -142,7 +134,7 @@ public class Passenger extends Thread {
      * @param newState new state of a passenger
      */
     public void setPassengerState(int newState){
-        this.currentState.setValue(newState);
+        this.currentState = newState;
     }
 
     /**

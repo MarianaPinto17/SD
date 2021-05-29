@@ -56,7 +56,7 @@ public class PlaneStub {
             System.exit(1);
         }
 
-        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE || inMessage.getState() > PilotStates.FLYING_BACK){
             System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
@@ -90,7 +90,7 @@ public class PlaneStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
-        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE || inMessage.getState() > PilotStates.FLYING_BACK){
             System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
@@ -153,7 +153,7 @@ public class PlaneStub {
             System.exit(1);
         }
 
-        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE || inMessage.getState() > PilotStates.FLYING_BACK){
             System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
@@ -187,7 +187,7 @@ public class PlaneStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
-        if (inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value || inMessage.getState() > HostessStates.READY_TO_FLY.value){
+        if (inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT || inMessage.getState() > HostessStates.READY_TO_FLY){
             System.out.println("Invalid return hostess state!!");
             System.exit(1);
         }

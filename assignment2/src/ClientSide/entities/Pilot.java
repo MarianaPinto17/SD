@@ -13,7 +13,7 @@ public class Pilot extends Thread {
     /**
      * current state of the pilot.
      */
-    private PilotStates currentState;
+    private int currentState;
 
     /**
      * True if the pilot doesn't have more flights.
@@ -79,24 +79,24 @@ public class Pilot extends Thread {
     public void run(){
         while(!endOfLife){
             switch(currentState){
-                case AT_TRANSFER_GATE:
+                case 0:
                     depAir.informPlaneReadyForBoarding();
                     break;
-                case READY_FOR_BOARDING:
+                case 1:
                     plane.waitForAllInBoard();
                     break;
-                case WAIT_FOR_BOARDING:
+                case 2:
                     plane.flyToDestinationPoint();
                     fly();
                     break;
-                case FLYING_FORWARD:
+                case 3:
                     destAir.announceArrival();
                     break;
-                case DEBOARDING:
+                case 4:
                     plane.flyToDeparturePoint();
                     fly();
                     break;
-                case FLYING_BACK:
+                case 5:
                     depAir.parkAtTransferGate();
                     if(SimulPar.N == getPTAL()) {
                         repos.sumUp(npassengers);
@@ -131,7 +131,7 @@ public class Pilot extends Thread {
      * @return the current state of a pilot
      */
     public int getPilotState(){
-        return currentState.value;
+        return currentState;
     }
 
     /**
@@ -139,7 +139,7 @@ public class Pilot extends Thread {
      * @param newState new state of a pilot
      */
     public void setPilotState(int newState){
-        this.currentState.setValue(newState);
+        this.currentState = newState;
     }
 
     /**

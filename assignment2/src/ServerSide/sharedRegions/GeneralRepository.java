@@ -29,19 +29,19 @@ public class GeneralRepository {
      * Current state of the pilot.
      */
 
-    private PilotStates pilotState;
+    private int pilotState;
 
     /**
      * Current state of the hostess.
      */
 
-    private HostessStates hostessState;
+    private int hostessState;
 
     /**
      * Current state of each passenger (in array).
      */
 
-    private final PassengerStates[] passengerStates;
+    private final int[] passengerStates;
 
     /**
      * Number of passengers presently forming a queue to board the plane.
@@ -98,7 +98,7 @@ public class GeneralRepository {
         this.logFileName = "log.txt";
         pilotState = PilotStates.AT_TRANSFER_GATE;
         hostessState = HostessStates.WAIT_FOR_FLIGHT;
-        passengerStates = new PassengerStates[SimulPar.N];
+        passengerStates = new int[SimulPar.N];
         for (int i = 0; i < SimulPar.N; i++)
             passengerStates[i] = PassengerStates.GOING_TO_AIRPORT;
         InQ = 0;
@@ -164,53 +164,53 @@ public class GeneralRepository {
 
             try (PrintWriter pw = new PrintWriter(fw)) {
                 switch (pilotState) {
-                    case AT_TRANSFER_GATE:
+                    case 0:
                         lineStatus += "ATRG ";
                         break;
-                    case READY_FOR_BOARDING:
+                    case 1:
                         lineStatus += "RDFB ";
                         break;
-                    case WAIT_FOR_BOARDING:
+                    case 2:
                         lineStatus += "WTFB ";
                         break;
-                    case FLYING_FORWARD:
+                    case 3:
                         lineStatus += "FLFW ";
                         break;
-                    case DEBOARDING:
+                    case 4:
                         lineStatus += "DRPP ";
                         break;
-                    case FLYING_BACK:
+                    case 5:
                         lineStatus += "FLBK ";
                         break;
                 }
 
                 switch (hostessState){
-                    case READY_TO_FLY:
+                    case 0:
                         lineStatus += "RDTF ";
                         break;
-                    case CHECK_PASSENGER:
+                    case 1:
                         lineStatus += "CKPS ";
                         break;
-                    case WAIT_FOR_PASSENGER:
+                    case 2:
                         lineStatus += "WTPS ";
                         break;
-                    case WAIT_FOR_FLIGHT:
+                    case 3:
                         lineStatus += "WTFL ";
                         break;
                 }
 
                 for (int i = 0; i < SimulPar.N; i++) {
                     switch (passengerStates[i]){
-                        case IN_QUEUE:
+                        case 1:
                             lineStatus += "INQE ";
                             break;
-                        case IN_FLIGHT:
+                        case 2:
                             lineStatus += "INFL ";
                             break;
-                        case AT_DESTINATION:
+                        case 3:
                             lineStatus += "ATDS ";
                             break;
-                        case GOING_TO_AIRPORT:
+                        case 0:
                             lineStatus += "GTAP ";
                             break;
                     }
@@ -236,18 +236,20 @@ public class GeneralRepository {
 
     public synchronized void setPilotState (int state)
     {
-        this.pilotState.setValue(state);
+        System.out.println(state);
+        this.pilotState = state;
+        System.out.println("SET PILOT STATE (espero que seja o estado 1): "+ pilotState);
 
-        if(state == PilotStates.DEBOARDING.value || state == PilotStates.READY_FOR_BOARDING.value || state == PilotStates.FLYING_BACK.value){
+        if(state == PilotStates.DEBOARDING || state == PilotStates.READY_FOR_BOARDING || state == PilotStates.FLYING_BACK){
             String lineStatus;
             switch (pilotState){
-                case DEBOARDING:
+                case 4:
                     lineStatus = "arrived.";
                     break;
-                case READY_FOR_BOARDING:
+                case 1:
                     lineStatus = "boarding started.";
                     break;
-                case FLYING_BACK:
+                case 5:
                     lineStatus = "returning.";
                     break;
                 default:
@@ -275,8 +277,8 @@ public class GeneralRepository {
 
     public synchronized void setHostessState (int state)
     {
-        this.hostessState.setValue(state);
-        if (state == HostessStates.READY_TO_FLY.value) {
+        this.hostessState = state;
+        if (state == HostessStates.READY_TO_FLY) {
             String lineStatus = "departed with "+InF+" passengers.";
             try {
                 FileWriter fw = new FileWriter(logFileName, true);
@@ -294,8 +296,8 @@ public class GeneralRepository {
 
     public synchronized void setHostessState (int state, int id)
     {
-        this.hostessState.setValue(state);
-        if (state == HostessStates.CHECK_PASSENGER.value) {
+        this.hostessState = state;
+        if (state == HostessStates.CHECK_PASSENGER) {
             InQ -= 1;
             String lineStatus = "passenger " + id + " checked.";
             try {
@@ -321,15 +323,15 @@ public class GeneralRepository {
 
     public synchronized void setPassengerState (int id, int state)
     {
-        this.passengerStates[id].setValue(state);
+        this.passengerStates[id] = state;
         switch (passengerStates[id]) {
-            case IN_QUEUE:
+            case 1:
                 InQ += 1;
                 break;
-            case IN_FLIGHT:
+            case 2:
                 InF += 1;
                 break;
-            case AT_DESTINATION:
+            case 3:
                 InF -= 1;
                 PTAL += 1;
                 break;

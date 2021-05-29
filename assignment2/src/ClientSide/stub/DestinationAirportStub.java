@@ -54,7 +54,7 @@ public class DestinationAirportStub {
             System.out.println("Invalid return message from server!!");
             System.exit(1);
         }
-        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value || inMessage.getState() > PilotStates.FLYING_BACK.value){
+        if (inMessage.getState() < PilotStates.AT_TRANSFER_GATE || inMessage.getState() > PilotStates.FLYING_BACK){
             System.out.println("Invalid return pilot state!!");
             System.exit(1);
         }
@@ -92,7 +92,7 @@ public class DestinationAirportStub {
             System.out.println("Invalid return passenger id!!");
             System.exit(1);
         }
-        if (inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value || inMessage.getState() > PassengerStates.AT_DESTINATION.value){
+        if (inMessage.getState() < PassengerStates.GOING_TO_AIRPORT || inMessage.getState() > PassengerStates.AT_DESTINATION){
             System.out.println("Invalid return passenger state!!");
             System.exit(1);
         }

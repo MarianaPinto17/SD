@@ -26,6 +26,8 @@ public class DepartureAirportInterface {
      *    @param depAir reference to the departure Airport
      */
 
+    private static int remove = 0;
+
     public DepartureAirportInterface (DepartureAirport depAir)
     {
         this.depAir = depAir;
@@ -49,16 +51,16 @@ public class DepartureAirportInterface {
 
         switch (inMessage.getMsgType ()) {
             case INFORM_PLANE_READY_FOR_BOARDING: case PARK_AT_TRANSFER_GATE:
-                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value) || (inMessage.getState() > PilotStates.FLYING_BACK.value))
+                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE) || (inMessage.getState() > PilotStates.FLYING_BACK))
                     throw new MessageException ("Invalid Pilot state!", inMessage);
                 break;
             case PREPARE_FOR_PASS_BOARDING: case CHECK_DOCUMENTS: case WAIT_FOR_NEXT_PASSENGER: case WAIT_FOR_NEXT_FLIGHT:
                 System.out.println(inMessage.getState());
-                if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT.value) || (inMessage.getState() > HostessStates.READY_TO_FLY.value))
+                if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT) || (inMessage.getState() > HostessStates.READY_TO_FLY))
                     throw new MessageException ("Invalid Hostess state!", inMessage);
                 break;
             case WAIT_IN_QUEUE: case SHOW_DOCUMENTS: case BOARD_THE_PLANE:
-                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
+                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
                     throw new MessageException ("Invalid Passenger state!", inMessage);
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);
@@ -74,6 +76,7 @@ public class DepartureAirportInterface {
         switch (inMessage.getMsgType ()) {
             case INFORM_PLANE_READY_FOR_BOARDING:
                 ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
+                System.out.println(++remove);
                 depAir.informPlaneReadyForBoarding();
                 outMessage = new Message(MessageType.DONE_IPRFB, ((Pilot) Thread.currentThread()).getPilotState());
                 break;

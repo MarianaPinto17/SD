@@ -26,7 +26,7 @@ public class Hostess extends Thread{
     /**
      * The current state of the Hostess.
      */
-    private HostessStates currentState;
+    private int currentState;
 
     /**
      * True if hostess don't have more passengers in Queue.
@@ -55,19 +55,19 @@ public class Hostess extends Thread{
     public void run(){
         while(!endOfLife){
             switch (currentState){
-                case WAIT_FOR_FLIGHT:
+                case 0:
                     depAir.prepareForPassBoarding();
                     break;
-                case WAIT_FOR_PASSENGER:
+                case 1:
                     if(depAir.isInformPlane())
                         plane.informPlaneReadyToTakeOff();
                     else
                         depAir.checkDocuments();
                     break;
-                case CHECK_PASSENGER:
+                case 2:
                     depAir.waitForNextPassenger();
                     break;
-                case READY_TO_FLY:
+                case 3:
                     depAir.waitForNextFlight();
                     break;
             }
@@ -79,23 +79,15 @@ public class Hostess extends Thread{
      * @return the current state of a hostess
      */
     public int getHostessState(){
-        return currentState.value;
+        return currentState;
     }
 
     /**
      * Set current state.
      * @param newState new state of a hostess
      */
-    public void setHostessState(HostessStates newState){
-        this.currentState = newState;
-    }
-
-    /**
-     * Set current state.
-     * @param newState int representing new state of a hostess
-     */
     public void setHostessState(int newState){
-        this.currentState.setValue(newState);
+        this.currentState = newState;
     }
 
     /**

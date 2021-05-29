@@ -5,19 +5,16 @@ package ServerSide.entities;
  * @author André Alves
  */
 
-public enum PassengerStates {
-    GOING_TO_AIRPORT(0),
-    IN_QUEUE(1),
-    IN_FLIGHT(2),
-    AT_DESTINATION(3);
+public class PassengerStates {
+    public static final int GOING_TO_AIRPORT = 0;
+    public static final int IN_QUEUE = 1;
+    public static final int IN_FLIGHT = 2;
+    public static final int AT_DESTINATION = 3;
 
-    public int value;
 
-    PassengerStates(int value) {
-        this.value = value;
-    }
-
-    public void setValue(int value){
-        this.value = value;
+    /**
+     * The class can not be instantiated.
+     */
+    private PassengerStates() {
     }
 }

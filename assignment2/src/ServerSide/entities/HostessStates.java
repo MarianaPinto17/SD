@@ -4,19 +4,15 @@ package ServerSide.entities;
  * @author Mariana Pinto
  * @author André Alves
  */
-public enum HostessStates {
-    WAIT_FOR_FLIGHT(0),
-    WAIT_FOR_PASSENGER(1),
-    CHECK_PASSENGER(2),
-    READY_TO_FLY(3);
+public class HostessStates {
+    public static final int WAIT_FOR_FLIGHT = 0;
+    public static final int WAIT_FOR_PASSENGER = 1;
+    public static final int CHECK_PASSENGER = 2;
+    public static final int READY_TO_FLY = 3;
 
-    public int value;
-
-    HostessStates(int value) {
-        this.value = value;
-    }
-
-    public void setValue(int value){
-        this.value = value;
+    /**
+     * The class can not be instantiated.
+     */
+    private HostessStates() {
     }
 }

@@ -55,20 +55,19 @@ public class GeneralRepositoryInterface {
                 break;
 
             case SET_PILOT_STATE:
-                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE.value) || (inMessage.getState() > PilotStates.FLYING_BACK.value))
+                if ((inMessage.getState() < PilotStates.AT_TRANSFER_GATE) || (inMessage.getState() > PilotStates.FLYING_BACK))
                     throw new MessageException ("Invalid Pilot state!", inMessage);
                 break;
 
             case SET_HOSTESS_STATE:
-                if ((inMessage.getState () < HostessStates.WAIT_FOR_FLIGHT.value) && (inMessage.getState() != HostessStates.READY_TO_FLY.value))
+                if ((inMessage.getState () < HostessStates.WAIT_FOR_FLIGHT) && (inMessage.getState() != HostessStates.READY_TO_FLY))
                     throw new MessageException ("Invalid Hostess state!", inMessage);
                 break;
 
             case SET_PASSENGER_STATE:
-                System.out.println("State: "+ inMessage.getState() + "\nPassId: "+ inMessage.getPassId());
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid passenger id!", inMessage);
-                else if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT.value) || (inMessage.getState() > PassengerStates.AT_DESTINATION.value))
+                else if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
                     throw new MessageException ("Invalid passenger state!", inMessage);
                 break;
             case SUM_UP:
@@ -78,13 +77,13 @@ public class GeneralRepositoryInterface {
                 break;
             case SET_INF: case SET_PTAL:
                 if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
-                    throw new MessageException ("Invalid InF or PTAL value!", inMessage);
+                    throw new MessageException ("Invalid InF or PTAL!", inMessage);
                 break;
             case SHUT: case GET_INF: case GET_PTAL:  case IS_ARRIVED_AT_DEST:   // check nothing
                 break;
             case SET_ARRIVED_AT_DEST: case SET_EMPTY_PLANE_DEST:
                 if (inMessage.isInformPlane() != false && inMessage.isInformPlane() != true)
-                    throw new MessageException ("Invalid boolean value!", inMessage);
+                    throw new MessageException ("Invalid boolean!", inMessage);
                 break;
             default:
                 throw new MessageException ("Invalid message type!", inMessage);
@@ -98,7 +97,7 @@ public class GeneralRepositoryInterface {
                 outMessage = new Message (MessageType.DONE_NFIC);
                 break;
             case SET_PILOT_STATE:
-
+                System.out.println("SET PILOT STATE (espero que seja o estado 1): "+ inMessage.getState());
                 repos.setPilotState(inMessage.getState());
                 outMessage = new Message (MessageType.DONE_SPiS);
                 break;

@@ -69,8 +69,8 @@ public class Plane {
         pi = (Pilot) Thread.currentThread();
 
         // Pilot is inside the plane ready for boarding
-        pi.setPilotState(PilotStates.WAIT_FOR_BOARDING.value);
-        repos.setPilotState(PilotStates.WAIT_FOR_BOARDING.value);
+        pi.setPilotState(PilotStates.WAIT_FOR_BOARDING);
+        repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
     }
 
     /**
@@ -86,8 +86,8 @@ public class Plane {
 
         readyToFly = false;
 
-        pi.setPilotState(PilotStates.FLYING_FORWARD.value);
-        repos.setPilotState(PilotStates.FLYING_FORWARD.value);
+        pi.setPilotState(PilotStates.FLYING_FORWARD);
+        repos.setPilotState(PilotStates.FLYING_FORWARD);
 
         repos.setArrivedAtDest(true);
         notifyAll();
@@ -118,8 +118,8 @@ public class Plane {
 
         repos.setEmptyPlaneDest(false);
 
-        pi.setPilotState(PilotStates.FLYING_BACK.value);
-        repos.setPilotState(PilotStates.FLYING_BACK.value);
+        pi.setPilotState(PilotStates.FLYING_BACK);
+        repos.setPilotState(PilotStates.FLYING_BACK);
 
     }
 
@@ -129,9 +129,9 @@ public class Plane {
     public synchronized void informPlaneReadyToTakeOff(){
         ho = (Hostess) Thread.currentThread();
 
-        ho.setHostessState(HostessStates.READY_TO_FLY.value);
+        ho.setHostessState(HostessStates.READY_TO_FLY);
         System.out.println();
-        repos.setHostessState(HostessStates.READY_TO_FLY.value);
+        repos.setHostessState(HostessStates.READY_TO_FLY);
 
         readyToFly = true;
 

@@ -307,6 +307,7 @@ public class DepartureAirportProxy extends Thread implements Pilot, Hostess, Pas
         /* service providing */
 
         inMessage = (Message) sconi.readObject ();                     // get service request
+        System.out.println(inMessage.getMsgType());
         try {
             outMessage = depAirInt.processAndReply(inMessage);         // process it
         }
