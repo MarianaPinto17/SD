@@ -57,9 +57,7 @@ public class PlaneInterface {
                     throw new MessageException ("Invalid Hostess state!", inMessage);
                 break;
             case WAIT_FOR_END_OF_FLIGHT:
-                if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
-                    throw new MessageException ("Invalid Passenger state!", inMessage);
-                if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
+                if ((inMessage.getState() < 0) || (inMessage.getState() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);
                 break;
             default:
@@ -90,8 +88,7 @@ public class PlaneInterface {
                 outMessage = new Message(MessageType.DONE_IPRTT, ((Hostess) Thread.currentThread()).getHostessState());
                 break;
             case WAIT_FOR_END_OF_FLIGHT:
-                ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
-                ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
+                ((Passenger) Thread.currentThread()).setId(inMessage.getState());
                 plane.waitForEndOfFlight();
                 outMessage = new Message(MessageType.DONE_WFEOF);
                 break;

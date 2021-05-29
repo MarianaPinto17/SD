@@ -97,11 +97,9 @@ public class GeneralRepositoryInterface {
                 outMessage = new Message (MessageType.DONE_NFIC);
                 break;
             case SET_PILOT_STATE:
-                System.out.println("SET PILOT STATE (espero que seja o estado 1): "+ inMessage.getState());
                 repos.setPilotState(inMessage.getState());
                 outMessage = new Message (MessageType.DONE_SPiS);
                 break;
-
             case SET_HOSTESS_STATE:
                 if(inMessage.getPassId() >= 0)
                     repos.setHostessState(inMessage.getState(), inMessage.getPassId());

@@ -85,7 +85,6 @@ public class GeneralRepositoryStub {
         catch (InterruptedException e) {}
         }
         outMessage = new Message(MessageType.SET_PILOT_STATE, state);
-        System.out.println("#3 Inform PLane ready for boarding (state): "+state);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
         if (inMessage.getMsgType() != MessageType.DONE_SPiS) {
@@ -93,7 +92,6 @@ public class GeneralRepositoryStub {
             System.out.println(inMessage.toString ());
             System.exit (1);
         }
-        System.out.println("#4 Inform PLane ready for boarding (msgtype): "+inMessage.getMsgType());
         com.close ();
     }
 

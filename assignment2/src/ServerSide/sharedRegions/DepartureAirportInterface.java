@@ -26,8 +26,6 @@ public class DepartureAirportInterface {
      *    @param depAir reference to the departure Airport
      */
 
-    private static int remove = 0;
-
     public DepartureAirportInterface (DepartureAirport depAir)
     {
         this.depAir = depAir;
@@ -55,7 +53,6 @@ public class DepartureAirportInterface {
                     throw new MessageException ("Invalid Pilot state!", inMessage);
                 break;
             case PREPARE_FOR_PASS_BOARDING: case CHECK_DOCUMENTS: case WAIT_FOR_NEXT_PASSENGER: case WAIT_FOR_NEXT_FLIGHT:
-                System.out.println(inMessage.getState());
                 if ((inMessage.getState() < HostessStates.WAIT_FOR_FLIGHT) || (inMessage.getState() > HostessStates.READY_TO_FLY))
                     throw new MessageException ("Invalid Hostess state!", inMessage);
                 break;
@@ -76,7 +73,6 @@ public class DepartureAirportInterface {
         switch (inMessage.getMsgType ()) {
             case INFORM_PLANE_READY_FOR_BOARDING:
                 ((Pilot) Thread.currentThread()).setPilotState(inMessage.getState());
-                System.out.println(++remove);
                 depAir.informPlaneReadyForBoarding();
                 outMessage = new Message(MessageType.DONE_IPRFB, ((Pilot) Thread.currentThread()).getPilotState());
                 break;
@@ -124,6 +120,7 @@ public class DepartureAirportInterface {
                 outMessage = new Message(MessageType.DONE_PATG, ((Pilot) Thread.currentThread()).getPilotState());
                 break;
             case IS_INFORM_PLANE:
+                outMessage = new Message(MessageType.DONE_IIP, depAir.isInformPlane());
                 break;
         }
 

@@ -19,8 +19,6 @@ public class DepartureAirportStub {
      */
     private int serverPortNumb;
 
-    private static int remove = 0;
-
     /**
      *   Instantiation of a stub to the Departure Airport.
      *
@@ -47,7 +45,6 @@ public class DepartureAirportStub {
             } catch (InterruptedException e) {
             }
         }
-        System.out.println("PILOT in DepAirSTUB number "+ ++remove);
         outMessage = new Message(MessageType.INFORM_PLANE_READY_FOR_BOARDING, ((Pilot) Thread.currentThread()).getPilotState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
@@ -77,6 +74,8 @@ public class DepartureAirportStub {
             } catch (InterruptedException e) {
             }
         }
+
+        System.out.println("Hostess state: "+((Hostess) Thread.currentThread()).getHostessState());
 
         outMessage = new Message(MessageType.PREPARE_FOR_PASS_BOARDING, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);

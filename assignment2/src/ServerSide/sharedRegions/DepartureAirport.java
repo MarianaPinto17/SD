@@ -137,10 +137,8 @@ public class DepartureAirport {
         repos.setPilotState(PilotStates.READY_FOR_BOARDING);
         System.out.println("Plane ready for boarding.");
 
-        System.out.println("#1 Inform PLane ready for boarding (readyForBoarding): "+readyForBoarding);
         // hostess can start boarding
         readyForBoarding = true;
-        System.out.println("#2 Inform PLane ready for boarding (readyForBoarding): "+readyForBoarding);
         notifyAll();
     }
 
@@ -155,7 +153,6 @@ public class DepartureAirport {
 
             return;
         }
-        System.out.println("Prepare for Pasenger Boarding: "+readyForBoarding);
         while(!readyForBoarding){
             try {
                 wait();
@@ -176,7 +173,6 @@ public class DepartureAirport {
      * Passenger function - passenger waits in queue to board the plane.
      */
     public synchronized void waitInQueue(){
-        System.out.println("WAIT IN QUEUE: "+waitPassengers);
         while(!waitPassengers){
             try{
                 wait();
@@ -271,7 +267,7 @@ public class DepartureAirport {
         this.canBoard = true;
         nCheckedPassengers++;
 
-//        notifyAll();
+        notifyAll();
 
         int passInDep = (SimulPar.N - (nCheckedPassengersTotal- InF));
 

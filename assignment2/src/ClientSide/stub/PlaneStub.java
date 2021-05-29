@@ -116,7 +116,7 @@ public class PlaneStub {
             }
         }
 
-        outMessage = new Message(MessageType.WAIT_FOR_END_OF_FLIGHT);
+        outMessage = new Message(MessageType.WAIT_FOR_END_OF_FLIGHT,((Passenger) Thread.currentThread()).getID());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();
 

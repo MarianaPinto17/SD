@@ -87,7 +87,7 @@ public class PlaneProxy extends Thread implements Pilot, Hostess, Passenger {
 
     public PlaneProxy(ServerCom sconi, PlaneInterface planeInt)
     {
-        super ("BarberShopProxy_" + PlaneProxy.getProxyId ());
+        super ("PlaneProxy_" + PlaneProxy.getProxyId ());
         this.sconi = sconi;
         this.planeInt = planeInt;
     }

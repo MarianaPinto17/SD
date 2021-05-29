@@ -75,7 +75,7 @@ public class DestinationAirportProxy extends Thread implements Pilot, Passenger 
 
     public DestinationAirportProxy (ServerCom sconi, DestinationAirportInterface desAirInt)
     {
-        super ("BarberShopProxy_" + DestinationAirportProxy.getProxyId ());
+        super ("DestinationAirportProxy" + DestinationAirportProxy.getProxyId ());
         this.sconi = sconi;
         this.desAirInt = desAirInt;
     }

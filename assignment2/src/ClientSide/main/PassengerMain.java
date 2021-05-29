@@ -91,7 +91,6 @@ public class PassengerMain {
 
         for (int i = 0; i < SimulPar.N; i++) {
             passenger[i] = new Passenger(i, depAir, desAir, plane);
-            System.out.println(i);
         }
 
         /* start of the simulation */

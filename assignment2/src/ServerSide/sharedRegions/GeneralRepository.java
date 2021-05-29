@@ -236,9 +236,7 @@ public class GeneralRepository {
 
     public synchronized void setPilotState (int state)
     {
-        System.out.println(state);
         this.pilotState = state;
-        System.out.println("SET PILOT STATE (espero que seja o estado 1): "+ pilotState);
 
         if(state == PilotStates.DEBOARDING || state == PilotStates.READY_FOR_BOARDING || state == PilotStates.FLYING_BACK){
             String lineStatus;
