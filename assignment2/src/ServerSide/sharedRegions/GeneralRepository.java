@@ -423,6 +423,7 @@ public class GeneralRepository {
      * @param PTAL changes status of PTAL.
      */
     public void setPTAL(int PTAL) {
+        System.out.println("setPTAL genrepos: "+PTAL);
         this.PTAL = PTAL;
     }
 

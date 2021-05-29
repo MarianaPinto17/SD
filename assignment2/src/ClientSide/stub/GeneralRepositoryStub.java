@@ -283,6 +283,7 @@ public class GeneralRepositoryStub {
             System.out.println(inMessage.toString ());
             System.exit (1);
         }
+        System.out.println("get PTAL: "+inMessage.getState());
         if (inMessage.getState() < 0){
             System.out.println("Error getting PTAL!");
         }
@@ -326,6 +327,7 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
+        System.out.println("[REPOS STUB] PTAL: "+ptal);
         outMessage = new Message (MessageType.SET_PTAL, ptal);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();

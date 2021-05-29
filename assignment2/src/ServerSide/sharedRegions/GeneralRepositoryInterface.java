@@ -76,6 +76,7 @@ public class GeneralRepositoryInterface {
                 }
                 break;
             case SET_INF: case SET_PTAL:
+                System.out.println("[REPOS INtERFACE] PTAL: "+inMessage.getState());
                 if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
                     throw new MessageException ("Invalid InF or PTAL!", inMessage);
                 break;

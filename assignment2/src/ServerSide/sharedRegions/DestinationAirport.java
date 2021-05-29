@@ -58,8 +58,6 @@ public class DestinationAirport {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
 
         pass[passengerID] = (Passenger) Thread.currentThread();
-        repos.setInF(repos.getInF() - 1);
-        repos.setPTAL(repos.getPTAL() + 1);
 
         if(repos.getInF() == 0){
             repos.setArrivedAtDest(false);
