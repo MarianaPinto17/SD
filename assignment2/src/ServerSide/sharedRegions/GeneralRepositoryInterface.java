@@ -75,9 +75,9 @@ public class GeneralRepositoryInterface {
                 if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
                     throw new MessageException ("Invalid InF or PTAL!", inMessage);
                 break;
-            case SHUT: case GET_INF: case GET_PTAL:  case IS_ARRIVED_AT_DEST: case SUM_UP:  // check nothing
+            case SHUT: case GET_INF: case GET_PTAL:  case SUM_UP:  // check nothing
                 break;
-            case SET_ARRIVED_AT_DEST: case SET_EMPTY_PLANE_DEST:
+            case SET_EMPTY_PLANE_DEST:
                 if (inMessage.boolState() != false && inMessage.boolState() != true)
                     throw new MessageException ("Invalid boolean!", inMessage);
                 break;
@@ -129,16 +129,9 @@ public class GeneralRepositoryInterface {
                 repos.setPTAL(inMessage.getState());
                 outMessage = new Message(MessageType.DONE_SPTAL);
                 break;
-            case SET_ARRIVED_AT_DEST:
-                repos.setArrivedAtDest(inMessage.boolState());
-                outMessage = new Message(MessageType.DONE_SAAD);
-                break;
             case SET_EMPTY_PLANE_DEST:
                 repos.setEmptyPlaneDest(inMessage.boolState());
                 outMessage = new Message(MessageType.DONE_SEPD);
-                break;
-            case IS_ARRIVED_AT_DEST:
-                outMessage = new Message(MessageType.DONE_IAAD, repos.isArrivedAtDest() );
                 break;
         }
 

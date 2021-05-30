@@ -95,7 +95,6 @@ public class Plane {
         pi.setPilotState(PilotStates.FLYING_FORWARD);
         repos.setPilotState(PilotStates.FLYING_FORWARD);
 
-        repos.setArrivedAtDest(true);
         arrivedAtDest = true;
         notifyAll();
 

@@ -40,6 +40,7 @@ public class DestinationAirport {
         pi = (Pilot) Thread.currentThread();
         pi.setPilotState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
+        System.out.println("[ Dest Air - Pilot ] InF: "+repos.getInF());
 
         notifyAll();
         while (repos.getInF() > 0){
@@ -59,7 +60,6 @@ public class DestinationAirport {
         pass[passengerID] = (Passenger) Thread.currentThread();
 
         if(repos.getInF() == 0){
-            repos.setArrivedAtDest(false);
             repos.setEmptyPlaneDest(true);
         }
         pass[passengerID].setPassengerState(PassengerStates.AT_DESTINATION);

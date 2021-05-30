@@ -245,7 +245,6 @@ public class GeneralRepository {
             switch (pilotState){
                 case 4:
                     lineStatus = "arrived.";
-                    setNpassengers(nFlights, InF);
                     break;
                 case 1:
                     lineStatus = "boarding started.";
@@ -282,6 +281,9 @@ public class GeneralRepository {
         this.hostessState = state;
         if (state == HostessStates.READY_TO_FLY) {
             String lineStatus = "departed with "+InF+" passengers.";
+            System.out.println("Voo n."+nFlights);
+            System.out.println("InF: "+InF);
+            setNpassengers(nFlights, InF);
             try {
                 FileWriter fw = new FileWriter(logFileName, true);
 
@@ -350,9 +352,10 @@ public class GeneralRepository {
             FileWriter fw = new FileWriter(logFileName, true);
 
             try (PrintWriter pw = new PrintWriter(fw)) {
+                System.out.println(npassengers[0]);
                 for (int i = 0; i < npassengers.length; i++) {
                     if (npassengers[i] != 0) {
-                        pw.print("\nFlight " + i + " transported " + npassengers[i] + " passengers");
+                        pw.print("\nFlight " + (i+1) + " transported " + npassengers[i] + " passengers");
                     }
                 }
                 pw.print(".");
