@@ -56,7 +56,7 @@ public class Hostess extends Thread{
         while(!endOfLife){
             switch (currentState){
                 case 0:
-                    depAir.prepareForPassBoarding();
+                    endOfLife = depAir.prepareForPassBoarding();
                     break;
                 case 1:
                     if(depAir.isInformPlane())
@@ -88,22 +88,6 @@ public class Hostess extends Thread{
      */
     public void setHostessState(int newState){
         this.currentState = newState;
-    }
-
-    /**
-     * Get end of life.
-     * @return true if Hostess don't have passengers in queue
-     */
-    public boolean getHEndOfLife(){
-        return endOfLife;
-    }
-
-    /**
-     * Set end of life state of a hostess.
-     * @param newEndOfLife changes status of endOfLife
-     */
-    public void setHEndOfLife(boolean newEndOfLife){
-        this.endOfLife = newEndOfLife;
     }
 
 }

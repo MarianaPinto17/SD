@@ -78,8 +78,8 @@ public class DepartureAirportInterface {
                 break;
             case PREPARE_FOR_PASS_BOARDING:
                 ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
-                depAir.prepareForPassBoarding();
-                outMessage = new Message(MessageType.DONE_PFPB, ((Hostess) Thread.currentThread()).getHostessState());
+                boolean endOfLife = depAir.prepareForPassBoarding();
+                outMessage = new Message(MessageType.DONE_PFPB, ((Hostess) Thread.currentThread()).getHostessState(), endOfLife);
                 break;
             case WAIT_IN_QUEUE:
                 ((Passenger) Thread.currentThread()).setId(inMessage.getPassId());
@@ -121,6 +121,12 @@ public class DepartureAirportInterface {
                 break;
             case IS_INFORM_PLANE:
                 outMessage = new Message(MessageType.DONE_IIP, depAir.isInformPlane());
+                break;
+            case SHUTDOWN:
+                PlaneMain.waitConnection = false;
+                DestinationAirportMain.waitConnection = false;
+                DepartureAirportMain.waitConnection = false;
+                outMessage = new Message(MessageType.DONE_SHUTDOWN);
                 break;
         }
 

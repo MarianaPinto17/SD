@@ -5,6 +5,8 @@ import ServerSide.entities.DestinationAirportProxy;
 import ServerSide.sharedRegions.*;
 import commonInfrastructures.ServerCom;
 
+import java.net.SocketTimeoutException;
+
 /**
  *    Server side of the General Repository of Information.
  *
@@ -28,8 +30,7 @@ public class DestinationAirportMain {
      *        args[2] - port nunber where the server for the general repository is listening to service requests
      */
 
-    public static void main (String [] args)
-    {
+    public static void main (String [] args) {
         DestinationAirport desAir;                                              // desarture airport (service to be rendered)
         DestinationAirportInterface desAirInter;                                // interface to the desarture airport
         GeneralRepositoryStub reposStub;                                    // stub to the general repository

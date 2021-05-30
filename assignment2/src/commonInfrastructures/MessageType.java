@@ -26,8 +26,6 @@ public enum MessageType {
     DONE_WFNP,
     WAIT_FOR_NEXT_FLIGHT,
     DONE_WFNF,
-    TRAVEL_TO_AIRPORT,
-    DONE_TTA,
     WAIT_IN_QUEUE,
     DONE_WIQ,
     SHOW_DOCUMENTS,
@@ -66,4 +64,6 @@ public enum MessageType {
     DONE_SEPD,
     IS_ARRIVED_AT_DEST,
     DONE_IAAD,
+    SHUTDOWN,
+    DONE_SHUTDOWN,
 }

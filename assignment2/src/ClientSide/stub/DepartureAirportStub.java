@@ -62,7 +62,7 @@ public class DepartureAirportStub {
     /**
      * Hostess Function - prepare to start boarding passengers on the plane.
      */
-    public void prepareForPassBoarding() {
+    public boolean prepareForPassBoarding() {
         ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
         Message outMessage,                                            // outgoing message
                 inMessage;                                             // incoming message
@@ -86,9 +86,14 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
+        if (inMessage.boolState() ) {
+            System.out.println("Hostess end of life");
+        }
+
         ((Hostess) Thread.currentThread()).setHostessState(inMessage.getState());
 
         com.close();
+        return inMessage.boolState();
     }
 
     /**
@@ -358,11 +363,41 @@ public class DepartureAirportStub {
             System.exit(1);
         }
 
-        boolean informPlane = inMessage.isInformPlane();
+        boolean informPlane = inMessage.boolState();
 
         com.close();
 
         return informPlane;
 
     }
+
+    /**
+     * Shutdown message to remote object.
+     */
+    public void shutdown() {
+        ClientCom com = new ClientCom(serverHostName, serverPortNumb);  // communication channel
+        Message outMessage,                                            // outgoing message
+                inMessage;                                             // incoming message
+
+        while (!com.open()) // open the connection
+        {
+            try {
+                Thread.currentThread().sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(MessageType.SHUTDOWN);
+        com.writeObject(outMessage);
+        inMessage = (Message) com.readObject();
+
+        if (inMessage.getMsgType() != MessageType.DONE_SHUTDOWN){
+            System.out.println("Invalid return message from server!!");
+            System.exit(1);
+        }
+
+        com.close();
+    }
+
+
 }

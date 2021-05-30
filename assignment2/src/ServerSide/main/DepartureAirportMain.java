@@ -29,8 +29,7 @@ public class DepartureAirportMain {
      *        args[2] - port nunber where the server for the general repository is listening to service requests
      */
 
-    public static void main (String [] args)
-    {
+    public static void main (String [] args) {
         DepartureAirport depAir;                                              // departure airport (service to be rendered)
         DepartureAirportInterface depAirInter;                                // interface to the departure airport
         GeneralRepositoryStub reposStub;                                    // stub to the general repository

@@ -87,7 +87,7 @@ public class HostessMain {
         try {
             hostess.join ();
         } catch (InterruptedException e) {}
-        System.out.println("The pilot has terminated.");
+        System.out.println("The Hostess has terminated.");
 
         System.out.println();
     }

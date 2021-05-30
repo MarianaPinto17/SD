@@ -181,7 +181,7 @@ public class GeneralRepositoryStub {
         com.close ();
     }
 
-    public void sumUp(int[] npassengers){
+    public void sumUp(){
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message
                 inMessage;                                             // incoming message
@@ -193,7 +193,7 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
-        outMessage = new Message(MessageType.SUM_UP, npassengers);
+        outMessage = new Message(MessageType.SUM_UP);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
         if (inMessage.getMsgType() != MessageType.DONE_SU) {
@@ -382,12 +382,12 @@ public class GeneralRepositoryStub {
             System.out.println(inMessage.toString ());
             System.exit (1);
         }
-        if (!inMessage.isInformPlane() && inMessage.isInformPlane()){
+        if (!inMessage.boolState() && inMessage.boolState()){
             System.out.println("Error getting IsArrivedAtDest!");
         }
         com.close ();
 
-        return inMessage.isInformPlane();
+        return inMessage.boolState();
     }
 
     public void setEmptyPlaneDest(boolean b) {

@@ -40,7 +40,6 @@ public class DestinationAirport {
         pi = (Pilot) Thread.currentThread();
         pi.setPilotState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
-        pi.setNpassengers(pi.getNflights(), repos.getInF());
 
         notifyAll();
         while (repos.getInF() > 0){

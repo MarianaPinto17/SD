@@ -6,6 +6,8 @@ import ServerSide.sharedRegions.Plane;
 import ServerSide.sharedRegions.PlaneInterface;
 import commonInfrastructures.ServerCom;
 
+import java.net.SocketTimeoutException;
+
 /**
  *    Server side of the General Repository of Information.
  *
@@ -29,8 +31,7 @@ public class PlaneMain {
      *        args[2] - port nunber where the server for the general repository is listening to service requests
      */
 
-    public static void main (String [] args)
-    {
+    public static void main (String [] args) {
         Plane plane;                                              // departure airport (service to be rendered)
         PlaneInterface planeInter;                                // interface to the departure airport
         GeneralRepositoryStub reposStub;                                    // stub to the general repository

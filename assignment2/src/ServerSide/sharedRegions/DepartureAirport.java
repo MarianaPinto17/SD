@@ -3,7 +3,7 @@ package ServerSide.sharedRegions;
 import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
 import ServerSide.entities.*;
-import ServerSide.main.SimulPar;
+import ServerSide.main.*;
 
 /**
  * Shared Region Departure Airport
@@ -43,6 +43,36 @@ public class DepartureAirport {
      * number of passengers in flight.
      */
     private int InF;
+
+    /**
+     * number of passengers at destinations airport.
+     */
+    private int PTAL;
+
+    /**
+     * number of passengers in Departure airport.
+     */
+    private int passengersInDeparture;
+
+    /**
+     * number of passengers in departure airport that didn't checked.
+     */
+    private int passengersInDepartureNotChecked;
+
+    /**
+     * number of passengers that already checked.
+     */
+    private int passengersChecked;
+
+    /**
+     * number of passengers that checked or are in later process..
+     */
+    private int passengersCheckedOrAtDest;
+
+    /**
+     * number os passengers who have not yet arrived.
+     */
+    private int passengerNotArrived;
 
 
     /**
@@ -97,10 +127,14 @@ public class DepartureAirport {
      */
     public DepartureAirport(GeneralRepositoryStub repos){
         readyForBoarding = false;
-        nPassengers = 0;
-        nCheckedPassengers = 0;
-        nCheckedPassengersTotal = 0;
         InF = 0;
+        PTAL = 0;
+        passengersInDeparture = 0;
+        passengersInDepartureNotChecked = 0;
+        passengersChecked = 0;
+        passengersCheckedOrAtDest = 0;
+        passengerNotArrived = SimulPar.N;
+
         pass = new Passenger[SimulPar.N];
 
         try{
@@ -145,20 +179,18 @@ public class DepartureAirport {
     /**
      * Hostess Function - prepare to start boarding passengers on the plane.
      */
-    public synchronized void prepareForPassBoarding(){
+    public synchronized boolean prepareForPassBoarding(){
         ho = (Hostess) Thread.currentThread();
 
         if(SimulPar.N == nCheckedPassengersTotal){
             ho.setHEndOfLife(true);
-
-            return;
+            return true;
         }
         while(!readyForBoarding){
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
-        nCheckedPassengers = 0;
         InF = 0;
         ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
@@ -166,6 +198,8 @@ public class DepartureAirport {
         waitPassengers = true;
 
         notifyAll();
+
+        return false;
 
     }
 
@@ -180,7 +214,9 @@ public class DepartureAirport {
         }
         int passengerID = ((Passenger) Thread.currentThread()).getID();
         pass[passengerID] = (Passenger) Thread.currentThread();
-        nPassengers++;
+        passengerNotArrived--;
+        passengersInDeparture++;
+        passengersInDepartureNotChecked++;
         pass[passengerID].setPassengerState(PassengerStates.IN_QUEUE);
         repos.setPassengerState(PassengerStates.IN_QUEUE, passengerID);
         // number of passengers in queue increases
@@ -199,7 +235,7 @@ public class DepartureAirport {
      */
     public synchronized void checkDocuments(){
         ho = (Hostess) Thread.currentThread();
-        while(nPassengers == 0){
+        while(passengersInDepartureNotChecked == 0){
             try{
                 wait();
             } catch (InterruptedException e){}
@@ -214,7 +250,6 @@ public class DepartureAirport {
             System.exit(1);
         }
 
-        nPassengers--;
         ho.setHostessState(HostessStates.CHECK_PASSENGER);
         repos.setHostessState(HostessStates.CHECK_PASSENGER, checkDocID);
 
@@ -244,10 +279,14 @@ public class DepartureAirport {
         }
 
         docShow = true;
-
+        passengersChecked++;
+        passengersCheckedOrAtDest++;
+        passengersInDepartureNotChecked--;
         notifyAll();
 
-        while (!canBoard){
+//        while (!canBoard){
+        System.out.println("[Pass] Plane at Departure? "+ planeAtDeparture);
+        while (!(InF < 10 && !informPlane)){
             try{
                 wait();
             } catch (InterruptedException e){}
@@ -265,22 +304,39 @@ public class DepartureAirport {
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
 
         this.canBoard = true;
-        nCheckedPassengers++;
+
+
+        boolean readyToFly = InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5;
 
         notifyAll();
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println("A QUEUE está vazia? "+passengersAtQueue.isEmpty());
+        System.out.println("Numero de passangers que estão no departure airport: "+ passengersInDeparture);
+        System.out.println("Numero de passangers que estão no departure airport mas ainda não fizeram check: "+ passengersInDepartureNotChecked);
+        System.out.println("Numero de passangers que estão checked: "+ passengersChecked);
+        System.out.println("Numero de passangers que estão checked ou já bazaram: "+ passengersCheckedOrAtDest);
+        System.out.println("Número de passangers que ainda não chegaram ao DepAir: "+ passengerNotArrived);
+        System.out.println("IN FLIGHT (InF): "+InF);
+        System.out.println("IN FLIGHT (PTAL): "+PTAL);
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println("Vou dormir? "+ (passengersAtQueue.isEmpty() && !readyToFly));
+        System.out.println("VOU VOAR? "+ ((InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5)));
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------");
 
-        int passInDep = (SimulPar.N - (nCheckedPassengersTotal- InF));
-
-        notifyAll();
-        while(passengersAtQueue.isEmpty() && passInDep >=5 || (nCheckedPassengers != passInDep) && (passInDep < 5)){
+        while(passengersAtQueue.isEmpty() && !(InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5)){
+//        while(){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
 
-        if((nCheckedPassengers >= 5 && passengersAtQueue.isEmpty()) || nCheckedPassengers == 10 || passInDep < 5){
+//        if((nCheckedPassengers >= 5 && passengersAtQueue.isEmpty()) || nCheckedPassengers == 10 || passInDep < 5){
+        if(readyToFly){
             informPlane = true;
             planeAtDeparture = false;
+            System.out.println("Flyyyyyyyyyyy");
         }
 
     }
@@ -293,7 +349,6 @@ public class DepartureAirport {
         pass[passengerID] = (Passenger) Thread.currentThread();
 
         InF++;
-        nCheckedPassengersTotal++;
         pass[passengerID].setPassengerState(PassengerStates.IN_FLIGHT);
         repos.setPassengerState(PassengerStates.IN_FLIGHT, passengerID);
 
@@ -307,6 +362,11 @@ public class DepartureAirport {
         ho = (Hostess) Thread.currentThread();
         ho.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
         repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
+
+        passengersInDeparture -= InF;
+        passengersChecked -= InF;
+        PTAL += InF;
+        InF = 0;
 
         informPlane = false;
         while(!planeAtDeparture){
@@ -331,6 +391,7 @@ public class DepartureAirport {
 
         if(SimulPar.N == nCheckedPassengersTotal){
             pi.setPiEndOfLife(true);
+
         }
 
         notifyAll();

@@ -70,20 +70,15 @@ public class GeneralRepositoryInterface {
                 else if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
                     throw new MessageException ("Invalid passenger state!", inMessage);
                 break;
-            case SUM_UP:
-                if (inMessage.getNpassFlight() == null){
-                    throw new MessageException ("Invalid message, no passengers array found", inMessage);
-                }
-                break;
             case SET_INF: case SET_PTAL:
                 System.out.println("[REPOS INtERFACE] PTAL: "+inMessage.getState());
                 if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
                     throw new MessageException ("Invalid InF or PTAL!", inMessage);
                 break;
-            case SHUT: case GET_INF: case GET_PTAL:  case IS_ARRIVED_AT_DEST:   // check nothing
+            case SHUT: case GET_INF: case GET_PTAL:  case IS_ARRIVED_AT_DEST: case SUM_UP:  // check nothing
                 break;
             case SET_ARRIVED_AT_DEST: case SET_EMPTY_PLANE_DEST:
-                if (inMessage.isInformPlane() != false && inMessage.isInformPlane() != true)
+                if (inMessage.boolState() != false && inMessage.boolState() != true)
                     throw new MessageException ("Invalid boolean!", inMessage);
                 break;
             default:
@@ -113,7 +108,7 @@ public class GeneralRepositoryInterface {
                 outMessage = new Message (MessageType.DONE_SPaS);
                 break;
             case SUM_UP:
-                repos.sumUp(inMessage.getNpassFlight());
+                repos.sumUp();
                 outMessage = new Message(MessageType.DONE_SU);
                 break;
             case SHUT:
@@ -135,11 +130,11 @@ public class GeneralRepositoryInterface {
                 outMessage = new Message(MessageType.DONE_SPTAL);
                 break;
             case SET_ARRIVED_AT_DEST:
-                repos.setArrivedAtDest(inMessage.isInformPlane());
+                repos.setArrivedAtDest(inMessage.boolState());
                 outMessage = new Message(MessageType.DONE_SAAD);
                 break;
             case SET_EMPTY_PLANE_DEST:
-                repos.setEmptyPlaneDest(inMessage.isInformPlane());
+                repos.setEmptyPlaneDest(inMessage.boolState());
                 outMessage = new Message(MessageType.DONE_SEPD);
                 break;
             case IS_ARRIVED_AT_DEST:

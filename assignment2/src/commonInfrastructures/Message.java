@@ -54,26 +54,15 @@ public class Message implements Serializable {
      * Message instantiation (form 2).
      *
      * @param msgType message type
-     * @param npassFlight number of passengers per flight
-     */
-    public Message(MessageType msgType, int[] npassFlight) {
-        this.msgType = msgType;
-        this.npassFlight = npassFlight;
-    }
-
-    /**
-     * Message instantiation (form 3).
-     *
-     * @param msgType message type
      * @param informPlane if a plane is ready to take off.
      */
     public Message(MessageType msgType, boolean informPlane) {
         this.msgType = msgType;
-        this.informPlane = informPlane;
+        this.boolState = informPlane;
     }
 
     /**
-     * Messafe instantiation (form 4).
+     * Messafe instantiation (form 3).
      *
      * @param msgType message type
      * @param fileName file name of log file
@@ -84,7 +73,7 @@ public class Message implements Serializable {
     }
 
     /**
-     * Messafe instantiation (form 5).
+     * Messafe instantiation (form 4).
      *
      * @param msgType message type
      * @param state state number (can be for Pilot, Hostess or Passenger) or passenger id
@@ -95,7 +84,7 @@ public class Message implements Serializable {
     }
 
     /**
-     * Messafe instantiation (form 6).
+     * Messafe instantiation (form 5).
      *
      * @param msgType message type
      * @param state state number (can be for Pilot, Hostess or Passenger)
@@ -105,6 +94,19 @@ public class Message implements Serializable {
         this.msgType = msgType;
         this.state = state;
         this.passId = Id;
+    }
+
+    /**
+     * Messafe instantiation (form 6).
+     *
+     * @param msgType message type
+     * @param state state number (can be for Pilot, Hostess or Passenger)
+     * @param endOfLife boolean that represents the end of life of that client.
+     */
+    public Message(MessageType msgType, int state, boolean endOfLife) {
+        this.msgType = msgType;
+        this.state = state;
+        this.boolState = endOfLife;
     }
 
     /**
@@ -124,19 +126,11 @@ public class Message implements Serializable {
     }
 
     /**
-     * Getting Number of Passengers per flight
-     * @return Number of Passengers per flight
+     * Getting the boolean variable.
+     * @return boolean variable.
      */
-    public int[] getNpassFlight() {
-        return npassFlight;
-    }
-
-    /**
-     * Getting if a plane is ready to take off.
-     * @return if a plane is ready to take off.
-     */
-    public boolean isInformPlane() {
-        return informPlane;
+    public boolean boolState() {
+        return boolState;
     }
 
     /**
@@ -154,4 +148,5 @@ public class Message implements Serializable {
     public int getState() {
         return state;
     }
+
 }

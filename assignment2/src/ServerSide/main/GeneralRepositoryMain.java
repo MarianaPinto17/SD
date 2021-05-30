@@ -26,8 +26,7 @@ public class GeneralRepositoryMain {
      *        args[0] - port nunber for listening to service requests
      */
 
-    public static void main (String [] args)
-    {
+    public static void main (String [] args) {
         GeneralRepository repos;                                            // general repository of information (service to be rendered)
         GeneralRepositoryInterface reposInter;                              // interface to the general repository of information
         ServerCom scon, sconi;                                         // communication channels

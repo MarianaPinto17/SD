@@ -86,10 +86,11 @@ public class GeneralRepository {
     private boolean emptyPlaneDest;
 
 
+
     /**
-     *   Number of entity groups requesting the shutdown.
+     * number of passengers in each flight.
      */
-    private int nEntities;
+    private int npassengers[];
 
     /**
      * General Repository constructor.
@@ -108,6 +109,7 @@ public class GeneralRepository {
         readyToFly = false;
         nFlights = 0;
         emptyPlaneDest = false;
+        this.npassengers=new int[5];
 
         reportInitialStatus();
     }
@@ -243,9 +245,11 @@ public class GeneralRepository {
             switch (pilotState){
                 case 4:
                     lineStatus = "arrived.";
+                    setNpassengers(nFlights, InF);
                     break;
                 case 1:
                     lineStatus = "boarding started.";
+                    nFlights++;
                     break;
                 case 5:
                     lineStatus = "returning.";
@@ -339,16 +343,16 @@ public class GeneralRepository {
 
     /**
      *
-     * @param npassFlight
+     *
      */
-    public synchronized void sumUp(int[] npassFlight){
+    public synchronized void sumUp(){
         try {
             FileWriter fw = new FileWriter(logFileName, true);
 
             try (PrintWriter pw = new PrintWriter(fw)) {
-                for (int i = 0; i < npassFlight.length; i++) {
-                    if (npassFlight[i] != 0) {
-                        pw.print("\nFlight " + i + " transported " + npassFlight[i] + " passengers");
+                for (int i = 0; i < npassengers.length; i++) {
+                    if (npassengers[i] != 0) {
+                        pw.print("\nFlight " + i + " transported " + npassengers[i] + " passengers");
                     }
                 }
                 pw.print(".");
@@ -462,4 +466,15 @@ public class GeneralRepository {
     public int getnFlights() {
         return nFlights;
     }
+
+    /**
+     * sets the number of passengers in each flight.
+     * @param index index of the flight
+     * @param npassengers number the passenger of the flight
+     */
+    public void setNpassengers(int index, int npassengers) {
+        this.npassengers[index-1] = npassengers;
+    }
+
+
 }

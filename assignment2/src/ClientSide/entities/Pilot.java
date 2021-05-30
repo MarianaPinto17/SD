@@ -40,10 +40,6 @@ public class Pilot extends Thread {
      */
     private int nflights;
 
-    /**
-     * number of passengers in each flight.
-     */
-    private int npassengers[];
 
     /**
      * Reference to the General Repository Stub
@@ -68,7 +64,6 @@ public class Pilot extends Thread {
         this.endOfLife = false;
         this.currentState = PilotStates.AT_TRANSFER_GATE;
         this.nflights=0;
-        this.npassengers=new int[5];
         this.repos=repos;
     }
 
@@ -98,8 +93,9 @@ public class Pilot extends Thread {
                     break;
                 case 5:
                     depAir.parkAtTransferGate();
-                    if(SimulPar.N == getPTAL()) {
-                        repos.sumUp(npassengers);
+                    if(SimulPar.N == repos.getPTAL()) {
+                        endOfLife = true;
+                        repos.sumUp();
                     }
                     break;
             }
@@ -107,24 +103,14 @@ public class Pilot extends Thread {
     }
 
     /**
-     *
+     * Plane is flying.
      */
     private void fly() {
         try {
             sleep((long) (1 + 150 * Math.random()));
         } catch (InterruptedException e) {}
     }
-    /**
-     * Get the number of passengers that already arrived at destination.
-     * @return number of passengers that already arrived at destination
-     */
-    public int getPTAL(){
-        int total=0;
-        for (int i: this.npassengers) {
-            total+= i;
-        }
-        return total;
-    }
+
 
     /**
      * Get current state
@@ -156,23 +142,6 @@ public class Pilot extends Thread {
      */
     public void setPiEndOfLife(boolean newEndOfLife){
         this.endOfLife = newEndOfLife;
-    }
-
-    /**
-     * Checks the number of passengers in each flight.
-     * @return number of passengers in each flight.
-     */
-    public int[] getNpassengers() {
-        return npassengers;
-    }
-
-    /**
-     * sets the number of passengers in each flight.
-     * @param index index of the flight
-     * @param npassengers number the passenger of the flight
-     */
-    public void setNpassengers(int index, int npassengers) {
-        this.npassengers[index] = npassengers;
     }
 
     /**
