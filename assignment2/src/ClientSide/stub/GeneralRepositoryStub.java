@@ -382,9 +382,6 @@ public class GeneralRepositoryStub {
             System.out.println(inMessage.toString ());
             System.exit (1);
         }
-        if (!inMessage.boolState() && inMessage.boolState()){
-            System.out.println("Error getting IsArrivedAtDest!");
-        }
         com.close ();
 
         return inMessage.boolState();

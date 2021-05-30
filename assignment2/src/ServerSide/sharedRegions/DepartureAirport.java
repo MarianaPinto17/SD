@@ -282,10 +282,11 @@ public class DepartureAirport {
         passengersChecked++;
         passengersCheckedOrAtDest++;
         passengersInDepartureNotChecked--;
-        notifyAll();
 
 //        while (!canBoard){
         System.out.println("[Pass] Plane at Departure? "+ planeAtDeparture);
+        if(!(InF < 10 && !informPlane))
+            notifyAll();
         while (!(InF < 10 && !informPlane)){
             try{
                 wait();
@@ -317,7 +318,7 @@ public class DepartureAirport {
         System.out.println("Numero de passangers que estão checked ou já bazaram: "+ passengersCheckedOrAtDest);
         System.out.println("Número de passangers que ainda não chegaram ao DepAir: "+ passengerNotArrived);
         System.out.println("IN FLIGHT (InF): "+InF);
-        System.out.println("IN FLIGHT (PTAL): "+PTAL);
+        System.out.println("Passengers DONE (PTAL): "+PTAL);
         System.out.println("------------------------------------------------------------------------------");
         System.out.println("------------------------------------------------------------------------------");
         System.out.println("Vou dormir? "+ (passengersAtQueue.isEmpty() && !readyToFly));
@@ -326,14 +327,12 @@ public class DepartureAirport {
         System.out.println("------------------------------------------------------------------------------");
 
         while(passengersAtQueue.isEmpty() && !(InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5)){
-//        while(){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
 
-//        if((nCheckedPassengers >= 5 && passengersAtQueue.isEmpty()) || nCheckedPassengers == 10 || passInDep < 5){
-        if(readyToFly){
+            if(readyToFly){
             informPlane = true;
             planeAtDeparture = false;
             System.out.println("Flyyyyyyyyyyy");

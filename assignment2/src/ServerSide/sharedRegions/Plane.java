@@ -43,6 +43,11 @@ public class Plane {
     private final GeneralRepositoryStub repos;
 
     /**
+     * Arrived at destination boolean
+     */
+    private boolean arrivedAtDest;
+
+    /**
      * Plane instantiation.
      * @param repos reference to general repository.
      */
@@ -58,6 +63,7 @@ public class Plane {
             waitingPassenger = null;
             System.exit (1);
         }
+        arrivedAtDest = false;
         this.repos = repos;
 
     }
@@ -67,7 +73,7 @@ public class Plane {
      */
     public synchronized void waitForAllInBoard(){
         pi = (Pilot) Thread.currentThread();
-
+        arrivedAtDest = false;
         // Pilot is inside the plane ready for boarding
         pi.setPilotState(PilotStates.WAIT_FOR_BOARDING);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
@@ -90,6 +96,7 @@ public class Plane {
         repos.setPilotState(PilotStates.FLYING_FORWARD);
 
         repos.setArrivedAtDest(true);
+        arrivedAtDest = true;
         notifyAll();
 
     }
@@ -100,7 +107,7 @@ public class Plane {
      */
     public synchronized void waitForEndOfFlight(){
 
-        while(!repos.isArrivedAtDest()){
+        while(!arrivedAtDest){
             try{
                 wait();
 
