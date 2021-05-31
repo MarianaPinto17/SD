@@ -39,7 +39,7 @@ public class PilotMain {
         DepartureAirportStub depAir;
         DestinationAirportStub desAir;
         PlaneStub plane;
-        GeneralRepositoryStub genReposStub;                                 // remote reference to the general repository
+        GeneralRepositoryStub repos;                                 // remote reference to the general repository
 
 
         /* getting problem runtime parameters */
@@ -102,9 +102,9 @@ public class PilotMain {
         depAir = new DepartureAirportStub(depAirHostName, depAirPortNumb);
         desAir = new DestinationAirportStub(desAirHostName, desAirPortNumb);
         plane = new PlaneStub(planeHostName, planePortNumb);
-        genReposStub = new GeneralRepositoryStub (genReposHostName, genReposPortNumb);
+        repos = new GeneralRepositoryStub (genReposHostName, genReposPortNumb);
 
-        pilot = new Pilot("Piloto", depAir, desAir, plane, genReposStub);
+        pilot = new Pilot("Piloto", depAir, desAir, plane, repos);
 
         /* start of the simulation */
         pilot.start();
@@ -124,7 +124,7 @@ public class PilotMain {
 
         System.out.println();
         depAir.shutdown();
-        genReposStub.shutdown();
+        repos.shutdown();
         desAir.shutdown();
         plane.shutdown();
 

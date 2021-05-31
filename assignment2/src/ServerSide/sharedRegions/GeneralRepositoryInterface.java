@@ -70,16 +70,7 @@ public class GeneralRepositoryInterface {
                 else if ((inMessage.getState() < PassengerStates.GOING_TO_AIRPORT) || (inMessage.getState() > PassengerStates.AT_DESTINATION))
                     throw new MessageException ("Invalid passenger state!", inMessage);
                 break;
-            case SET_INF: case SET_PTAL:
-                System.out.println("[REPOS INtERFACE] PTAL: "+inMessage.getState());
-                if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
-                    throw new MessageException ("Invalid InF or PTAL!", inMessage);
-                break;
-            case SHUTDOWN: case GET_INF: case GET_PTAL:  case SUM_UP:  // check nothing
-                break;
-            case SET_EMPTY_PLANE_DEST:
-                if (inMessage.boolState() != false && inMessage.boolState() != true)
-                    throw new MessageException ("Invalid boolean!", inMessage);
+            case SHUTDOWN: case GET_INF: case GET_PTAL: case SUM_UP: case SET_EMPTY_PLANE_DEST:  // check nothing
                 break;
             default:
                 throw new MessageException ("Invalid message type!", inMessage);
@@ -120,14 +111,6 @@ public class GeneralRepositoryInterface {
                 break;
             case GET_PTAL:
                 outMessage = new Message(MessageType.DONE_GPTAL, repos.getPTAL());
-                break;
-            case SET_INF:
-                repos.setInF(inMessage.getState());
-                outMessage = new Message(MessageType.DONE_SINF);
-                break;
-            case SET_PTAL:
-                repos.setPTAL(inMessage.getState());
-                outMessage = new Message(MessageType.DONE_SPTAL);
                 break;
             case SET_EMPTY_PLANE_DEST:
                 repos.setEmptyPlaneDest(inMessage.boolState());

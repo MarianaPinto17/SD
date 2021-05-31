@@ -25,16 +25,6 @@ public class DepartureAirport {
     private boolean planeAtDeparture;
 
     /**
-     * number of passengers in queue.
-     */
-    private int nPassengers;
-
-    /**
-     * number of checked passengers in queue.
-     */
-    private int nCheckedPassengers;
-
-    /**
      * number of passengers in flight.
      */
     private int InF;
@@ -45,30 +35,9 @@ public class DepartureAirport {
     private int PTAL;
 
     /**
-     * number of passengers in Departure airport.
-     */
-    private int passengersInDeparture;
-
-    /**
      * number of passengers in departure airport that didn't checked.
      */
     private int passengersInDepartureNotChecked;
-
-    /**
-     * number of passengers that already checked.
-     */
-    private int passengersChecked;
-
-    /**
-     * number of passengers that checked or are in later process..
-     */
-    private int passengersCheckedOrAtDest;
-
-    /**
-     * number os passengers who have not yet arrived.
-     */
-    private int passengerNotArrived;
-
 
     /**
      * General repossitory of information
@@ -124,11 +93,7 @@ public class DepartureAirport {
         readyForBoarding = false;
         InF = 0;
         PTAL = 0;
-        passengersInDeparture = 0;
         passengersInDepartureNotChecked = 0;
-        passengersChecked = 0;
-        passengersCheckedOrAtDest = 0;
-        passengerNotArrived = SimulPar.N;
 
         pass = new Passenger[SimulPar.N];
 
@@ -209,8 +174,6 @@ public class DepartureAirport {
         }
         int passengerID = ((Passenger) Thread.currentThread()).getID();
         pass[passengerID] = (Passenger) Thread.currentThread();
-        passengerNotArrived--;
-        passengersInDeparture++;
         passengersInDepartureNotChecked++;
         pass[passengerID].setPassengerState(PassengerStates.IN_QUEUE);
         repos.setPassengerState(PassengerStates.IN_QUEUE, passengerID);
@@ -274,8 +237,6 @@ public class DepartureAirport {
         }
 
         docShow = true;
-        passengersChecked++;
-        passengersCheckedOrAtDest++;
         passengersInDepartureNotChecked--;
 
         if(!(InF < 10 && !informPlane))
@@ -339,8 +300,6 @@ public class DepartureAirport {
         ho.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
         repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
 
-        passengersInDeparture -= InF;
-        passengersChecked -= InF;
         PTAL += InF;
         InF = 0;
 

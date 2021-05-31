@@ -8,4 +8,4 @@ echo "Decompressing data sent to the hostess node."
 sshpass -f password ssh sd101@l040101-ws06.ua.pt 'cd test/AirLift ; unzip -uq hostessDir.zip'
 echo "Executing program at the hostess node."
 #                                                                                                         DepAir: Hostname   Port  Plane: Hostname    Port
-sshpass -f password ssh sd101@l040101-ws06.ua.pt 'cd test/AirLift/hostessDir ; java ClientSide.main.HostessMain l040101-ws02.ua.pt 22101 l040101-ws04.ua.pt 22103'
+sshpass -f password ssh sd101@l040101-ws06.ua.pt 'cd test/AirLift/hostessDir ; java ClientSide.main.HostessMain l040101-ws02.ua.pt 22105 l040101-ws04.ua.pt 22107'

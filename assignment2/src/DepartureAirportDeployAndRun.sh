@@ -7,4 +7,4 @@ sshpass -f password scp test/out/departureairportDir.zip sd101@l040101-ws02.ua.p
 echo "Decompressing data sent to the departure airport node."
 sshpass -f password ssh sd101@l040101-ws02.ua.pt 'cd test/AirLift ; unzip -uq departureairportDir.zip'
 echo "Executing program at the departure airport node."
-sshpass -f password ssh sd101@l040101-ws02.ua.pt 'cd test/AirLift/departureairportDir ; java ServerSide.main.DepartureAirportMain 22101 l040101-ws01.ua.pt 22100'
+sshpass -f password ssh sd101@l040101-ws02.ua.pt 'cd test/AirLift/departureairportDir ; java ServerSide.main.DepartureAirportMain 22105 l040101-ws01.ua.pt 22100'

@@ -22,16 +22,6 @@ public class Message implements Serializable {
     private int passId = -1;
 
     /**
-     * Number os passenger per flight
-     */
-    private int[] npassFlight = null;
-
-    /**
-     * if a plane is ready to take off.
-     */
-    private boolean informPlane = false;
-
-    /**
      * state number (can be for Pilot, Hostess or Passenger)
      */
     private int state = -1;

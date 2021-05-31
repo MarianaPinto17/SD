@@ -292,53 +292,6 @@ public class GeneralRepositoryStub {
         return inMessage.getState();
     }
 
-    public void setInF(int inf) {
-        ClientCom com;                                                 // communication channel
-        Message outMessage,                                            // outgoing message
-                inMessage;                                             // incoming message
-
-        com = new ClientCom (serverHostName, serverPortNumb);
-        while (!com.open ())
-        { try
-        { Thread.sleep ((long) (1000));
-        }
-        catch (InterruptedException e) {}
-        }
-        outMessage = new Message (MessageType.SET_INF, inf);
-        com.writeObject (outMessage);
-        inMessage = (Message) com.readObject ();
-        if (inMessage.getMsgType() != MessageType.DONE_SINF)
-        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
-            System.out.println(inMessage.toString ());
-            System.exit (1);
-        }
-        com.close ();
-    }
-
-    public void setPTAL(int ptal) {
-        ClientCom com;                                                 // communication channel
-        Message outMessage,                                            // outgoing message
-                inMessage;                                             // incoming message
-
-        com = new ClientCom (serverHostName, serverPortNumb);
-        while (!com.open ())
-        { try
-        { Thread.sleep ((long) (1000));
-        }
-        catch (InterruptedException e) {}
-        }
-        System.out.println("[REPOS STUB] PTAL: "+ptal);
-        outMessage = new Message (MessageType.SET_PTAL, ptal);
-        com.writeObject (outMessage);
-        inMessage = (Message) com.readObject ();
-        if (inMessage.getMsgType() != MessageType.DONE_SPTAL)
-        { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
-            System.out.println(inMessage.toString ());
-            System.exit (1);
-        }
-        com.close ();
-    }
-
     public void setEmptyPlaneDest(boolean b) {
         ClientCom com;                                                 // communication channel
         Message outMessage,                                            // outgoing message

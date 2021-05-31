@@ -96,7 +96,6 @@ public class Pilot extends Thread {
                     if(SimulPar.N == repos.getPTAL()) {
                         endOfLife = true;
                         repos.sumUp();
-
                     }
                     break;
             }
