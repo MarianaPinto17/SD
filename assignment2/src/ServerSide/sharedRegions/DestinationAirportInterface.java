@@ -58,6 +58,8 @@ public class DestinationAirportInterface {
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);
                 break;
+            case SHUTDOWN:
+                break;
             default:
                 throw new MessageException ("Invalid message type!", inMessage);
         }
@@ -75,6 +77,10 @@ public class DestinationAirportInterface {
                 ((Passenger) Thread.currentThread()).setPassengerState(inMessage.getState());
                 desAir.leaveThePlane();
                 outMessage = new Message(MessageType.DONE_LTP, ((Passenger) Thread.currentThread()).getPassengerState(), ((Passenger) Thread.currentThread()).getID());
+                break;
+            case SHUTDOWN:
+                desAir.shutdown();
+                outMessage = new Message(MessageType.DONE_SHUTDOWN);
                 break;
         }
 

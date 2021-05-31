@@ -48,8 +48,6 @@ public enum MessageType {
     DONE_IIP,
     SETNFIC,
     DONE_NFIC,
-    SHUT,
-    DONE_S,
     GET_INF,
     DONE_GINF,
     GET_PTAL,

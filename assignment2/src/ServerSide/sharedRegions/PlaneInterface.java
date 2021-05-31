@@ -60,6 +60,8 @@ public class PlaneInterface {
                 if ((inMessage.getState() < 0) || (inMessage.getState() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);
                 break;
+            case SHUTDOWN:
+                break;
             default:
                 throw new MessageException ("Invalid message type!", inMessage);
         }
@@ -91,6 +93,10 @@ public class PlaneInterface {
                 ((Passenger) Thread.currentThread()).setId(inMessage.getState());
                 plane.waitForEndOfFlight();
                 outMessage = new Message(MessageType.DONE_WFEOF);
+                break;
+            case SHUTDOWN:
+                plane.shutdown();
+                outMessage = new Message(MessageType.DONE_SHUTDOWN);
                 break;
         }
 

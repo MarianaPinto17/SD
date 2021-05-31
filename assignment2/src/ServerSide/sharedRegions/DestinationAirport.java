@@ -2,6 +2,8 @@ package ServerSide.sharedRegions;
 
 import ServerSide.entities.*;
 import ClientSide.stub.*;
+import ServerSide.main.DepartureAirportMain;
+import ServerSide.main.DestinationAirportMain;
 import ServerSide.main.SimulPar;
 
 /**
@@ -40,7 +42,6 @@ public class DestinationAirport {
         pi = (Pilot) Thread.currentThread();
         pi.setPilotState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
-        System.out.println("[ Dest Air - Pilot ] InF: "+repos.getInF());
 
         notifyAll();
         while (repos.getInF() > 0){
@@ -66,5 +67,9 @@ public class DestinationAirport {
         repos.setPassengerState(PassengerStates.AT_DESTINATION, passengerID);
 
         notifyAll();
+    }
+
+    public void shutdown() {
+        DestinationAirportMain.waitConnection = false;
     }
 }

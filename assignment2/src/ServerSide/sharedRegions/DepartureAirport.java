@@ -35,11 +35,6 @@ public class DepartureAirport {
     private int nCheckedPassengers;
 
     /**
-     * number of checked passengers in total.
-     */
-    private int nCheckedPassengersTotal;
-
-    /**
      * number of passengers in flight.
      */
     private int InF;
@@ -182,7 +177,7 @@ public class DepartureAirport {
     public synchronized boolean prepareForPassBoarding(){
         ho = (Hostess) Thread.currentThread();
 
-        if(SimulPar.N == nCheckedPassengersTotal){
+        if(SimulPar.N == PTAL){
             ho.setHEndOfLife(true);
             return true;
         }
@@ -283,8 +278,6 @@ public class DepartureAirport {
         passengersCheckedOrAtDest++;
         passengersInDepartureNotChecked--;
 
-//        while (!canBoard){
-        System.out.println("[Pass] Plane at Departure? "+ planeAtDeparture);
         if(!(InF < 10 && !informPlane))
             notifyAll();
         while (!(InF < 10 && !informPlane)){
@@ -310,21 +303,6 @@ public class DepartureAirport {
         boolean readyToFly = InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5;
 
         notifyAll();
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println("A QUEUE está vazia? "+passengersAtQueue.isEmpty());
-        System.out.println("Numero de passangers que estão no departure airport: "+ passengersInDeparture);
-        System.out.println("Numero de passangers que estão no departure airport mas ainda não fizeram check: "+ passengersInDepartureNotChecked);
-        System.out.println("Numero de passangers que estão checked: "+ passengersChecked);
-        System.out.println("Numero de passangers que estão checked ou já bazaram: "+ passengersCheckedOrAtDest);
-        System.out.println("Número de passangers que ainda não chegaram ao DepAir: "+ passengerNotArrived);
-        System.out.println("IN FLIGHT (InF): "+InF);
-        System.out.println("Passengers DONE (PTAL): "+PTAL);
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println("Vou dormir? "+ (passengersAtQueue.isEmpty() && !readyToFly));
-        System.out.println("VOU VOAR? "+ ((InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5)));
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println("------------------------------------------------------------------------------");
 
         while(passengersAtQueue.isEmpty() && !(InF == 10 || InF >= 5 & passengersAtQueue.isEmpty() || PTAL > SimulPar.N - 5)){
             try{
@@ -335,7 +313,6 @@ public class DepartureAirport {
             if(readyToFly){
             informPlane = true;
             planeAtDeparture = false;
-            System.out.println("Flyyyyyyyyyyy");
         }
 
     }
@@ -388,34 +365,21 @@ public class DepartureAirport {
         pi.setPilotState(PilotStates.AT_TRANSFER_GATE);
         repos.setPilotState(PilotStates.AT_TRANSFER_GATE);
 
-        if(SimulPar.N == nCheckedPassengersTotal){
+        if(SimulPar.N == PTAL){
             pi.setPiEndOfLife(true);
-
         }
 
         notifyAll();
 
     }
 
+    public void shutdown() {
+        DepartureAirportMain.waitConnection = false;
+    }
+
     /**
      * Getters and setters.
      */
-
-//    /**
-//     * Checks if a plane is ready for boarding.
-//     * @return true if is ready.
-//     */
-//    public boolean isReadyForBoarding() {
-//        return readyForBoarding;
-//    }
-//
-//    /**
-//     * Sets a plane ready for boarding.
-//     * @param readyForBoarding changes status of readyForBoarding.
-//     */
-//    public void setReadyForBoarding(boolean readyForBoarding) {
-//        this.readyForBoarding = readyForBoarding;
-//    }
 
     /**
      * Checks if a plane is ready for flying.
@@ -425,11 +389,4 @@ public class DepartureAirport {
         return informPlane;
     }
 
-    /**
-     * Sets the plane ready for flying.
-     * @param informPlane changes status of informPlane.
-     */
-    public void setInformPlane(boolean informPlane) {
-        this.informPlane = informPlane;
-    }
 }

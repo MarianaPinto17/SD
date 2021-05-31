@@ -75,7 +75,7 @@ public class GeneralRepositoryInterface {
                 if (inMessage.getState () < 0 || inMessage.getState() > SimulPar.N)
                     throw new MessageException ("Invalid InF or PTAL!", inMessage);
                 break;
-            case SHUT: case GET_INF: case GET_PTAL:  case SUM_UP:  // check nothing
+            case SHUTDOWN: case GET_INF: case GET_PTAL:  case SUM_UP:  // check nothing
                 break;
             case SET_EMPTY_PLANE_DEST:
                 if (inMessage.boolState() != false && inMessage.boolState() != true)
@@ -111,9 +111,9 @@ public class GeneralRepositoryInterface {
                 repos.sumUp();
                 outMessage = new Message(MessageType.DONE_SU);
                 break;
-            case SHUT:
+            case SHUTDOWN:
                 repos.shutdown();
-                outMessage = new Message (MessageType.DONE_S);
+                outMessage = new Message (MessageType.DONE_SHUTDOWN);
                 break;
             case GET_INF:
                 outMessage = new Message(MessageType.DONE_GINF, repos.getInF());

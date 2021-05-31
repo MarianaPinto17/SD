@@ -62,7 +62,7 @@ public class DepartureAirportInterface {
                 if ((inMessage.getPassId() < 0) || (inMessage.getPassId() >= SimulPar.N))
                     throw new MessageException ("Invalid Passenger id!", inMessage);
                 break;
-            case IS_INFORM_PLANE:
+            case IS_INFORM_PLANE: case SHUTDOWN:
                 break;
             default:
                 throw new MessageException ("Invalid message type!", inMessage);
@@ -123,9 +123,7 @@ public class DepartureAirportInterface {
                 outMessage = new Message(MessageType.DONE_IIP, depAir.isInformPlane());
                 break;
             case SHUTDOWN:
-                PlaneMain.waitConnection = false;
-                DestinationAirportMain.waitConnection = false;
-                DepartureAirportMain.waitConnection = false;
+                depAir.shutdown();
                 outMessage = new Message(MessageType.DONE_SHUTDOWN);
                 break;
         }

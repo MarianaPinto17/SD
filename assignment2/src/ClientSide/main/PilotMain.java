@@ -123,6 +123,10 @@ public class PilotMain {
         System.out.println("The pilot has terminated.");
 
         System.out.println();
+        depAir.shutdown();
         genReposStub.shutdown();
+        desAir.shutdown();
+        plane.shutdown();
+
     }
 }

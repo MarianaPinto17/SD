@@ -57,6 +57,7 @@ public class Hostess extends Thread{
             switch (currentState){
                 case 0:
                     endOfLife = depAir.prepareForPassBoarding();
+                    if(endOfLife) depAir.shutdown();
                     break;
                 case 1:
                     if(depAir.isInformPlane())

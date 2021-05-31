@@ -75,8 +75,6 @@ public class DepartureAirportStub {
             }
         }
 
-        System.out.println("Hostess state: "+((Hostess) Thread.currentThread()).getHostessState());
-
         outMessage = new Message(MessageType.PREPARE_FOR_PASS_BOARDING, ((Hostess) Thread.currentThread()).getHostessState());
         com.writeObject(outMessage);
         inMessage = (Message) com.readObject();

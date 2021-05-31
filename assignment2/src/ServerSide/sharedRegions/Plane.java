@@ -1,6 +1,7 @@
 package ServerSide.sharedRegions;
 
 import ClientSide.stub.GeneralRepositoryStub;
+import ServerSide.main.PlaneMain;
 import commonInfrastructures.*;
 import ServerSide.entities.*;
 import ServerSide.main.SimulPar;
@@ -142,5 +143,9 @@ public class Plane {
         readyToFly = true;
 
         notifyAll();
+    }
+
+    public void shutdown() {
+        PlaneMain.waitConnection = false;
     }
 }

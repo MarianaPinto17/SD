@@ -62,10 +62,12 @@ public class GeneralRepositoryMain {
         GeneralRepositoryProxy cliProxy;                                  // service provider agent
 
         waitConnection = true;
-        while (waitConnection) { 
-            sconi = scon.accept ();                                              // enter listening procedure
-            cliProxy = new GeneralRepositoryProxy (sconi, reposInter);          // start a service provider agent to address
-            cliProxy.start ();                                                   //   the request of service
+        while (waitConnection) {
+            try {
+                sconi = scon.accept ();                                              // enter listening procedure
+                cliProxy = new GeneralRepositoryProxy (sconi, reposInter);          // start a service provider agent to address
+                cliProxy.start ();                                                   //   the request of service
+            } catch (SocketTimeoutException e) {}
         }
         scon.end ();                                                   // operations termination
         System.out.println("Server was shutdown.");

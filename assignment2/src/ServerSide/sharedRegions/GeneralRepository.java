@@ -187,16 +187,16 @@ public class GeneralRepository {
                 }
 
                 switch (hostessState){
-                    case 0:
+                    case 3:
                         lineStatus += "RDTF ";
                         break;
-                    case 1:
+                    case 2:
                         lineStatus += "CKPS ";
                         break;
-                    case 2:
+                    case 1:
                         lineStatus += "WTPS ";
                         break;
-                    case 3:
+                    case 0:
                         lineStatus += "WTFL ";
                         break;
                 }
@@ -281,8 +281,6 @@ public class GeneralRepository {
         this.hostessState = state;
         if (state == HostessStates.READY_TO_FLY) {
             String lineStatus = "departed with "+InF+" passengers.";
-            System.out.println("Voo n."+nFlights);
-            System.out.println("InF: "+InF);
             setNpassengers(nFlights, InF);
             try {
                 FileWriter fw = new FileWriter(logFileName, true);
@@ -352,7 +350,6 @@ public class GeneralRepository {
             FileWriter fw = new FileWriter(logFileName, true);
 
             try (PrintWriter pw = new PrintWriter(fw)) {
-                System.out.println(npassengers[0]);
                 for (int i = 0; i < npassengers.length; i++) {
                     if (npassengers[i] != 0) {
                         pw.print("\nFlight " + (i+1) + " transported " + npassengers[i] + " passengers");
@@ -360,7 +357,7 @@ public class GeneralRepository {
                 }
                 pw.print(".");
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -430,7 +427,6 @@ public class GeneralRepository {
      * @param PTAL changes status of PTAL.
      */
     public void setPTAL(int PTAL) {
-        System.out.println("setPTAL genrepos: "+PTAL);
         this.PTAL = PTAL;
     }
 

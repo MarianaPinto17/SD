@@ -224,10 +224,10 @@ public class GeneralRepositoryStub {
         }
         catch (InterruptedException e) {}
         }
-        outMessage = new Message (MessageType.SHUT);
+        outMessage = new Message (MessageType.SHUTDOWN);
         com.writeObject (outMessage);
         inMessage = (Message) com.readObject ();
-        if (inMessage.getMsgType() != MessageType.DONE_S)
+        if (inMessage.getMsgType() != MessageType.DONE_SHUTDOWN)
         { System.out.println("Thread " + Thread.currentThread ().getName () + ": Invalid message type!");
             System.out.println(inMessage.toString ());
             System.exit (1);
@@ -283,7 +283,7 @@ public class GeneralRepositoryStub {
             System.out.println(inMessage.toString ());
             System.exit (1);
         }
-        System.out.println("get PTAL: "+inMessage.getState());
+
         if (inMessage.getState() < 0){
             System.out.println("Error getting PTAL!");
         }
