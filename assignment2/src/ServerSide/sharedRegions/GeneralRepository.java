@@ -109,7 +109,7 @@ public class GeneralRepository {
         readyToFly = false;
         nFlights = 0;
         emptyPlaneDest = false;
-        this.npassengers=new int[5];
+        this.npassengers=new int[7];
 
         reportInitialStatus();
     }
