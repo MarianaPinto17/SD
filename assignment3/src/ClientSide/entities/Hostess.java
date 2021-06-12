@@ -1,7 +1,8 @@
 package ClientSide.entities;
 
-import ClientSide.stub.*;
-import ClientSide.entities.*;
+import java.rmi.*;
+import commonInfrastructures.*;
+import interfaces.*;
 
 
 /**
@@ -15,13 +16,13 @@ public class Hostess extends Thread{
      * Reference to Departure Airport.
      */
 
-    private final DepartureAirportStub depAir;
+    private final DepartureAirportInterface depAir;
 
     /**
      * Reference to Plane.
      */
 
-    private final PlaneStub plane;
+    private final PlaneInterface plane;
 
     /**
      * The current state of the Hostess.
@@ -40,7 +41,7 @@ public class Hostess extends Thread{
      * @param depAir departure Airport.
      * @param plane plane that is flying
      */
-    public Hostess(String name, DepartureAirportStub depAir, PlaneStub plane){
+    public Hostess(String name, DepartureAirportInterface depAir, PlaneInterface plane){
         super(name);
         this.depAir = depAir;
         this.plane = plane;
@@ -56,23 +57,109 @@ public class Hostess extends Thread{
         while(!endOfLife){
             switch (currentState){
                 case 0:
-                    endOfLife = depAir.prepareForPassBoarding();
-                    if(endOfLife) depAir.shutdown();
+                    endOfLife = prepareForPassBoarding();
+                    if(endOfLife) shutdown();
                     break;
                 case 1:
-                    if(depAir.isInformPlane())
-                        plane.informPlaneReadyToTakeOff();
+                    if(isInformPlane())
+                        informPlaneReadyToTakeOff();
                     else
-                        depAir.checkDocuments();
+                        checkDocuments();
                     break;
                 case 2:
-                    depAir.waitForNextPassenger();
+                    waitForNextPassenger();
                     break;
                 case 3:
-                    depAir.waitForNextFlight();
+                    waitForNextFlight();
                     break;
             }
         }
+    }
+
+    // DEPARTURE AIRPORT FUNCTIONS
+
+    public boolean prepareForPassBoarding(){
+        Message ret = null;                            // return value
+
+        try { 
+            ret = depAir.prepareForPassBoarding();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on prepareForPassBoarding: " + e.getMessage ());
+            System.exit (1);
+        }
+        currentState = ret.getState ();
+        return ret.boolState();
+    }
+
+    public void checkDocuments(){
+        Message ret = null;
+
+        try {
+            ret = depAir.checkDocuments();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on checkDocuments: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    public void waitForNextPassenger(){
+        Message ret = null;
+
+        try {
+            ret = depAir.waitForNextPassenger();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on waitForNextPassenger: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    public void waitForNextFlight(){
+        Message ret = null;
+
+        try {
+            ret = depAir.waitForNextFlight();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on waitForNextFlight: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    public boolean isInformPlane(){
+        Message ret = null;
+
+        try {
+            ret = depAir.waitForNextFlight();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on isInformPlane: " + e.getMessage ());
+            System.exit(1);
+        }
+        return ret.boolState();
+    }
+
+    public void shutdown(){
+        try {
+            depAir.waitForNextFlight();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on shutdown: " + e.getMessage ());
+            System.exit(1);
+        }
+    }
+
+    // PLANE FUNCTIONS
+
+    public void informPlaneReadyToTakeOff(){
+        Message ret = null;
+
+        try {
+            ret = plane.informPlaneReadyToTakeOff();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on informPlaneReadyToTakeOff: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
     }
 
     /**

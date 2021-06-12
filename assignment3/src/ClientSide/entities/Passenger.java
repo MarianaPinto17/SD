@@ -1,7 +1,10 @@
 package ClientSide.entities;
 
-import ClientSide.stub.*;
+import commonInfrastructures.Message;
+import interfaces.*;
 import ClientSide.entities.*;
+
+import java.rmi.RemoteException;
 
 /**
  * Passenger thread and life cycle.
@@ -33,17 +36,17 @@ public class Passenger extends Thread {
     /**
      * Reference to Departure Airport.
      */
-    private final DepartureAirportStub depAir;
+    private final DepartureAirportInterface depAir;
 
     /**
      * Reference to Destination Airport.
      */
-    private final DestinationAirportStub destAir;
+    private final DestinationAirportInterface destAir;
 
     /**
      * Reference to Plane.
      */
-    private final PlaneStub plane;
+    private final PlaneInterface plane;
 
     /**
      * Passenger Constructor.
@@ -54,7 +57,7 @@ public class Passenger extends Thread {
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Passenger(int id, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane) {
+    public Passenger(int id, DepartureAirportInterface depAir, DestinationAirportInterface destAir, PlaneInterface plane) {
         this.id = id;
         this.currentState = PassengerStates.GOING_TO_AIRPORT;
         this.endOfLife = false;
@@ -73,15 +76,15 @@ public class Passenger extends Thread {
             switch(currentState){
                 case 0:
                     travelToAirport();
-                    depAir.waitInQueue();
+                    waitInQueue();
                     break;
                 case 1:
-                    depAir.showDocuments();
-                    depAir.boardThePlane();
+                    showDocuments();
+                    boardThePlane();
                     break;
                 case 2:
-                    plane.waitForEndOfFlight();
-                    destAir.leaveThePlane();
+                    waitForEndOfFlight();
+                    leaveThePlane();
                     break;
                 case 3:
                     endOfLife = true;
@@ -103,6 +106,73 @@ public class Passenger extends Thread {
             sleep ((long) (1 + 8000 * Math.random ()));
         } catch (InterruptedException e) {}
 
+    }
+
+
+    // DEPARTURE AIRPORT FUNCTIONS
+
+    public void waitInQueue(){
+        Message ret = null;
+
+        try {
+            ret = depAir.waitInQueue();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on waitInQueue: " + e.getMessage ());
+            System.exit(1);
+        }
+
+        id = ret.getPassId();
+        currentState = ret.getState();
+    }
+
+    public void showDocuments(){
+        try {
+            depAir.showDocuments();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on showDocuments: " + e.getMessage ());
+            System.exit(1);
+        }
+    }
+
+    public void boardThePlane(){
+        Message ret = null;
+
+        try {
+            ret = depAir.boardThePlane();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on boardThePlane: " + e.getMessage ());
+            System.exit(1);
+        }
+
+        id = ret.getPassId();
+        currentState = ret.getState();
+    }
+
+    // PLANE FUNCTIONS
+
+    public void waitForEndOfFlight(){
+        try {
+            plane.waitForEndOfFlight();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on waitForEndOfFlight: " + e.getMessage ());
+            System.exit(1);
+        }
+    }
+
+    // DESTINATION AIRPORT FUNCTIONS
+
+    public void leaveThePlane(){
+        Message ret = null;
+
+        try {
+            ret = destAir.leaveThePlane();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on leaveThePlane: " + e.getMessage ());
+            System.exit(1);
+        }
+
+        id = ret.getPassId();
+        currentState = ret.getState();
     }
 
     /**

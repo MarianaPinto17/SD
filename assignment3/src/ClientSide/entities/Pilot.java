@@ -1,7 +1,10 @@
 package ClientSide.entities;
 
 import ClientSide.main.SimulPar;
-import ClientSide.stub.*;
+import commonInfrastructures.Message;
+import interfaces.*;
+
+import java.rmi.RemoteException;
 
 /**
  * Pilot thread and life cycle.
@@ -23,17 +26,17 @@ public class Pilot extends Thread {
     /**
      * Reference to Departure Airport.
      */
-    private final DepartureAirportStub depAir;
+    private final DepartureAirportInterface depAir;
 
     /**
      * Reference to Destination Airport.
      */
-    private final DestinationAirportStub destAir;
+    private final DestinationAirportInterface destAir;
 
     /**
      * Reference to Plane.
      */
-    private final PlaneStub plane;
+    private final PlaneInterface plane;
 
     /**
      * number of flights.
@@ -44,7 +47,7 @@ public class Pilot extends Thread {
     /**
      * Reference to the General Repository Stub
      */
-    private final GeneralRepositoryStub repos;
+    private final GeneralRepositoryInterface repos;
 
 
     /**
@@ -56,7 +59,7 @@ public class Pilot extends Thread {
      * @param destAir destination Airport
      * @param plane plane that is flying
      */
-    public Pilot (String name, DepartureAirportStub depAir, DestinationAirportStub destAir, PlaneStub plane, GeneralRepositoryStub repos){
+    public Pilot (String name, DepartureAirportInterface depAir, DestinationAirportInterface destAir, PlaneInterface plane, GeneralRepositoryInterface repos){
         super(name);
         this.depAir = depAir;
         this.destAir = destAir;
@@ -75,27 +78,27 @@ public class Pilot extends Thread {
         while(!endOfLife){
             switch(currentState){
                 case 0:
-                    depAir.informPlaneReadyForBoarding();
+                    informPlaneReadyForBoarding();
                     break;
                 case 1:
-                    plane.waitForAllInBoard();
+                    waitForAllInBoard();
                     break;
                 case 2:
-                    plane.flyToDestinationPoint();
+                    flyToDestinationPoint();
                     fly();
                     break;
                 case 3:
-                    destAir.announceArrival();
+                    announceArrival();
                     break;
                 case 4:
-                    plane.flyToDeparturePoint();
+                    flyToDeparturePoint();
                     fly();
                     break;
                 case 5:
-                    depAir.parkAtTransferGate();
-                    if(SimulPar.N == repos.getPTAL()) {
+                    parkAtTransferGate();
+                    if(SimulPar.N == getPTAL()) {
                         endOfLife = true;
-                        repos.sumUp();
+                        sumUp();
                     }
                     break;
             }
@@ -109,6 +112,108 @@ public class Pilot extends Thread {
         try {
             sleep((long) (1 + 150 * Math.random()));
         } catch (InterruptedException e) {}
+    }
+
+    // DEPARTURE AIRPORT FUNCTIONS
+
+    public void informPlaneReadyForBoarding(){
+        Message ret = null;
+
+        try {
+            ret = depAir.informPlaneReadyForBoarding();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on informPlaneReadyForBoarding: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    public void parkAtTransferGate(){
+        Message ret = null;
+
+        try {
+            ret = depAir.parkAtTransferGate();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on parkAtTransferGate: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+        endOfLife = ret.boolState();
+    }
+
+    // PLANE
+
+    public void waitForAllInBoard(){
+        Message ret = null;
+
+        try {
+            ret = plane.waitForAllInBoard();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on waitForAllInBoard: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    public void flyToDestinationPoint(){
+        Message ret = null;
+
+        try {
+            ret = plane.flyToDestinationPoint();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on flyToDestinationPoint: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    public void flyToDeparturePoint(){
+        Message ret = null;
+
+        try {
+            ret = plane.flyToDeparturePoint();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on flyToDeparturePoint: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    // DESTINATION AIRPORT
+
+    public void announceArrival(){
+        Message ret = null;
+
+        try {
+            ret = destAir.announceArrival();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on announceArrival: " + e.getMessage ());
+            System.exit(1);
+        }
+        currentState = ret.getState();
+    }
+
+    // GENERAL REPOSITORY FUNCTIONS
+
+    public int getPTAL(){
+        Message ret = null;
+
+        try {
+            ret = repos.getPTAL();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on getPTAL: " + e.getMessage ());
+            System.exit(1);
+        }
+        return ret.getState();
+    }
+
+    public void sumUp(){
+        try {
+            repos.sumUp();
+        } catch (RemoteException e) {
+            System.out.println("Hostess remote exception on sumUp: " + e.getMessage ());
+            System.exit(1);
+        }
     }
 
 
