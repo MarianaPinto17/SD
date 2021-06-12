@@ -117,7 +117,7 @@ public class Pilot extends Thread {
     // DEPARTURE AIRPORT FUNCTIONS
 
     public void informPlaneReadyForBoarding(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = depAir.informPlaneReadyForBoarding();
@@ -125,7 +125,7 @@ public class Pilot extends Thread {
             System.out.println("Hostess remote exception on informPlaneReadyForBoarding: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     public void parkAtTransferGate(){
@@ -144,7 +144,7 @@ public class Pilot extends Thread {
     // PLANE
 
     public void waitForAllInBoard(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = plane.waitForAllInBoard();
@@ -152,11 +152,11 @@ public class Pilot extends Thread {
             System.out.println("Hostess remote exception on waitForAllInBoard: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     public void flyToDestinationPoint(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = plane.flyToDestinationPoint();
@@ -164,7 +164,7 @@ public class Pilot extends Thread {
             System.out.println("Hostess remote exception on flyToDestinationPoint: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     public void flyToDeparturePoint(){
@@ -182,7 +182,7 @@ public class Pilot extends Thread {
     // DESTINATION AIRPORT
 
     public void announceArrival(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = destAir.announceArrival();
@@ -190,13 +190,13 @@ public class Pilot extends Thread {
             System.out.println("Hostess remote exception on announceArrival: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     // GENERAL REPOSITORY FUNCTIONS
 
     public int getPTAL(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = repos.getPTAL();
@@ -204,7 +204,7 @@ public class Pilot extends Thread {
             System.out.println("Hostess remote exception on getPTAL: " + e.getMessage ());
             System.exit(1);
         }
-        return ret.getState();
+        return ret;
     }
 
     public void sumUp(){

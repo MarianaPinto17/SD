@@ -1,14 +1,15 @@
-package ServerSide.sharedRegions;
+package ServerSide.objects;
 
-import ClientSide.stub.GeneralRepositoryStub;
 import commonInfrastructures.*;
 import ServerSide.entities.*;
 import ServerSide.main.*;
+import interfaces.*;
+import java.rmi.*;
 
 /**
  * Shared Region Departure Airport
  */
-public class DepartureAirport {
+public class DepartureAirport implements DepartureAirportInterface {
     /**
      * If a plane is ready to start boarding (controlled by the pilot).
      */
@@ -43,7 +44,7 @@ public class DepartureAirport {
      * General repossitory of information
      * @serialField repos
      */
-    private GeneralRepositoryStub repos ;
+    private GeneralRepositoryInterface repos ;
 
     /**
      * Reference to passenger threads.
@@ -89,7 +90,7 @@ public class DepartureAirport {
      * Departure Airport constructor
      * @param repos general repository of information
      */
-    public DepartureAirport(GeneralRepositoryStub repos){
+    public DepartureAirport(GeneralRepositoryInterface repos){
         readyForBoarding = false;
         InF = 0;
         PTAL = 0;
@@ -123,7 +124,8 @@ public class DepartureAirport {
     /**
      * Pilot function - says to hostess boarding can start.
      */
-    public synchronized void informPlaneReadyForBoarding(){
+    @Override
+    public synchronized int informPlaneReadyForBoarding() throws RemoteException {
         pi = (Pilot) Thread.currentThread();
         // pilot is at transfer gate and ready for boarding
         pi.setNflights(pi.getNflights()+1);
@@ -134,17 +136,20 @@ public class DepartureAirport {
         // hostess can start boarding
         readyForBoarding = true;
         notifyAll();
+
+        return PilotStates.READY_FOR_BOARDING;
     }
 
     /**
      * Hostess Function - prepare to start boarding passengers on the plane.
      */
-    public synchronized boolean prepareForPassBoarding(){
+    @Override
+    public synchronized Message prepareForPassBoarding() throws RemoteException {
         ho = (Hostess) Thread.currentThread();
 
         if(SimulPar.N == PTAL){
             ho.setHEndOfLife(true);
-            return true;
+            return new Message(ClientSide.entities.HostessStates.WAIT_FOR_FLIGHT, true);
         }
         while(!readyForBoarding){
             try {
@@ -159,39 +164,43 @@ public class DepartureAirport {
 
         notifyAll();
 
-        return false;
+        return new Message(HostessStates.WAIT_FOR_PASSENGER,false);
 
     }
 
     /**
      * Passenger function - passenger waits in queue to board the plane.
      */
-    public synchronized void waitInQueue(){
+    @Override
+    public synchronized Message waitInQueue(int passID) throws RemoteException{
         while(!waitPassengers){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
         int passengerID = ((Passenger) Thread.currentThread()).getID();
-        pass[passengerID] = (Passenger) Thread.currentThread();
+        pass[passID] = (Passenger) Thread.currentThread();
         passengersInDepartureNotChecked++;
-        pass[passengerID].setPassengerState(PassengerStates.IN_QUEUE);
-        repos.setPassengerState(PassengerStates.IN_QUEUE, passengerID);
+        pass[passID].setPassengerState(PassengerStates.IN_QUEUE);
+        repos.setPassengerState(PassengerStates.IN_QUEUE, passID);
         // number of passengers in queue increases
 
         try{
-            passengersAtQueue.write(passengerID);
+            passengersAtQueue.write(passID);
         }catch (MemException e){
             System.out.println("Insertion of customer id in FIFO failed: " +e.getMessage());
             System.exit(1);
         }
         notifyAll();
+
+        return new Message(PassengerStates.IN_QUEUE, passID);
     }
 
     /**
      * Hostess function - if a passenger in queue checks documents, waits for passenger to show documents.
      */
-    public synchronized void checkDocuments(){
+    @Override
+    public synchronized int checkDocuments() throws RemoteException{
         ho = (Hostess) Thread.currentThread();
         while(passengersInDepartureNotChecked == 0){
             try{
@@ -222,15 +231,18 @@ public class DepartureAirport {
         }
 
         docShow = false;
+
+        return HostessStates.CHECK_PASSENGER;
     }
 
     /**
      * Passenger function - passenger shows documents to hostess.
      */
-    public synchronized void showDocuments() {
+    @Override
+    public synchronized void showDocuments(int passId) throws RemoteException {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
-        pass[passengerID] = (Passenger) Thread.currentThread();
-        while (!this.checkedPass[passengerID]){
+        pass[passId] = (Passenger) Thread.currentThread();
+        while (!this.checkedPass[passId]){
             try{
                 wait();
             } catch (InterruptedException e){}
@@ -253,7 +265,8 @@ public class DepartureAirport {
     /**
      *  Hostess function - hostess waits for passengers if plane not full and not min and passenger in queue.
      */
-    public synchronized void waitForNextPassenger(){
+    @Override
+    public synchronized int waitForNextPassenger() throws RemoteException {
         ho = (Hostess) Thread.currentThread();
         ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
@@ -271,31 +284,37 @@ public class DepartureAirport {
             } catch (InterruptedException e){}
         }
 
-            if(readyToFly){
+        if(readyToFly){
             informPlane = true;
             planeAtDeparture = false;
         }
+
+        return HostessStates.WAIT_FOR_PASSENGER;
 
     }
 
     /**
      * Passenger function - passenger boards the plane.
      */
-    public synchronized void boardThePlane() {
+    @Override
+    public synchronized Message boardThePlane(int passId) throws RemoteException {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
-        pass[passengerID] = (Passenger) Thread.currentThread();
+        pass[passId] = (Passenger) Thread.currentThread();
 
         InF++;
-        pass[passengerID].setPassengerState(PassengerStates.IN_FLIGHT);
-        repos.setPassengerState(PassengerStates.IN_FLIGHT, passengerID);
+        pass[passId].setPassengerState(PassengerStates.IN_FLIGHT);
+        repos.setPassengerState(PassengerStates.IN_FLIGHT, passId);
 
         notifyAll();
+
+        return new Message(PassengerStates.IN_FLIGHT, passId);
     }
 
     /**
      * Hostess function - hostess waits for the next flight of the day.
      */
-    public synchronized void waitForNextFlight() {
+    @Override
+    public synchronized int waitForNextFlight() throws RemoteException {
         ho = (Hostess) Thread.currentThread();
         ho.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
         repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
@@ -312,27 +331,44 @@ public class DepartureAirport {
 
         notifyAll();
 
+        return HostessStates.WAIT_FOR_FLIGHT;
     }
 
     /**
      * Pilot function - when the pilot parks the plane at the Transfer gate.
      */
-    public synchronized void parkAtTransferGate() {
+    @Override
+    public synchronized Message parkAtTransferGate() throws RemoteException {
         pi = (Pilot) Thread.currentThread();
         planeAtDeparture = true;
+        boolean PilotEndOfLife = false;
 
         pi.setPilotState(PilotStates.AT_TRANSFER_GATE);
         repos.setPilotState(PilotStates.AT_TRANSFER_GATE);
 
         if(SimulPar.N == PTAL){
             pi.setPiEndOfLife(true);
+            PilotEndOfLife = true;
         }
 
         notifyAll();
 
+        return new Message(PilotStates.AT_TRANSFER_GATE, PilotEndOfLife);
+
     }
 
-    public void shutdown() {
+
+    /**
+     *   Operation server shutdown.
+     *
+     *   New operation.
+     *
+     *      @throws RemoteException if either the invocation of the remote method, or the communication with the registry
+     *                              service fails
+     */
+
+    @Override
+    public void shutdown() throws RemoteException {
         DepartureAirportMain.waitConnection = false;
     }
 

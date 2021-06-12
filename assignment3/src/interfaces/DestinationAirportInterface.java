@@ -5,8 +5,8 @@ import commonInfrastructures.*;
 
 public interface DestinationAirportInterface extends Remote {
 
-    public Message announceArrival() throws RemoteException;
-    public Message leaveThePlane() throws RemoteException;
-    public Message shutdown() throws RemoteException;
+    public int announceArrival() throws RemoteException;
+    public Message leaveThePlane(int passId) throws RemoteException;
+    public void shutdown() throws RemoteException;
 
 }

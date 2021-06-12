@@ -1,15 +1,15 @@
-package ServerSide.sharedRegions;
+package ServerSide.objects;
 
+import java.rmi.*;
+import commonInfrastructures.*;
 import ServerSide.entities.*;
-import ClientSide.stub.*;
-import ServerSide.main.DepartureAirportMain;
-import ServerSide.main.DestinationAirportMain;
-import ServerSide.main.SimulPar;
+import ServerSide.main.*;
+import interfaces.*;
 
 /**
  * Shared Region Destination Airport
  */
-public class DestinationAirport {
+public class DestinationAirport implements DestinationAirportInterface {
 
     /**
      * Reference to the passenger threads.
@@ -24,13 +24,13 @@ public class DestinationAirport {
     /**
      * Reference to the General Repository.
      */
-    private final GeneralRepositoryStub repos;
+    private final GeneralRepositoryInterface repos;
 
     /**
      * Destination Airport constructor.
      * @param repos general repository of information
      */
-    public DestinationAirport(GeneralRepositoryStub repos){
+    public DestinationAirport(GeneralRepositoryInterface repos){
         pass = new Passenger[SimulPar.N];
         this.repos = repos;
     }
@@ -38,7 +38,8 @@ public class DestinationAirport {
     /**
      * Pilot function - pilot announces that the plane arrived at destination.
      */
-    public synchronized void announceArrival(){
+    @Override
+    public synchronized int announceArrival() throws RemoteException {
         pi = (Pilot) Thread.currentThread();
         pi.setPilotState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
@@ -50,26 +51,31 @@ public class DestinationAirport {
             } catch (InterruptedException e) {}
         }
 
+        return PilotStates.DEBOARDING;
     }
 
     /**
      * Passenger function - when the plane arrives at destination the passenger exits the plane.
      */
-    public synchronized void leaveThePlane(){
+    @Override
+    public synchronized Message leaveThePlane(int passId) throws RemoteException {
         int passengerID = ((Passenger) Thread.currentThread()).getID();
 
-        pass[passengerID] = (Passenger) Thread.currentThread();
+        pass[passId] = (Passenger) Thread.currentThread();
 
         if(repos.getInF() == 0){
             repos.setEmptyPlaneDest(true);
         }
-        pass[passengerID].setPassengerState(PassengerStates.AT_DESTINATION);
-        repos.setPassengerState(PassengerStates.AT_DESTINATION, passengerID);
+        pass[passId].setPassengerState(PassengerStates.AT_DESTINATION);
+        repos.setPassengerState(PassengerStates.AT_DESTINATION, passId);
 
         notifyAll();
+
+        return new Message(PassengerStates.AT_DESTINATION, passId);
     }
 
-    public void shutdown() {
+    @Override
+    public void shutdown() throws RemoteException {
         DestinationAirportMain.waitConnection = false;
     }
 }

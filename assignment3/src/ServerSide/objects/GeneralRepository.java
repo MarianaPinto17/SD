@@ -1,10 +1,11 @@
-package ServerSide.sharedRegions;
+package ServerSide.objects;
 
 import ServerSide.entities.*;
 import ServerSide.main.*;
+import interfaces.GeneralRepositoryInterface;
 
+import java.rmi.*;
 import java.io.*;
-
 import java.util.Objects;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Objects;
  */
 
 
-public class GeneralRepository {
+public class GeneralRepository implements GeneralRepositoryInterface {
     /**
      *  Name of the logging file.
      */
@@ -120,8 +121,8 @@ public class GeneralRepository {
      *     @param logFileName name of the logging file
      */
 
-    public synchronized void initSimul (String logFileName)
-    {
+    @Override
+    public synchronized void initSimul (String logFileName) throws RemoteException {
         if (!Objects.equals (logFileName, ""))
             this.logFileName = logFileName;
         reportInitialStatus ();
@@ -131,7 +132,8 @@ public class GeneralRepository {
      *   Operation server shutdown.
      */
 
-    public synchronized void shutdown () {
+    @Override
+    public synchronized void shutdown () throws RemoteException {
         GeneralRepositoryMain.waitConnection = false;
     }
 
@@ -236,8 +238,8 @@ public class GeneralRepository {
      *     @param state pilot state
      */
 
-    public synchronized void setPilotState (int state)
-    {
+    @Override
+    public synchronized void setPilotState (int state) throws RemoteException {
         this.pilotState = state;
 
         if(state == PilotStates.DEBOARDING || state == PilotStates.READY_FOR_BOARDING || state == PilotStates.FLYING_BACK){
@@ -276,8 +278,8 @@ public class GeneralRepository {
      *     @param state hostess state
      */
 
-    public synchronized void setHostessState (int state)
-    {
+    @Override
+    public synchronized void setHostessState (int state) throws RemoteException {
         this.hostessState = state;
         if (state == HostessStates.READY_TO_FLY) {
             String lineStatus = "departed with "+InF+" passengers.";
@@ -296,8 +298,8 @@ public class GeneralRepository {
         reportStatus ();
     }
 
-    public synchronized void setHostessState (int state, int id)
-    {
+    @Override
+    public synchronized void setHostessState (int state, int id) throws RemoteException {
         this.hostessState = state;
         if (state == HostessStates.CHECK_PASSENGER) {
             InQ -= 1;
@@ -323,8 +325,8 @@ public class GeneralRepository {
      *     @param state passenger state
      */
 
-    public synchronized void setPassengerState (int id, int state)
-    {
+    @Override
+    public synchronized void setPassengerState (int id, int state) throws RemoteException {
         this.passengerStates[id] = state;
         switch (passengerStates[id]) {
             case 1:
@@ -345,7 +347,8 @@ public class GeneralRepository {
      *
      *
      */
-    public synchronized void sumUp(){
+    @Override
+    public synchronized void sumUp() throws RemoteException {
         try {
             FileWriter fw = new FileWriter(logFileName, true);
 
@@ -402,7 +405,8 @@ public class GeneralRepository {
      * Number of passengers in flight.
      * @return number of passengers inside the plane.
      */
-    public int getInF() {
+    @Override
+    public int getInF() throws RemoteException {
         return InF;
     }
 
@@ -418,7 +422,8 @@ public class GeneralRepository {
      * checks the number of passengers that arrived at the destination airport.
      * @return the number of passengers that arrived at the destination airport.
      */
-    public int getPTAL() {
+    @Override
+    public int getPTAL() throws RemoteException {
         return PTAL;
     }
 
@@ -450,7 +455,8 @@ public class GeneralRepository {
      * sets the status of the plane to empty when all the passengers left the plane at the destination airport.
      * @param emptyPlaneDest changes status to emptyPlaneDest.
      */
-    public void setEmptyPlaneDest(boolean emptyPlaneDest) {
+    @Override
+    public void setEmptyPlaneDest(boolean emptyPlaneDest) throws RemoteException {
         this.emptyPlaneDest = emptyPlaneDest;
     }
 

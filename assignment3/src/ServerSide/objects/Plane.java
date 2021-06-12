@@ -1,17 +1,17 @@
-package ServerSide.sharedRegions;
+package ServerSide.objects;
 
-import ClientSide.stub.GeneralRepositoryStub;
-import ServerSide.main.PlaneMain;
 import commonInfrastructures.*;
 import ServerSide.entities.*;
-import ServerSide.main.SimulPar;
+import ServerSide.main.*;
+import interfaces.*;
+import java.rmi.*;
 
 
 /**
  * Shared Region Plane
  *
  */
-public class Plane {
+public class Plane implements PlaneInterface {
 
     /**
      * Reference to Passenger threads.
@@ -41,7 +41,7 @@ public class Plane {
     /**
      * Reference to general repository.
      */
-    private final GeneralRepositoryStub repos;
+    private final GeneralRepositoryInterface repos;
 
     /**
      * Arrived at destination boolean
@@ -52,7 +52,7 @@ public class Plane {
      * Plane instantiation.
      * @param repos reference to general repository.
      */
-    public Plane(GeneralRepositoryStub repos) {
+    public Plane(GeneralRepositoryInterface repos) {
         pass = new Passenger[SimulPar.N];
         for (int i = 0; i < SimulPar.N; i++)
                 pass[i] = null;
@@ -72,18 +72,22 @@ public class Plane {
     /**
      * Pilot function - waits for all passengers get on board.
      */
-    public synchronized void waitForAllInBoard(){
+    @Override
+    public synchronized int waitForAllInBoard() throws RemoteException {
         pi = (Pilot) Thread.currentThread();
         arrivedAtDest = false;
         // Pilot is inside the plane ready for boarding
         pi.setPilotState(PilotStates.WAIT_FOR_BOARDING);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
+
+        return PilotStates.WAIT_FOR_BOARDING;
     }
 
     /**
      * Pilot function - Pilot flies to destination.
      */
-    public synchronized void flyToDestinationPoint(){
+    @Override
+    public synchronized int flyToDestinationPoint() throws RemoteException {
         pi = (Pilot) Thread.currentThread();
         while (!readyToFly){
             try{
@@ -99,13 +103,16 @@ public class Plane {
         arrivedAtDest = true;
         notifyAll();
 
+        return PilotStates.FLYING_FORWARD;
+
     }
 
 
     /**
      * Passenger function - passenger waits for the flight to end.
      */
-    public synchronized void waitForEndOfFlight(){
+    @Override
+    public synchronized void waitForEndOfFlight(int passId) throws RemoteException {
 
         while(!arrivedAtDest){
             try{
@@ -120,7 +127,8 @@ public class Plane {
     /**
      * Pilot function - Pilot flies back to departure.
      */
-    public synchronized void flyToDeparturePoint(){
+    @Override
+    public synchronized Message flyToDeparturePoint() throws RemoteException {
         pi = (Pilot) Thread.currentThread();
 
         repos.setEmptyPlaneDest(false);
@@ -128,12 +136,15 @@ public class Plane {
         pi.setPilotState(PilotStates.FLYING_BACK);
         repos.setPilotState(PilotStates.FLYING_BACK);
 
+        return new Message(PilotStates.FLYING_BACK, false);
+
     }
 
     /**
      * Hostess Function - if no passenger at queue or plane is full awakes pilot.
      */
-    public synchronized void informPlaneReadyToTakeOff(){
+    @Override
+    public synchronized int informPlaneReadyToTakeOff() throws RemoteException {
         ho = (Hostess) Thread.currentThread();
 
         ho.setHostessState(HostessStates.READY_TO_FLY);
@@ -143,9 +154,12 @@ public class Plane {
         readyToFly = true;
 
         notifyAll();
+
+        return HostessStates.READY_TO_FLY;
     }
 
-    public void shutdown() {
+    @Override
+    public void shutdown() throws RemoteException {
         PlaneMain.waitConnection = false;
     }
 }

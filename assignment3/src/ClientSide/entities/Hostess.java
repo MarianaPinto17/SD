@@ -92,7 +92,7 @@ public class Hostess extends Thread{
     }
 
     public void checkDocuments(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = depAir.checkDocuments();
@@ -100,11 +100,11 @@ public class Hostess extends Thread{
             System.out.println("Hostess remote exception on checkDocuments: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     public void waitForNextPassenger(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = depAir.waitForNextPassenger();
@@ -112,11 +112,11 @@ public class Hostess extends Thread{
             System.out.println("Hostess remote exception on waitForNextPassenger: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     public void waitForNextFlight(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = depAir.waitForNextFlight();
@@ -124,19 +124,19 @@ public class Hostess extends Thread{
             System.out.println("Hostess remote exception on waitForNextFlight: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     public boolean isInformPlane(){
-        Message ret = null;
+        boolean ret = false;
 
         try {
-            ret = depAir.waitForNextFlight();
+            ret = depAir.isInformPlane();
         } catch (RemoteException e) {
             System.out.println("Hostess remote exception on isInformPlane: " + e.getMessage ());
             System.exit(1);
         }
-        return ret.boolState();
+        return ret;
     }
 
     public void shutdown(){
@@ -151,7 +151,7 @@ public class Hostess extends Thread{
     // PLANE FUNCTIONS
 
     public void informPlaneReadyToTakeOff(){
-        Message ret = null;
+        int ret = -1;
 
         try {
             ret = plane.informPlaneReadyToTakeOff();
@@ -159,7 +159,7 @@ public class Hostess extends Thread{
             System.out.println("Hostess remote exception on informPlaneReadyToTakeOff: " + e.getMessage ());
             System.exit(1);
         }
-        currentState = ret.getState();
+        currentState = ret;
     }
 
     /**

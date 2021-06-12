@@ -5,11 +5,11 @@ import commonInfrastructures.*;
 
 public interface PlaneInterface extends Remote {
 
-    public Message waitForAllInBoard() throws RemoteException;
-    public Message flyToDestinationPoint() throws RemoteException;
-    public Message waitForEndOfFlight() throws RemoteException;
+    public int waitForAllInBoard() throws RemoteException;
+    public int flyToDestinationPoint() throws RemoteException;
+    public void waitForEndOfFlight(int passId) throws RemoteException;
     public Message flyToDeparturePoint() throws RemoteException;
-    public Message informPlaneReadyToTakeOff() throws RemoteException;
-    public Message shutdown() throws RemoteException;
+    public int informPlaneReadyToTakeOff() throws RemoteException;
+    public void shutdown() throws RemoteException;
 
 }

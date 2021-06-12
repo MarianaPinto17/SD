@@ -5,18 +5,16 @@ import commonInfrastructures.*;
 
 public interface GeneralRepositoryInterface extends Remote {
 
-    public Message initSimul(String logFileName) throws RemoteException;
-    public Message shutdown() throws RemoteException;
-    public Message reportInitialStatus() throws RemoteException;
-    public Message reportStatus() throws RemoteException;
-    public Message setPilotState(int state) throws RemoteException;
-    public Message setHostessState(int state) throws RemoteException;
-    public Message setHostessState(int state, int id) throws RemoteException;
-    public Message setPassengerState(int id, int state) throws RemoteException;
-    public Message sumUp() throws RemoteException;
-    public Message getInF() throws RemoteException;
-    public Message getPTAL() throws RemoteException;
-    public Message setEmptyPlaneDest(boolean emptyPlaneDest) throws RemoteException;
+    public void initSimul(String logFileName) throws RemoteException;
+    public void shutdown() throws RemoteException;
+    public void setPilotState(int state) throws RemoteException;
+    public void setHostessState(int state) throws RemoteException;
+    public void setHostessState(int state, int id) throws RemoteException;
+    public void setPassengerState(int id, int state) throws RemoteException;
+    public void sumUp() throws RemoteException;
+    public int getInF() throws RemoteException;
+    public int getPTAL() throws RemoteException;
+    public void setEmptyPlaneDest(boolean emptyPlaneDest) throws RemoteException;
 
 
 }
