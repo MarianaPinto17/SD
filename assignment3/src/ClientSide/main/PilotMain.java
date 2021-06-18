@@ -1,9 +1,9 @@
 package ClientSide.main;
 
 import ClientSide.entities.*;
-import ClientSide.stub.*;
-import ServerSide.main.*;
-import commonInfrastructures.*;
+import interfaces.*;
+import java.rmi.*;
+import java.rmi.registry.*;
 
 /**
  *    Client side of the Sleeping Pilots (pilots).
@@ -17,92 +17,101 @@ public class PilotMain {
      *  Main method.
      *
      *    @param args runtime arguments
-     *        args[0] - name of the platform where is located the pilot shop server
-     *        args[1] - port nunber for listening to service requests
-     *        args[2] - name of the platform where is located the general repository server
-     *        args[3] - port nunber for listening to service requests
+     *        args[0] - name of the platform where is located RMI registering service
+     *        args[1] - port number where the registering service is listening to service requests
      */
 
-    public static void main (String [] args)
-    {
-        int depAirPortNumb = -1;
-        int planePortNumb = -1;
-        int desAirPortNumb = -1;
-        int genReposPortNumb = -1;
-
-        String depAirHostName;
-        String desAirHostName;
-        String planeHostName;
-        String genReposHostName;
-
-        Pilot pilot;                    // array of pilot threads
-        DepartureAirportStub depAir;
-        DestinationAirportStub desAir;
-        PlaneStub plane;
-        GeneralRepositoryStub repos;                                 // remote reference to the general repository
-
+    public static void main (String [] args) {
+        String rmiRegHostName;                                         // name of the platform where is located the RMI registering service
+        int rmiRegPortNumb = -1;                                       // port number where the registering service is listening to service requests
 
         /* getting problem runtime parameters */
 
-        if (args.length != 8)
-        { System.out.println("Wrong number of parameters!");
+        if (args.length != 2) {
+            System.out.println("Wrong number of parameters!");
             System.exit (1);
         }
-        depAirHostName = args[0];
-        try
-        { depAirPortNumb = Integer.parseInt (args[1]);
-        }
-        catch (NumberFormatException e)
-        { System.out.println("args[1] is not a number!");
+        rmiRegHostName = args[0];
+        try {
+            rmiRegPortNumb = Integer.parseInt (args[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("args[1] is not a number!");
             System.exit (1);
         }
-        if ((depAirPortNumb < 4000) || (depAirPortNumb >= 65536))
-        { System.out.println("args[1] is not a valid port number!");
-            System.exit (1);
-        }
-        desAirHostName = args[2];
-        try
-        { desAirPortNumb = Integer.parseInt (args[3]);
-        }
-        catch (NumberFormatException e)
-        { System.out.println("args[3] is not a number!");
-            System.exit (1);
-        }
-        if ((desAirPortNumb < 4000) || (desAirPortNumb >= 65536))
-        { System.out.println("args[3] is not a valid port number!");
-            System.exit (1);
-        }
-        planeHostName = args[4];
-        try
-        { planePortNumb = Integer.parseInt (args[5]);
-        }
-        catch (NumberFormatException e)
-        { System.out.println("args[5] is not a number!");
-            System.exit (1);
-        }
-        if ((planePortNumb < 4000) || (planePortNumb >= 65536))
-        { System.out.println("args[5] is not a valid port number!");
-            System.exit (1);
-        }
-        genReposHostName = args[6];
-        try
-        { genReposPortNumb = Integer.parseInt (args[7]);
-        }
-        catch (NumberFormatException e)
-        { System.out.println("args[7] is not a number!");
-            System.exit (1);
-        }
-        if ((genReposPortNumb < 4000) || (genReposPortNumb >= 65536))
-        { System.out.println("args[7] is not a valid port number!");
+        if ((rmiRegPortNumb < 4000) || (rmiRegPortNumb >= 65536)) {
+            System.out.println("args[1] is not a valid port number!");
             System.exit (1);
         }
 
         /* problem initialization */
 
-        depAir = new DepartureAirportStub(depAirHostName, depAirPortNumb);
-        desAir = new DestinationAirportStub(desAirHostName, desAirPortNumb);
-        plane = new PlaneStub(planeHostName, planePortNumb);
-        repos = new GeneralRepositoryStub (genReposHostName, genReposPortNumb);
+        String nameEntryGeneralRepos = "GeneralRepository";            // public name of the general repository object
+        GeneralRepositoryInterface repos = null;                        // remote reference to the general repository object
+        String nameEntryDepartureAirport = "DepartureAirport";                     // public name of the departure airport object
+        DepartureAirportInterface depAir = null;
+        String nameEntryPlane = "Plane";                     // public name of the plane object
+        PlaneInterface plane = null;
+        String nameEntryDestinationAirport = "DestinationAirport";                     // public name of the Destination Airport object
+        DestinationAirportInterface desAir = null;
+        Registry registry = null;                                      // remote reference for registration in the RMI registry service
+        Pilot pilot;                    // array of barber threads
+
+        try {
+            registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+        } catch (RemoteException e) {
+            System.out.println("RMI registry creation exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            repos = (GeneralRepositoryInterface) registry.lookup(nameEntryGeneralRepos);
+        } catch (RemoteException e) {
+            System.out.println("GeneralRepos lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            System.out.println("GeneralRepos not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            depAir = (DepartureAirportInterface) registry.lookup(nameEntryDepartureAirport);
+        } catch (RemoteException e) {
+            System.out.println("DepartureAirport lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            System.out.println("DepartureAirport not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            desAir = (DestinationAirportInterface) registry.lookup(nameEntryDestinationAirport);
+        } catch (RemoteException e) {
+            System.out.println("GeneralRepos lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            System.out.println("GeneralRepos not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            plane = (PlaneInterface) registry.lookup(nameEntryPlane);
+        } catch (RemoteException e) {
+            System.out.println("DepartureAirport lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            System.out.println("DepartureAirport not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
 
         pilot = new Pilot("Piloto", depAir, desAir, plane, repos);
 
@@ -115,18 +124,43 @@ public class PilotMain {
         System.out.println();
 
         while (pilot.isAlive ()) {
-            Thread.yield ();
+            try {
+                depAir.shutdown();
+            } catch (RemoteException e) {
+                System.out.println("Pilot generator remote exception on Departure Airport shutdown: " + e.getMessage());
+                System.exit(1);
+            }
+            Thread.yield();
+
+            try {
+                pilot.join();
+            } catch (InterruptedException e) { }
+            System.out.println("The pilot has terminated.");
         }
-        try {
-            pilot.join ();
-        } catch (InterruptedException e) {}
-        System.out.println("The pilot has terminated.");
+
 
         System.out.println();
-        depAir.shutdown();
-        repos.shutdown();
-        desAir.shutdown();
-        plane.shutdown();
+        try {
+            repos.shutdown();
+        } catch (RemoteException e) {
+            System.out.println("Pilot generator remote exception on General Repository shutdown: " + e.getMessage());
+            System.exit(1);
+        }
+
+        try {
+            desAir.shutdown();
+        } catch (RemoteException e) {
+            System.out.println("Pilot generator remote exception on Destination Airport shutdown: " + e.getMessage());
+            System.exit(1);
+        }
+
+        try {
+            plane.shutdown();
+        } catch (RemoteException e) {
+            System.out.println("Pilot generator remote exception on Plane shutdown: " + e.getMessage());
+            System.exit(1);
+        }
+
 
     }
 }

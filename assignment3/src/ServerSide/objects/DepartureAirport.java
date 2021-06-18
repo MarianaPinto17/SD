@@ -1,7 +1,7 @@
 package ServerSide.objects;
 
 import commonInfrastructures.*;
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.*;
 import interfaces.*;
 import java.rmi.*;
@@ -148,7 +148,6 @@ public class DepartureAirport implements DepartureAirportInterface {
         ho = (Hostess) Thread.currentThread();
 
         if(SimulPar.N == PTAL){
-            ho.setHEndOfLife(true);
             return new Message(ClientSide.entities.HostessStates.WAIT_FOR_FLIGHT, true);
         }
         while(!readyForBoarding){

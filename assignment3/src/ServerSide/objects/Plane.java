@@ -1,7 +1,7 @@
 package ServerSide.objects;
 
 import commonInfrastructures.*;
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.*;
 import interfaces.*;
 import java.rmi.*;

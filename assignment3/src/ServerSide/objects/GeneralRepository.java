@@ -1,6 +1,6 @@
 package ServerSide.objects;
 
-import ServerSide.entities.*;
+import ClientSide.entities.*;
 import ServerSide.main.*;
 import interfaces.GeneralRepositoryInterface;
 
