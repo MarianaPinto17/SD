@@ -14,11 +14,14 @@ echo "  General Repository of Information"
 rm -rf dirGeneralRepos/ServerSide dirGeneralRepos/ClientSide dirGeneralRepos/interfaces
 mkdir -p dirGeneralRepos/ServerSide dirGeneralRepos/ServerSide/main dirGeneralRepos/ServerSide/objects dirGeneralRepos/interfaces \
          dirGeneralRepos/ClientSide dirGeneralRepos/ClientSide/entities
-cp ServerSide/main/SimulPar.class ServerSide/main/ServerSleepingBarbersGeneralRepos.class dirGeneralRepos/ServerSide/main
-cp ServerSide/objects/GeneralRepos.class dirGeneralRepos/ServerSide/objects
-cp interfaces/Register.class interfaces/GeneralReposInterface.class dirGeneralRepos/interfaces
-cp ClientSide/entities/BarberStates.class ClientSide/entities/CustomerStates.class dirGeneralRepos/ClientSide/entities
-echo "  Barber Shop"
+cp ServerSide/main/SimulPar.class ServerSide/main/GeneralRepositoryMain.class dirGeneralRepos/ServerSide/main
+cp ServerSide/objects/GeneralRepository.class dirGeneralRepos/ServerSide/objects
+cp interfaces/Register.class interfaces/GeneralRepositoryInterface.class dirGeneralRepos/interfaces
+cp ClientSide/entities/HostessStates.class ClientSide/entities/PassengerStates.class ClientSide/entities/PilotStates.class dirGeneralRepos/ClientSide/entities
+
+# TODO:
+# SCRIPTSSSSSSS
+echo "  Departure Airport"
 rm -rf dirBarberShop/ServerSide dirBarberShop/ClientSide dirBarberShop/interfaces dirBarberShop/commonInfrastructures
 mkdir -p dirBarberShop/ServerSide dirBarberShop/ServerSide/main dirBarberShop/ServerSide/objects dirBarberShop/interfaces \
          dirBarberShop/ClientSide dirBarberShop/ClientSide/entities dirBarberShop/commonInfrastructures
@@ -27,6 +30,9 @@ cp ServerSide/objects/BarberShop.class dirBarberShop/ServerSide/objects
 cp interfaces/*.class dirBarberShop/interfaces
 cp ClientSide/entities/BarberStates.class ClientSide/entities/CustomerStates.class dirBarberShop/ClientSide/entities
 cp commonInfrastructures/*.class dirBarberShop/commonInfrastructures
+
+
+
 echo "  Barbers"
 rm -rf dirBarbers/ServerSide dirBarbers/ClientSide dirBarbers/interfaces
 mkdir -p dirBarbers/ServerSide dirBarbers/ServerSide/main dirBarbers/ClientSide dirBarbers/ClientSide/main dirBarbers/ClientSide/entities \
