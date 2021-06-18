@@ -368,7 +368,8 @@ public class DepartureAirport implements DepartureAirportInterface {
 
     @Override
     public void shutdown() throws RemoteException {
-        DepartureAirportMain.waitConnection = false;
+        DepartureAirportMain.shutdown();
+        notifyAll();
     }
 
     /**

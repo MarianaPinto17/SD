@@ -1,7 +1,82 @@
 #!/usr/bin/env bash
 
 echo "Compiling source code."
-javac ClientSide/*/*.java ServerSide/*/*.java commonInfrastructures/*.java
+javac */*.java */*/*.java
+
+echo "Distributing intermediate code to the different execution environments."
+echo "  Register Remote Objects"
+rm -rf dirRegistry/ServerSide dirRegistry/interfaces
+mkdir -p dirRegistry/ServerSide dirRegistry/ServerSide/main dirRegistry/ServerSide/objects dirRegistry/interfaces
+cp ServerSide/main/ServerRegisterRemoteObject.class dirRegistry/ServerSide/main
+cp ServerSide/objects/RegisterRemoteObject.class dirRegistry/ServerSide/objects
+cp interfaces/Register.class dirRegistry/interfaces
+echo "  General Repository of Information"
+rm -rf dirGeneralRepos/ServerSide dirGeneralRepos/ClientSide dirGeneralRepos/interfaces
+mkdir -p dirGeneralRepos/ServerSide dirGeneralRepos/ServerSide/main dirGeneralRepos/ServerSide/objects dirGeneralRepos/interfaces \
+         dirGeneralRepos/ClientSide dirGeneralRepos/ClientSide/entities
+cp ServerSide/main/SimulPar.class ServerSide/main/ServerSleepingBarbersGeneralRepos.class dirGeneralRepos/ServerSide/main
+cp ServerSide/objects/GeneralRepos.class dirGeneralRepos/ServerSide/objects
+cp interfaces/Register.class interfaces/GeneralReposInterface.class dirGeneralRepos/interfaces
+cp ClientSide/entities/BarberStates.class ClientSide/entities/CustomerStates.class dirGeneralRepos/ClientSide/entities
+echo "  Barber Shop"
+rm -rf dirBarberShop/ServerSide dirBarberShop/ClientSide dirBarberShop/interfaces dirBarberShop/commonInfrastructures
+mkdir -p dirBarberShop/ServerSide dirBarberShop/ServerSide/main dirBarberShop/ServerSide/objects dirBarberShop/interfaces \
+         dirBarberShop/ClientSide dirBarberShop/ClientSide/entities dirBarberShop/commonInfrastructures
+cp ServerSide/main/SimulPar.class ServerSide/main/ServerSleepingBarbersBarberShop.class dirBarberShop/ServerSide/main
+cp ServerSide/objects/BarberShop.class dirBarberShop/ServerSide/objects
+cp interfaces/*.class dirBarberShop/interfaces
+cp ClientSide/entities/BarberStates.class ClientSide/entities/CustomerStates.class dirBarberShop/ClientSide/entities
+cp commonInfrastructures/*.class dirBarberShop/commonInfrastructures
+echo "  Barbers"
+rm -rf dirBarbers/ServerSide dirBarbers/ClientSide dirBarbers/interfaces
+mkdir -p dirBarbers/ServerSide dirBarbers/ServerSide/main dirBarbers/ClientSide dirBarbers/ClientSide/main dirBarbers/ClientSide/entities \
+         dirBarbers/interfaces
+cp ServerSide/main/SimulPar.class dirBarbers/ServerSide/main
+cp ClientSide/main/ClientSleepingBarbersBarber.class dirBarbers/ClientSide/main
+cp ClientSide/entities/Barber.class ClientSide/entities/BarberStates.class dirBarbers/ClientSide/entities
+cp interfaces/BarberShopInterface.class interfaces/GeneralReposInterface.class interfaces/ReturnBoolean.class interfaces/ReturnInt.class dirBarbers/interfaces
+echo "  Customers"
+rm -rf dirCustomers/ServerSide dirCustomers/ClientSide dirCustomers/interfaces
+mkdir -p dirCustomers/ServerSide dirCustomers/ServerSide/main dirCustomers/ClientSide dirCustomers/ClientSide/main dirCustomers/ClientSide/entities \
+         dirCustomers/interfaces
+cp ServerSide/main/SimulPar.class dirCustomers/ServerSide/main
+cp ClientSide/main/ClientSleepingBarbersCustomer.class dirCustomers/ClientSide/main
+cp ClientSide/entities/Customer.class ClientSide/entities/CustomerStates.class dirCustomers/ClientSide/entities
+cp interfaces/BarberShopInterface.class interfaces/GeneralReposInterface.class interfaces/ReturnBoolean.class interfaces/ReturnInt.class dirCustomers/interfaces
+echo "Compressing execution environments."
+echo "  Register Remote Objects"
+rm -f  dirRegistry.zip
+zip -rq dirRegistry.zip dirRegistry set_rmiregistry_alt.sh
+echo "  General Repository of Information"
+rm -f  dirGeneralRepos.zip
+zip -rq dirGeneralRepos.zip dirGeneralRepos
+echo "  Barber Shop"
+rm -f  dirBarberShop.zip
+zip -rq dirBarberShop.zip dirBarberShop
+echo "  Barbers"
+rm -f  dirBarbers.zip
+zip -rq dirBarbers.zip dirBarbers
+echo "  Customers"
+rm -f  dirCustomers.zip
+zip -rq dirCustomers.zip dirCustomers
+echo "Deploying and decompressing execution environments."
+mkdir -p /home/$1/test/SleepingBarbers
+rm -rf /home/$1/test/SleepingBarbers/*
+cp dirRegistry.zip /home/$1/test/SleepingBarbers
+cp dirGeneralRepos.zip /home/$1/test/SleepingBarbers
+cp dirBarberShop.zip /home/$1/test/SleepingBarbers
+cp dirBarbers.zip /home/$1/test/SleepingBarbers
+cp dirCustomers.zip /home/$1/test/SleepingBarbers
+cd /home/$1/test/SleepingBarbers
+unzip -q dirRegistry.zip
+mv set_rmiregistry_alt.sh /home/$1
+unzip -q dirGeneralRepos.zip
+unzip -q dirBarberShop.zip
+unzip -q dirBarbers.zip
+unzip -q dirCustomers.zip
+
+###////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 echo "Distributing intermediate code to the different execution environments."
 mkdir -p test/AirLift

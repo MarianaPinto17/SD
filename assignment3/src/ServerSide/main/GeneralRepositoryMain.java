@@ -1,9 +1,10 @@
 package ServerSide.main;
 
-import ServerSide.entities.GeneralRepositoryProxy;
-import ServerSide.sharedRegions.*;
-import commonInfrastructures.*;
-import java.net.*;
+import java.rmi.registry.*;
+import java.rmi.*;
+import java.rmi.server.*;
+import ServerSide.objects.*;
+import interfaces.*;
 
 /**
  *    Server side of the General Repository of Information.
@@ -13,63 +14,186 @@ import java.net.*;
  */
 
 public class GeneralRepositoryMain {
+
     /**
-     *  Flag signaling the service is active.
+     *  Flag signaling the end of operations.
      */
 
-    public static boolean waitConnection;
+    private static boolean end = false;
 
     /**
      *  Main method.
      *
-     *    @param args runtime arguments
-     *        args[0] - port nunber for listening to service requests
+     *        args[0] - port number for listening to service requests
+     *        args[1] - name of the platform where is located the RMI registering service
+     *        args[2] - port nunber where the registering service is listening to service requests
      */
 
-    public static void main (String [] args) {
-        GeneralRepository repos;                                            // general repository of information (service to be rendered)
-        GeneralRepositoryInterface reposInter;                              // interface to the general repository of information
-        ServerCom scon, sconi;                                         // communication channels
+    public static void main(String[] args)
+    {
         int portNumb = -1;                                             // port number for listening to service requests
+        String rmiRegHostName;                                         // name of the platform where is located the RMI registering service
+        int rmiRegPortNumb = -1;                                       // port number where the registering service is listening to service requests
 
-        if (args.length != 1) {
+        if (args.length != 3) {
             System.out.println("Wrong number of parameters!");
             System.exit (1);
         }
+
         try {
-            portNumb = Integer.parseInt(args[0]);
-        }
-        catch (NumberFormatException e) {
+            portNumb = Integer.parseInt (args[0]);
+        } catch (NumberFormatException e) {
             System.out.println("args[0] is not a number!");
             System.exit (1);
         }
+
         if ((portNumb < 4000) || (portNumb >= 65536)) {
             System.out.println("args[0] is not a valid port number!");
             System.exit (1);
         }
 
-        /* service is established */
+        rmiRegHostName = args[1];
 
-        repos = new GeneralRepository();                                   // service is instantiated
-        reposInter = new GeneralRepositoryInterface (repos);                // interface to the service is instantiated
-        scon = new ServerCom (portNumb);                               // listening channel at the public port is established
-        scon.start ();
-        System.out.println("Service is established!");
-        System.out.println("Server is listening for service requests.");
-
-        /* service request processing */
-
-        GeneralRepositoryProxy cliProxy;                                  // service provider agent
-
-        waitConnection = true;
-        while (waitConnection) {
-            try {
-                sconi = scon.accept ();                                              // enter listening procedure
-                cliProxy = new GeneralRepositoryProxy (sconi, reposInter);          // start a service provider agent to address
-                cliProxy.start ();                                                   //   the request of service
-            } catch (SocketTimeoutException e) {}
+        try {
+            rmiRegPortNumb = Integer.parseInt (args[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("args[2] is not a number!");
+            System.exit (1);
         }
-        scon.end ();                                                   // operations termination
-        System.out.println("Server was shutdown.");
+
+        if ((rmiRegPortNumb < 4000) || (rmiRegPortNumb >= 65536)) {
+            System.out.println("args[2] is not a valid port number!");
+            System.exit (1);
+        }
+
+        /* create and install the security manager */
+
+        if (System.getSecurityManager () == null)
+            System.setSecurityManager (new SecurityManager ());
+        System.out.println("Security manager was installed!");
+
+        /* instantiate a general repository object */
+
+        GeneralRepository repos = new GeneralRepository();                      // general repository object
+        GeneralRepositoryInterface reposStub = null;                        // remote reference to the general repository object
+
+        try {
+            reposStub = (GeneralRepositoryInterface) UnicastRemoteObject.exportObject (repos, portNumb);
+        } catch (RemoteException e) {
+            System.out.println("General Repository stub generation exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        System.out.println("Stub was generated!");
+
+        /* register it with the general registry service */
+
+        String nameEntryBase = "RegisterHandler";                      // public name of the object that enables the registration
+        // of other remote objects
+        String nameEntryObject = "GeneralRepository";                  // public name of the object general repository
+        Registry registry = null;                                      // remote reference for registration in the RMI registry service
+        Register reg = null;                                           // remote reference to the object that enables the registration
+        // of other remote objects
+
+        try {
+            registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+        } catch (RemoteException e) {
+            System.out.println("RMI registry creation exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        System.out.println("RMI registry was created!");
+
+        try {
+            reg = (Register) registry.lookup (nameEntryBase);
+        } catch (RemoteException e) {
+            System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            System.out.println("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        try {
+            reg.bind (nameEntryObject, reposStub);
+        } catch (RemoteException e) {
+            System.out.println("General Repository registration exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (AlreadyBoundException e) {
+            System.out.println("General Repository already bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        System.out.println("General Repository object was registered!");
+
+        /* wait for the end of operations */
+
+        System.out.println("General Repository is in operation!");
+
+        try {
+            while (!end) synchronized (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")) {
+                try {
+                    (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")).wait ();
+                } catch (InterruptedException e) {
+                    System.out.println("General Repository main thread was interrupted!");
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("The data type ServerSleepingBarbersGeneralRepos was not found (blocking)!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        /* server shutdown */
+
+        boolean shutdownDone = false;                                  // flag signalling the shutdown of the general repository service
+
+        try {
+            reg.unbind (nameEntryObject);
+        } catch (RemoteException e) {
+            System.out.println("General Repository deregistration exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        } catch (NotBoundException e) {
+            System.out.println("General Repository not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        System.out.println("General Repository was deregistered!");
+
+        try {
+            shutdownDone = UnicastRemoteObject.unexportObject (repos, true);
+        } catch (NoSuchObjectException e) {
+            System.out.println("General Repository unexport exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        if (shutdownDone)
+            System.out.println("General Repository was shutdown!");
+    }
+
+    /**
+     *  Close of operations.
+     */
+
+    public static void shutdown () {
+        end = true;
+        try {
+            synchronized (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")) {
+                (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")).notify ();
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("The data type ServerSleepingBarbersGeneralRepos was not found (waking up)!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
     }
 }

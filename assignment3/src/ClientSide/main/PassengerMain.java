@@ -1,6 +1,7 @@
 package ClientSide.main;
 
 import ClientSide.entities.*;
+import ServerSide.main.SimulPar;
 import interfaces.*;
 import java.rmi.*;
 import java.rmi.registry.*;

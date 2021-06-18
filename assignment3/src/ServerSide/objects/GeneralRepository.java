@@ -134,7 +134,8 @@ public class GeneralRepository implements GeneralRepositoryInterface {
 
     @Override
     public synchronized void shutdown () throws RemoteException {
-        GeneralRepositoryMain.waitConnection = false;
+        GeneralRepositoryMain.shutdown();
+        notifyAll();
     }
 
 

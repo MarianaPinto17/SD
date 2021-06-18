@@ -1,6 +1,6 @@
 package ClientSide.entities;
 
-import ClientSide.main.SimulPar;
+import ServerSide.main.SimulPar;
 import commonInfrastructures.Message;
 import interfaces.*;
 

@@ -76,6 +76,7 @@ public class DestinationAirport implements DestinationAirportInterface {
 
     @Override
     public void shutdown() throws RemoteException {
-        DestinationAirportMain.waitConnection = false;
+        DestinationAirportMain.shutdown();
+        notifyAll();
     }
 }

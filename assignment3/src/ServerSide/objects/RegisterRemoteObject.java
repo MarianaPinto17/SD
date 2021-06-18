@@ -1,4 +1,4 @@
-package serverSide.objects;
+package ServerSide.objects;
 
 import java.rmi.registry.*;
 import java.rmi.*;

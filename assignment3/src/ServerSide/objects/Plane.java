@@ -160,6 +160,7 @@ public class Plane implements PlaneInterface {
 
     @Override
     public void shutdown() throws RemoteException {
-        PlaneMain.waitConnection = false;
+        PlaneMain.shutdown();
+        notifyAll();
     }
 }
