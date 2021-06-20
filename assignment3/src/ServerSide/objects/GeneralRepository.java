@@ -16,6 +16,8 @@ import java.util.Objects;
  *    It is implemented as an implicit monitor.
  *    All public methods are executed in mutual exclusion.
  *    There are no internal synchronization points.
+ * @author André Alves
+ * @author Mariana Pinto
  */
 
 
@@ -162,6 +164,11 @@ public class GeneralRepository implements GeneralRepositoryInterface {
         reportStatus ();
     }
 
+    /**
+     * Write the status of the entities to the logging file.
+     *
+     * Internal Operation.
+     */
     private void reportStatus(){
         String lineStatus = "";
         try {
@@ -299,6 +306,12 @@ public class GeneralRepository implements GeneralRepositoryInterface {
         reportStatus ();
     }
 
+    /**
+     * Set hostess State when the passenger is checked.
+     * @param state hostess state
+     * @param id id passenger
+     * @throws RemoteException
+     */
     @Override
     public synchronized void setHostessState (int state, int id) throws RemoteException {
         this.hostessState = state;
@@ -345,8 +358,8 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     *
-     *
+     * Close of operations.
+     * @throws RemoteException
      */
     @Override
     public synchronized void sumUp() throws RemoteException {
@@ -371,7 +384,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
      */
 
     /**
-     * checks if a plane is ready to fly
+     * Checks if a plane is ready to fly
      * @return true if the plane is ready to fly
      */
     public boolean isReadyToFly() {
@@ -387,7 +400,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * checks the number of passengers in queue.
+     * Checks the number of passengers in queue.
      * @return the number of passengers in queue.
      */
     public int getInQ() {
@@ -395,7 +408,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * sets the number of passengers in queue.
+     * Sets the number of passengers in queue.
      * @param inQ changes status of inQ.
      */
     public void setInQ(int inQ) {
@@ -412,7 +425,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * sets the number of passengers inside de plane.
+     * Sets the number of passengers inside de plane.
      * @param inF changes status of inF.
      */
     public void setInF(int inF) {
@@ -420,7 +433,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * checks the number of passengers that arrived at the destination airport.
+     * Checks the number of passengers that arrived at the destination airport.
      * @return the number of passengers that arrived at the destination airport.
      */
     @Override
@@ -429,7 +442,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * sets the number of passengers that arrived at the destination airport.
+     * Sets the number of passengers that arrived at the destination airport.
      * @param PTAL changes status of PTAL.
      */
     public void setPTAL(int PTAL) {
@@ -437,7 +450,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * checks if the plane is at destination.
+     * Checks if the plane is at destination.
      * @return true if the plane is at destination.
      */
     public boolean isArrivedAtDest() {
@@ -445,7 +458,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * sets the status of the plane to Arrived at destination or not.
+     * Sets the status of the plane to Arrived at destination or not.
      * @param arrivedAtDest changes status of arrivedAtDest.
      */
     public void setArrivedAtDest(boolean arrivedAtDest) {
@@ -453,7 +466,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     }
 
     /**
-     * sets the status of the plane to empty when all the passengers left the plane at the destination airport.
+     * Sets the status of the plane to empty when all the passengers left the plane at the destination airport.
      * @param emptyPlaneDest changes status to emptyPlaneDest.
      */
     @Override
@@ -461,14 +474,26 @@ public class GeneralRepository implements GeneralRepositoryInterface {
         this.emptyPlaneDest = emptyPlaneDest;
     }
 
+    /**
+     * Checks if plane is empty at the destination airport.
+     * @return plane status at the destination airport.
+     */
     public boolean isEmptyPlaneDest() {
         return emptyPlaneDest;
     }
 
+    /**
+     * Set the number of flights occurring or occurred.
+     * @param nFlights number of flights
+     */
     public void setnFlights(int nFlights) {
         this.nFlights = nFlights;
     }
 
+    /**
+     * Get the number of flights occurring or occurred.
+     * @return number of flights occurrng or occurred
+     */
     public int getnFlights() {
         return nFlights;
     }

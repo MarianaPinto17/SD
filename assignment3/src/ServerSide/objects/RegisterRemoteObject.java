@@ -8,6 +8,8 @@ import interfaces.*;
  *   Generic functionality to register in the local RMI registry service objects located
  *   in the same or other processing nodes of a parallel machine.
  *     Communication is based on Java RMI.
+ * @author André Alves
+ * @author Mariana Pinto
  */
 
 public class RegisterRemoteObject implements Register
@@ -91,7 +93,6 @@ public class RegisterRemoteObject implements Register
    *    @throws RemoteException if either the invocation of the remote method, or the communication with the registry
    *                            service fails
    */
-
    @Override
    public void rebind (String name, Remote ref) throws RemoteException
    {

@@ -8,8 +8,8 @@ import java.rmi.RemoteException;
 
 /**
  * Passenger thread and life cycle.
- * @author Mariana Pinto
  * @author André Alves
+ * @author Mariana Pinto
  */
 public class Passenger extends Thread {
     /**
@@ -111,6 +111,9 @@ public class Passenger extends Thread {
 
     // DEPARTURE AIRPORT FUNCTIONS
 
+    /**
+     * Passenger waits in queue.
+     */
     public void waitInQueue(){
         Message ret = null;
 
@@ -125,6 +128,9 @@ public class Passenger extends Thread {
         currentState = ret.getState();
     }
 
+    /**
+     * Passenger shows documents to hostess.
+     */
     public void showDocuments(){
         try {
             depAir.showDocuments(id);
@@ -134,6 +140,9 @@ public class Passenger extends Thread {
         }
     }
 
+    /**
+     * Passenger boards the plane.
+     */
     public void boardThePlane(){
         Message ret = null;
 
@@ -150,6 +159,9 @@ public class Passenger extends Thread {
 
     // PLANE FUNCTIONS
 
+    /**
+     * Passenger waits for the flight to end.
+     */
     public void waitForEndOfFlight(){
         try {
             plane.waitForEndOfFlight(id);
@@ -161,6 +173,9 @@ public class Passenger extends Thread {
 
     // DESTINATION AIRPORT FUNCTIONS
 
+    /**
+     * Passenger leaves the plane when arriving to destination airport.
+     */
     public void leaveThePlane(){
         Message ret = null;
 

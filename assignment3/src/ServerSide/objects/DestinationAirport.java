@@ -7,7 +7,9 @@ import ServerSide.main.*;
 import interfaces.*;
 
 /**
- * Shared Region Destination Airport
+ * Shared Region Destination Airport.
+ * @author André Alves
+ * @author Mariana Pinto
  */
 public class DestinationAirport implements DestinationAirportInterface {
 
@@ -74,6 +76,10 @@ public class DestinationAirport implements DestinationAirportInterface {
         return new Message(PassengerStates.AT_DESTINATION, passId);
     }
 
+    /**
+     * Operation server shutdown.
+     * @throws RemoteException
+     */
     @Override
     public void shutdown() throws RemoteException {
         DestinationAirportMain.shutdown();

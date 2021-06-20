@@ -8,7 +8,9 @@ import java.rmi.*;
 
 
 /**
- * Shared Region Plane
+ * Shared Region Plane.
+ * @author André Alves
+ * @author Mariana Pinto
  *
  */
 public class Plane implements PlaneInterface {
@@ -158,6 +160,10 @@ public class Plane implements PlaneInterface {
         return HostessStates.READY_TO_FLY;
     }
 
+    /**
+     * Operation server shutdown.
+     * @throws RemoteException
+     */
     @Override
     public void shutdown() throws RemoteException {
         PlaneMain.shutdown();

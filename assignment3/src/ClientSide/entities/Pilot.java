@@ -8,8 +8,8 @@ import java.rmi.RemoteException;
 
 /**
  * Pilot thread and life cycle.
- * @author Mariana Pinto
  * @author André Alves
+ * @author Mariana Pinto
  */
 public class Pilot extends Thread {
 
@@ -107,6 +107,8 @@ public class Pilot extends Thread {
 
     /**
      * Plane is flying.
+     *
+     * Internal operation.
      */
     private void fly() {
         try {
@@ -116,6 +118,9 @@ public class Pilot extends Thread {
 
     // DEPARTURE AIRPORT FUNCTIONS
 
+    /**
+     * Pilot informs hostess that the plane is ready to take off.
+     */
     public void informPlaneReadyForBoarding(){
         int ret = -1;
 
@@ -128,6 +133,9 @@ public class Pilot extends Thread {
         currentState = ret;
     }
 
+    /**
+     * Pilot parks the plane at the transfer gate.
+     */
     public void parkAtTransferGate(){
         Message ret = null;
 
@@ -143,6 +151,9 @@ public class Pilot extends Thread {
 
     // PLANE
 
+    /**
+     * Pilot waits for boarding to end.
+     */
     public void waitForAllInBoard(){
         int ret = -1;
 
@@ -155,6 +166,9 @@ public class Pilot extends Thread {
         currentState = ret;
     }
 
+    /**
+     * Pilot flies the plane to the destination airport.
+     */
     public void flyToDestinationPoint(){
         int ret = -1;
 
@@ -167,6 +181,9 @@ public class Pilot extends Thread {
         currentState = ret;
     }
 
+    /**
+     * Pilot flies the plane to Departure airport.
+     */
     public void flyToDeparturePoint(){
         Message ret = null;
 
@@ -181,6 +198,9 @@ public class Pilot extends Thread {
 
     // DESTINATION AIRPORT
 
+    /**
+     * Pilot announces arrival at destination airport.
+     */
     public void announceArrival(){
         int ret = -1;
 
@@ -195,6 +215,10 @@ public class Pilot extends Thread {
 
     // GENERAL REPOSITORY FUNCTIONS
 
+    /**
+     * Gets the number of passengers arrived at the destination airport.
+     * @return number of passengers arrived at the destination airport.
+     */
     public int getPTAL(){
         int ret = -1;
 
@@ -207,6 +231,9 @@ public class Pilot extends Thread {
         return ret;
     }
 
+    /**
+     *  Close of operations.
+     */
     public void sumUp(){
         try {
             repos.sumUp();

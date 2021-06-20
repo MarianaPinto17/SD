@@ -11,6 +11,8 @@ import interfaces.*;
  *
  *    Implementation of a client-server model of type 2 (server replication).
  *    Communication is based on Java RMI.
+ * @author André Alves
+ * @author Mariana Pinto
  */
 
 public class DestinationAirportMain {
@@ -28,7 +30,6 @@ public class DestinationAirportMain {
      *        args[1] - name of the platform where is located the RMI registering service
      *        args[2] - port number where the registering service is listening to service requests
      */
-
     public static void main (String[] args) {
         int portNumb = -1;                                             // port number for listening to service requests
         String rmiRegHostName;                                         // name of the platform where is located the RMI registering service
@@ -198,7 +199,6 @@ public class DestinationAirportMain {
     /**
      *  Close of operations.
      */
-
     public static void shutdown ()
     {
         end = true;

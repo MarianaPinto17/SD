@@ -7,7 +7,9 @@ import interfaces.*;
 import java.rmi.*;
 
 /**
- * Shared Region Departure Airport
+ * Shared Region Departure Airport.
+ * @author André Alves
+ * @author Mariana Pinto
  */
 public class DepartureAirport implements DepartureAirportInterface {
     /**
@@ -87,7 +89,8 @@ public class DepartureAirport implements DepartureAirportInterface {
     private boolean waitPassengers;
 
     /**
-     * Departure Airport constructor
+     * Departure Airport constructor.
+     *
      * @param repos general repository of information
      */
     public DepartureAirport(GeneralRepositoryInterface repos){
@@ -365,7 +368,6 @@ public class DepartureAirport implements DepartureAirportInterface {
      *      @throws RemoteException if either the invocation of the remote method, or the communication with the registry
      *                              service fails
      */
-
     @Override
     public void shutdown() throws RemoteException {
         DepartureAirportMain.shutdown();

@@ -27,8 +27,9 @@ public class DepartureAirportMain {
      *        args[0] - port number for listening to service requests
      *        args[1] - name of the platform where is located the RMI registering service
      *        args[2] - port number where the registering service is listening to service requests
+     * @author André Alves
+     * @author Mariana Pinto
      */
-
     public static void main (String[] args) {
         int portNumb = -1;                                             // port number for listening to service requests
         String rmiRegHostName;                                         // name of the platform where is located the RMI registering service

@@ -11,6 +11,8 @@ import java.rmi.registry.*;
  *
  *    Implementation of a client-server model of type 2 (server replication).
  *    Communication is based on a communication channel under the TCP protocol.
+ * @author André Alves
+ * @author Mariana Pinto
  */
 
 public class PassengerMain {
@@ -143,5 +145,12 @@ public class PassengerMain {
             System.out.println("Passenger generator remote exception on Plane shutdown: " + e.getMessage());
             System.exit(1);
         }
+    }
+
+    /**
+     * The class can not be instantiated.
+     */
+    private PassengerMain(){
+
     }
 }

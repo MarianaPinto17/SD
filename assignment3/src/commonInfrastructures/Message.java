@@ -2,27 +2,34 @@ package commonInfrastructures;
 
 import java.io.Serializable;
 
+/**
+ *   Internal structure of the exchanged messages.
+ *
+ *   Implementation of a client-server model of type 2 (server replication).
+ *   Communication is based on a communication channel under the TCP protocol.
+ */
+
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 7973215442438841515L;
 
     /**
-     * File Name
+     * File Name.
      */
     private String filename = null;
 
     /**
-     * Passenger Id
+     * Passenger Id.
      */
     private int passId = -1;
 
     /**
-     * state number (can be for Pilot, Hostess or Passenger)
+     * State number (can be for Pilot, Hostess or Passenger).
      */
     private int state = -1;
 
     /**
-     * boolean
+     * Boolean state.
      */
     private boolean boolState = false;
 
@@ -50,7 +57,7 @@ public class Message implements Serializable {
     }
 
     /**
-     * Getting passenger id
+     * Getting passenger id.
      * @return passenger id
      */
     public int getPassId() {
@@ -66,7 +73,7 @@ public class Message implements Serializable {
     }
 
     /**
-     * Getting file name of log
+     * Getting file name of log.
      * @return file name of logfile
      */
     public String getFilename() {
@@ -74,7 +81,7 @@ public class Message implements Serializable {
     }
 
     /**
-     * Getting number corresponding to state
+     * Getting number corresponding to state.
      * @return number corresponding to state
      */
     public int getState() {

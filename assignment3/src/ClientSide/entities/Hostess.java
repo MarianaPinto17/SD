@@ -7,21 +7,19 @@ import interfaces.*;
 
 /**
  * Hostess thread and life cycle.
- * @author Mariana Pinto
  * @author André Alves
+ * @author Mariana Pinto
  */
 public class Hostess extends Thread{
 
     /**
      * Reference to Departure Airport.
      */
-
     private final DepartureAirportInterface depAir;
 
     /**
      * Reference to Plane.
      */
-
     private final PlaneInterface plane;
 
     /**
@@ -78,6 +76,10 @@ public class Hostess extends Thread{
 
     // DEPARTURE AIRPORT FUNCTIONS
 
+    /**
+     * Hostess waiting for boarding to start.
+     * @return hostess state
+     */
     public boolean prepareForPassBoarding(){
         Message ret = null;                            // return value
 
@@ -91,6 +93,9 @@ public class Hostess extends Thread{
         return ret.boolState();
     }
 
+    /**
+     * Hostess checks documents of passengers.
+     */
     public void checkDocuments(){
         int ret = -1;
 
@@ -103,6 +108,9 @@ public class Hostess extends Thread{
         currentState = ret;
     }
 
+    /**
+     * Hostess waits for next passenger in line.
+     */
     public void waitForNextPassenger(){
         int ret = -1;
 
@@ -115,6 +123,9 @@ public class Hostess extends Thread{
         currentState = ret;
     }
 
+    /**
+     * Hostess waits for the next flight.
+     */
     public void waitForNextFlight(){
         int ret = -1;
 
@@ -127,6 +138,10 @@ public class Hostess extends Thread{
         currentState = ret;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isInformPlane(){
         boolean ret = false;
 
@@ -139,6 +154,9 @@ public class Hostess extends Thread{
         return ret;
     }
 
+    /**
+     * Hostess shutdown.
+     */
     public void shutdown(){
         try {
             depAir.waitForNextFlight();
@@ -150,6 +168,9 @@ public class Hostess extends Thread{
 
     // PLANE FUNCTIONS
 
+    /**
+     * Hostess informs that the plane is ready to take of.
+     */
     public void informPlaneReadyToTakeOff(){
         int ret = -1;
 
