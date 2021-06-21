@@ -137,15 +137,15 @@ public class GeneralRepositoryMain {
         System.out.println("General Repository is in operation!");
 
         try {
-            while (!end) synchronized (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")) {
+            while (!end) synchronized (Class.forName ("ServerSide.main.GeneralRepositoryMain")) {
                 try {
-                    (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")).wait ();
+                    (Class.forName ("ServerSide.main.GeneralRepositoryMain")).wait ();
                 } catch (InterruptedException e) {
                     System.out.println("General Repository main thread was interrupted!");
                 }
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("The data type ServerSleepingBarbersGeneralRepos was not found (blocking)!");
+            System.out.println("The data type GeneralRepositoryMain was not found (blocking)!");
             e.printStackTrace ();
             System.exit (1);
         }
@@ -187,11 +187,11 @@ public class GeneralRepositoryMain {
     public static void shutdown () {
         end = true;
         try {
-            synchronized (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")) {
-                (Class.forName ("serverSide.main.ServerSleepingBarbersGeneralRepos")).notify ();
+            synchronized (Class.forName ("ServerSide.main.GeneralRepositoryMain")) {
+                (Class.forName ("ServerSide.main.GeneralRepositoryMain")).notify ();
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("The data type ServerSleepingBarbersGeneralRepos was not found (waking up)!");
+            System.out.println("The data type GeneralRepositoryMain was not found (waking up)!");
             e.printStackTrace ();
             System.exit (1);
         }

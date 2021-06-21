@@ -1,7 +1,6 @@
 package ClientSide.entities;
 
 import ServerSide.main.SimulPar;
-import commonInfrastructures.Message;
 import interfaces.*;
 
 import java.rmi.RemoteException;

@@ -16,21 +16,6 @@ import java.rmi.*;
 public class Plane implements PlaneInterface {
 
     /**
-     * Reference to Passenger threads.
-     */
-    private final Passenger[] pass;
-
-    /**
-     * Reference to pilot.
-     */
-    private Pilot pi;
-
-    /**
-     * Reference to hostess.
-     */
-    private Hostess ho;
-
-    /**
      * is plane ready to fly
      */
     private boolean readyToFly;
@@ -55,10 +40,6 @@ public class Plane implements PlaneInterface {
      * @param repos reference to general repository.
      */
     public Plane(GeneralRepositoryInterface repos) {
-        pass = new Passenger[SimulPar.N];
-        for (int i = 0; i < SimulPar.N; i++)
-                pass[i] = null;
-
         try {
             waitingPassenger = new MemFIFO<> (new Integer [SimulPar.N]);
         } catch (MemException e) {
@@ -76,10 +57,8 @@ public class Plane implements PlaneInterface {
      */
     @Override
     public synchronized int waitForAllInBoard() throws RemoteException {
-        pi = (Pilot) Thread.currentThread();
         arrivedAtDest = false;
         // Pilot is inside the plane ready for boarding
-        pi.setPilotState(PilotStates.WAIT_FOR_BOARDING);
         repos.setPilotState(PilotStates.WAIT_FOR_BOARDING);
 
         return PilotStates.WAIT_FOR_BOARDING;
@@ -90,7 +69,6 @@ public class Plane implements PlaneInterface {
      */
     @Override
     public synchronized int flyToDestinationPoint() throws RemoteException {
-        pi = (Pilot) Thread.currentThread();
         while (!readyToFly){
             try{
                 wait();
@@ -99,7 +77,6 @@ public class Plane implements PlaneInterface {
 
         readyToFly = false;
 
-        pi.setPilotState(PilotStates.FLYING_FORWARD);
         repos.setPilotState(PilotStates.FLYING_FORWARD);
 
         arrivedAtDest = true;
@@ -131,11 +108,9 @@ public class Plane implements PlaneInterface {
      */
     @Override
     public synchronized Message flyToDeparturePoint() throws RemoteException {
-        pi = (Pilot) Thread.currentThread();
 
         repos.setEmptyPlaneDest(false);
 
-        pi.setPilotState(PilotStates.FLYING_BACK);
         repos.setPilotState(PilotStates.FLYING_BACK);
 
         return new Message(PilotStates.FLYING_BACK, false);
@@ -147,9 +122,6 @@ public class Plane implements PlaneInterface {
      */
     @Override
     public synchronized int informPlaneReadyToTakeOff() throws RemoteException {
-        ho = (Hostess) Thread.currentThread();
-
-        ho.setHostessState(HostessStates.READY_TO_FLY);
         System.out.println();
         repos.setHostessState(HostessStates.READY_TO_FLY);
 

@@ -78,11 +78,11 @@ public class HostessMain {
         try {
             plane = (PlaneInterface) registry.lookup(nameEntryPlane);
         } catch (RemoteException e) {
-            System.out.println("GeneralRepos lookup exception: " + e.getMessage ());
+            System.out.println("Plane lookup exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         } catch (NotBoundException e) {
-            System.out.println("GeneralRepos not bound exception: " + e.getMessage ());
+            System.out.println("Plane not bound exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
@@ -104,7 +104,7 @@ public class HostessMain {
         try {
             depAir.shutdown();
         } catch (RemoteException e) {
-            System.out.println("Hostess generator remote exception on General Repository shutdown: " + e.getMessage());
+            System.out.println("Hostess generator remote exception on Departure Airport shutdown: " + e.getMessage());
             System.exit(1);
         }
 

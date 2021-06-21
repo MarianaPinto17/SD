@@ -3,7 +3,6 @@
 echo "Compiling source code."
 javac */*.java */*/*.java
 
-echo "Distributing intermediate code to the different execution environments."
 echo "  Register Remote Objects"
 rm -rf dirRegistry/ServerSide dirRegistry/interfaces
 mkdir -p dirRegistry/ServerSide dirRegistry/ServerSide/main dirRegistry/ServerSide/objects dirRegistry/interfaces
@@ -16,39 +15,75 @@ mkdir -p dirGeneralRepos/ServerSide dirGeneralRepos/ServerSide/main dirGeneralRe
          dirGeneralRepos/ClientSide dirGeneralRepos/ClientSide/entities
 cp ServerSide/main/SimulPar.class ServerSide/main/GeneralRepositoryMain.class dirGeneralRepos/ServerSide/main
 cp ServerSide/objects/GeneralRepository.class dirGeneralRepos/ServerSide/objects
-cp interfaces/Register.class interfaces/GeneralRepositoryInterface.class dirGeneralRepos/interfaces
+cp interfaces/*.class dirGeneralRepos/interfaces
 cp ClientSide/entities/HostessStates.class ClientSide/entities/PassengerStates.class ClientSide/entities/PilotStates.class dirGeneralRepos/ClientSide/entities
 
-# TODO:
-# SCRIPTSSSSSSS
 echo "  Departure Airport"
-rm -rf dirBarberShop/ServerSide dirBarberShop/ClientSide dirBarberShop/interfaces dirBarberShop/commonInfrastructures
-mkdir -p dirBarberShop/ServerSide dirBarberShop/ServerSide/main dirBarberShop/ServerSide/objects dirBarberShop/interfaces \
-         dirBarberShop/ClientSide dirBarberShop/ClientSide/entities dirBarberShop/commonInfrastructures
-cp ServerSide/main/SimulPar.class ServerSide/main/ServerSleepingBarbersBarberShop.class dirBarberShop/ServerSide/main
-cp ServerSide/objects/BarberShop.class dirBarberShop/ServerSide/objects
-cp interfaces/*.class dirBarberShop/interfaces
-cp ClientSide/entities/BarberStates.class ClientSide/entities/CustomerStates.class dirBarberShop/ClientSide/entities
-cp commonInfrastructures/*.class dirBarberShop/commonInfrastructures
+rm -rf dirDepAir/ServerSide dirDepAir/ClientSide dirDepAir/interfaces dirDepAir/commonInfrastructures
+mkdir -p dirDepAir/ServerSide dirDepAir/ServerSide/main dirDepAir/ServerSide/objects dirDepAir/interfaces \
+         dirDepAir/ClientSide dirDepAir/ClientSide/entities dirDepAir/commonInfrastructures
+cp ServerSide/main/SimulPar.class ServerSide/main/DepartureAirportMain.class dirDepAir/ServerSide/main
+cp ServerSide/objects/DepartureAirport.class dirDepAir/ServerSide/objects
+cp interfaces/*.class dirDepAir/interfaces
+cp ClientSide/entities/PilotStates.class ClientSide/entities/HostessStates.class ClientSide/entities/PassengerStates.class dirDepAir/ClientSide/entities
+cp commonInfrastructures/*.class dirDepAir/commonInfrastructures
+
+echo "  Destination Airport"
+rm -rf dirDesAir/ServerSide dirDesAir/ClientSide dirDesAir/interfaces dirDesAir/commonInfrastructures
+mkdir -p dirDesAir/ServerSide dirDesAir/ServerSide/main dirDesAir/ServerSide/objects dirDesAir/interfaces \
+         dirDesAir/ClientSide dirDesAir/ClientSide/entities dirDesAir/commonInfrastructures
+cp ServerSide/main/SimulPar.class ServerSide/main/DestinationAirportMain.class dirDesAir/ServerSide/main
+cp ServerSide/objects/DestinationAirport.class dirDesAir/ServerSide/objects
+cp interfaces/*.class dirDesAir/interfaces
+cp ClientSide/entities/PilotStates.class ClientSide/entities/PassengerStates.class dirDesAir/ClientSide/entities
+cp commonInfrastructures/*.class dirDesAir/commonInfrastructures
+
+echo "  Plane"
+rm -rf dirPlane/ServerSide dirPlane/ClientSide dirPlane/interfaces dirPlane/commonInfrastructures
+mkdir -p dirPlane/ServerSide dirPlane/ServerSide/main dirPlane/ServerSide/objects dirPlane/interfaces \
+         dirPlane/ClientSide dirPlane/ClientSide/entities dirPlane/commonInfrastructures
+cp ServerSide/main/SimulPar.class ServerSide/main/PlaneMain.class dirPlane/ServerSide/main
+cp ServerSide/objects/Plane.class dirPlane/ServerSide/objects
+cp interfaces/*.class dirPlane/interfaces
+cp ClientSide/entities/PilotStates.class ClientSide/entities/HostessStates.class ClientSide/entities/PassengerStates.class dirPlane/ClientSide/entities
+cp commonInfrastructures/*.class dirPlane/commonInfrastructures
 
 
 
-echo "  Barbers"
-rm -rf dirBarbers/ServerSide dirBarbers/ClientSide dirBarbers/interfaces
-mkdir -p dirBarbers/ServerSide dirBarbers/ServerSide/main dirBarbers/ClientSide dirBarbers/ClientSide/main dirBarbers/ClientSide/entities \
-         dirBarbers/interfaces
-cp ServerSide/main/SimulPar.class dirBarbers/ServerSide/main
-cp ClientSide/main/ClientSleepingBarbersBarber.class dirBarbers/ClientSide/main
-cp ClientSide/entities/Barber.class ClientSide/entities/BarberStates.class dirBarbers/ClientSide/entities
-cp interfaces/BarberShopInterface.class interfaces/GeneralReposInterface.class interfaces/ReturnBoolean.class interfaces/ReturnInt.class dirBarbers/interfaces
-echo "  Customers"
-rm -rf dirCustomers/ServerSide dirCustomers/ClientSide dirCustomers/interfaces
-mkdir -p dirCustomers/ServerSide dirCustomers/ServerSide/main dirCustomers/ClientSide dirCustomers/ClientSide/main dirCustomers/ClientSide/entities \
-         dirCustomers/interfaces
-cp ServerSide/main/SimulPar.class dirCustomers/ServerSide/main
-cp ClientSide/main/ClientSleepingBarbersCustomer.class dirCustomers/ClientSide/main
-cp ClientSide/entities/Customer.class ClientSide/entities/CustomerStates.class dirCustomers/ClientSide/entities
-cp interfaces/BarberShopInterface.class interfaces/GeneralReposInterface.class interfaces/ReturnBoolean.class interfaces/ReturnInt.class dirCustomers/interfaces
+echo "  Pilot"
+rm -rf dirPilot/ServerSide dirPilot/ClientSide dirPilot/interfaces
+mkdir -p dirPilot/ServerSide dirPilot/ServerSide/main dirPilot/ClientSide dirPilot/ClientSide/main dirPilot/ClientSide/entities \
+         dirPilot/interfaces dirPilot/commonInfrastructures
+cp ServerSide/main/SimulPar.class dirPilot/ServerSide/main
+cp ClientSide/main/PilotMain.class dirPilot/ClientSide/main
+cp ClientSide/entities/Pilot.class ClientSide/entities/PilotStates.class dirPilot/ClientSide/entities
+cp interfaces/DepartureAirportInterface.class interfaces/DestinationAirportInterface.class interfaces/PlaneInterface.class \
+    interfaces/GeneralRepositoryInterface.class interfaces/Message.class interfaces/MessageException.class dirPilot/interfaces
+cp commonInfrastructures/*.class dirPlane/commonInfrastructures
+
+echo "  Passengers"
+rm -rf dirPassengers/ServerSide dirPassengers/ClientSide dirPassengers/interfaces
+mkdir -p dirPassengers/ServerSide dirPassengers/ServerSide/main dirPassengers/ClientSide dirPassengers/ClientSide/main dirPassengers/ClientSide/entities \
+         dirPassengers/interfaces dirPassengers/commonInfrastructures
+cp ServerSide/main/SimulPar.class dirPassengers/ServerSide/main
+cp ClientSide/main/PassengerMain.class dirPassengers/ClientSide/main
+cp ClientSide/entities/Passenger.class ClientSide/entities/PassengerStates.class dirPassengers/ClientSide/entities
+cp interfaces/DepartureAirportInterface.class interfaces/DestinationAirportInterface.class interfaces/PlaneInterface.class \
+    interfaces/GeneralRepositoryInterface.class interfaces/Message.class interfaces/MessageException.class dirPassengers/interfaces
+cp commonInfrastructures/*.class dirPlane/commonInfrastructures
+
+echo "  Hostess"
+rm -rf dirHostess/ServerSide dirHostess/ClientSide dirHostess/interfaces
+mkdir -p dirHostess/ServerSide dirHostess/ServerSide/main dirHostess/ClientSide dirHostess/ClientSide/main dirHostess/ClientSide/entities \
+         dirHostess/interfaces dirHostess/commonInfrastructures
+cp ServerSide/main/SimulPar.class dirHostess/ServerSide/main
+cp ClientSide/main/HostessMain.class dirHostess/ClientSide/main
+cp ClientSide/entities/Hostess.class ClientSide/entities/HostessStates.class dirHostess/ClientSide/entities
+cp interfaces/DepartureAirportInterface.class interfaces/PlaneInterface.class \
+    interfaces/GeneralRepositoryInterface.class interfaces/Message.class interfaces/MessageException.class dirHostess/interfaces
+cp commonInfrastructures/*.class dirPlane/commonInfrastructures
+
+
 echo "Compressing execution environments."
 echo "  Register Remote Objects"
 rm -f  dirRegistry.zip
@@ -56,172 +91,42 @@ zip -rq dirRegistry.zip dirRegistry set_rmiregistry_alt.sh
 echo "  General Repository of Information"
 rm -f  dirGeneralRepos.zip
 zip -rq dirGeneralRepos.zip dirGeneralRepos
-echo "  Barber Shop"
-rm -f  dirBarberShop.zip
-zip -rq dirBarberShop.zip dirBarberShop
-echo "  Barbers"
-rm -f  dirBarbers.zip
-zip -rq dirBarbers.zip dirBarbers
-echo "  Customers"
-rm -f  dirCustomers.zip
-zip -rq dirCustomers.zip dirCustomers
-echo "Deploying and decompressing execution environments."
-mkdir -p /home/$1/test/SleepingBarbers
-rm -rf /home/$1/test/SleepingBarbers/*
-cp dirRegistry.zip /home/$1/test/SleepingBarbers
-cp dirGeneralRepos.zip /home/$1/test/SleepingBarbers
-cp dirBarberShop.zip /home/$1/test/SleepingBarbers
-cp dirBarbers.zip /home/$1/test/SleepingBarbers
-cp dirCustomers.zip /home/$1/test/SleepingBarbers
-cd /home/$1/test/SleepingBarbers
-unzip -q dirRegistry.zip
-mv set_rmiregistry_alt.sh /home/$1
-unzip -q dirGeneralRepos.zip
-unzip -q dirBarberShop.zip
-unzip -q dirBarbers.zip
-unzip -q dirCustomers.zip
-
-###////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-echo "Distributing intermediate code to the different execution environments."
-mkdir -p test/AirLift
-echo "  General Repository of Information"
-rm -rf test/AirLift/generalRepositoryDir
-mkdir -p test/AirLift/generalRepositoryDir test/AirLift/generalRepositoryDir/ServerSide test/AirLift/generalRepositoryDir/ServerSide/main test/AirLift/generalRepositoryDir/ServerSide/sharedRegions \
-         test/AirLift/generalRepositoryDir/ServerSide/entities test/AirLift/generalRepositoryDir/ClientSide test/AirLift/generalRepositoryDir/ClientSide/entities test/AirLift/generalRepositoryDir/ClientSide/main \
-         test/AirLift/generalRepositoryDir/ClientSide/stub test/AirLift/generalRepositoryDir/commonInfrastructures
-cp ServerSide/main/SimulPar.class ServerSide/main/GeneralRepositoryMain.class test/AirLift/generalRepositoryDir/ServerSide/main
-cp ServerSide/entities/GeneralRepositoryProxy.class test/AirLift/generalRepositoryDir/ServerSide/entities
-cp ServerSide/sharedRegions/GeneralRepositoryInterface.class ServerSide/sharedRegions/GeneralRepositoryInterface\$1.class\
-   ServerSide/sharedRegions/GeneralRepository.class test/AirLift/generalRepositoryDir/ServerSide/sharedRegions
-cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class test/AirLift/generalRepositoryDir/ServerSide/entities
-cp commonInfrastructures/Message.class commonInfrastructures/MessageType.class commonInfrastructures/MessageException.class commonInfrastructures/ServerCom.class \
-   test/AirLift/generalRepositoryDir/commonInfrastructures
-
 echo "  Departure Airport"
-rm -rf test/AirLift/departureairportDir
-mkdir -p test/AirLift/departureairportDir test/AirLift/departureairportDir/ServerSide test/AirLift/departureairportDir/ServerSide/main test/AirLift/departureairportDir/ServerSide/sharedRegions \
-         test/AirLift/departureairportDir/ServerSide/entities test/AirLift/departureairportDir/ClientSide test/AirLift/departureairportDir/ClientSide/entities \
-         test/AirLift/departureairportDir/ClientSide/main test/AirLift/departureairportDir/ClientSide/stub test/AirLift/departureairportDir/commonInfrastructures
-cp ServerSide/main/SimulPar.class ServerSide/main/DepartureAirportMain.class test/AirLift/departureairportDir/ServerSide/main
-cp ServerSide/entities/DepartureAirportProxy.class test/AirLift/departureairportDir/ServerSide/entities
-cp ServerSide/sharedRegions/DepartureAirportInterface.class ServerSide/sharedRegions/DepartureAirportInterface\$1.class ServerSide/sharedRegions/DepartureAirport.class \
-   ServerSide/sharedRegions/GeneralRepositoryInterface.class ServerSide/sharedRegions/GeneralRepositoryInterface\$1.class test/AirLift/departureairportDir/ServerSide/sharedRegions
-cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class\
-   ServerSide/entities/Hostess.class ServerSide/entities/Passenger.class\
-   ServerSide/entities/Pilot.class test/AirLift/departureairportDir/ServerSide/entities
-cp ClientSide/stub/GeneralRepositoryStub.class test/AirLift/departureairportDir/ClientSide/stub
-cp commonInfrastructures/*.class test/AirLift/departureairportDir/commonInfrastructures
-
-echo "   Plane"
-rm -rf test/AirLift/planeDir
-mkdir -p test/AirLift/planeDir test/AirLift/planeDir/ServerSide test/AirLift/planeDir/ServerSide/main test/AirLift/planeDir/ServerSide/sharedRegions test/AirLift/planeDir/ServerSide/entities\
-         test/AirLift/planeDir/ClientSide test/AirLift/planeDir/ClientSide/entities test/AirLift/planeDir/ClientSide/main test/AirLift/planeDir/ClientSide/stub test/AirLift/planeDir/commonInfrastructures
-cp ServerSide/main/SimulPar.class ServerSide/main/PlaneMain.class test/AirLift/planeDir/ServerSide/main
-cp ServerSide/entities/PlaneProxy.class test/AirLift/planeDir/ServerSide/entities
-cp ServerSide/sharedRegions/PlaneInterface.class ServerSide/sharedRegions/PlaneInterface\$1.class\
-        ServerSide/sharedRegions/Plane.class ServerSide/sharedRegions/GeneralRepositoryInterface.class\
-        ServerSide/sharedRegions/GeneralRepositoryInterface\$1.class test/AirLift/planeDir/ServerSide/sharedRegions
-cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class\
-   ServerSide/entities/Hostess.class ServerSide/entities/Passenger.class\
-   ServerSide/entities/Pilot.class test/AirLift/planeDir/ServerSide/entities
-cp ClientSide/stub/GeneralRepositoryStub.class test/AirLift/planeDir/ClientSide/stub
-cp commonInfrastructures/*.class test/AirLift/planeDir/commonInfrastructures
-
-echo "   Destination Airport"
-rm -rf test/AirLift/destinationAirportDir
-mkdir -p test/AirLift/destinationAirportDir test/AirLift/destinationAirportDir/ServerSide test/AirLift/destinationAirportDir/ServerSide/main test/AirLift/destinationAirportDir/ServerSide/sharedRegions test/AirLift/destinationAirportDir/ServerSide/entities \
-         test/AirLift/destinationAirportDir/ClientSide test/AirLift/destinationAirportDir/ClientSide/entities test/AirLift/destinationAirportDir/ClientSide/main test/AirLift/destinationAirportDir/ClientSide/stub test/AirLift/destinationAirportDir/commonInfrastructures
-cp ServerSide/main/SimulPar.class ServerSide/main/DestinationAirportMain.class test/AirLift/destinationAirportDir/ServerSide/main
-cp ServerSide/entities/DestinationAirportProxy.class test/AirLift/destinationAirportDir/ServerSide/entities
-cp ServerSide/sharedRegions/DestinationAirportInterface.class ServerSide/sharedRegions/DestinationAirportInterface\$1.class\
-   ServerSide/sharedRegions/DestinationAirport.class ServerSide/sharedRegions/GeneralRepositoryInterface.class\
-   ServerSide/sharedRegions/GeneralRepositoryInterface\$1.class test/AirLift/destinationAirportDir/ServerSide/sharedRegions
-cp ServerSide/entities/HostessStates.class ServerSide/entities/PassengerStates.class ServerSide/entities/PilotStates.class\
-   ServerSide/entities/Hostess.class ServerSide/entities/Passenger.class\
-   ServerSide/entities/Pilot.class test/AirLift/destinationAirportDir/ServerSide/entities
-cp ClientSide/stub/GeneralRepositoryStub.class test/AirLift/destinationAirportDir/ClientSide/stub
-cp commonInfrastructures/*.class test/AirLift/destinationAirportDir/commonInfrastructures
-
-echo "   Pilot"
-rm -rf test/AirLift/pilotDir
-mkdir -p test/AirLift/pilotDir test/AirLift/pilotDir/ClientSide test/AirLift/pilotDir/ClientSide/entities\
-          test/AirLift/pilotDir/ClientSide/main test/AirLift/pilotDir/ClientSide/stub test/AirLift/pilotDir/commonInfrastructures
-cp ClientSide/main/SimulPar.class test/AirLift/pilotDir/ClientSide/main
-cp ClientSide/main/PilotMain.class test/AirLift/pilotDir/ClientSide/main
-cp ClientSide/entities/Pilot.class ClientSide/entities/PilotStates.class test/AirLift/pilotDir/ClientSide/entities
-cp ClientSide/stub/GeneralRepositoryStub.class ClientSide/stub/DepartureAirportStub.class ClientSide/stub/DestinationAirportStub.class ClientSide/stub/PlaneStub.class test/AirLift/pilotDir/ClientSide/stub
-cp commonInfrastructures/Message.class commonInfrastructures/MessageType.class commonInfrastructures/MessageException.class commonInfrastructures/ClientCom.class test/AirLift/pilotDir/commonInfrastructures
-
-echo "   Hostess"
-rm -rf test/AirLift/hostessDir
-mkdir -p test/AirLift/hostessDir test/AirLift/hostessDir/ClientSide test/AirLift/hostessDir/ClientSide/entities test/AirLift/hostessDir/ClientSide/main test/AirLift/hostessDir/ClientSide/stub test/AirLift/hostessDir/commonInfrastructures
-cp ClientSide/main/SimulPar.class test/AirLift/hostessDir/ClientSide/main
-cp ClientSide/main/HostessMain.class test/AirLift/hostessDir/ClientSide/main
-cp ClientSide/entities/Hostess.class ClientSide/entities/HostessStates.class test/AirLift/hostessDir/ClientSide/entities
-cp ClientSide/stub/GeneralRepositoryStub.class ClientSide/stub/DepartureAirportStub.class ClientSide/stub/PlaneStub.class test/AirLift/hostessDir/ClientSide/stub
-cp commonInfrastructures/Message.class commonInfrastructures/MessageType.class commonInfrastructures/MessageException.class commonInfrastructures/ClientCom.class test/AirLift/hostessDir/commonInfrastructures
-
-echo "   Passenger"
-rm -rf test/AirLift/passengerDir
-mkdir -p test/AirLift/passengerDir test/AirLift/passengerDir/ClientSide test/AirLift/passengerDir/ClientSide/entities\
-          test/AirLift/passengerDir/ClientSide/main test/AirLift/passengerDir/ClientSide/stub test/AirLift/passengerDir/commonInfrastructures
-cp ClientSide/main/SimulPar.class test/AirLift/passengerDir/ClientSide/main
-cp ClientSide/main/PassengerMain.class test/AirLift/passengerDir/ClientSide/main
-cp ClientSide/entities/Passenger.class ClientSide/entities/PassengerStates.class test/AirLift/passengerDir/ClientSide/entities
-cp ClientSide/stub/GeneralRepositoryStub.class ClientSide/stub/DepartureAirportStub.class ClientSide/stub/DestinationAirportStub.class ClientSide/stub/PlaneStub.class test/AirLift/passengerDir/ClientSide/stub
-cp commonInfrastructures/Message.class commonInfrastructures/MessageType.class commonInfrastructures/MessageException.class commonInfrastructures/ClientCom.class test/AirLift/passengerDir/commonInfrastructures
-
-
-echo "Compressing execution environments."
-cd test/AirLift
-mkdir -p ../out
-echo "  General Repository of Information"
-rm -f ../out/generalRepositoryDir.zip
-zip -rq ../out/generalRepositoryDir.zip generalRepositoryDir
-
-echo "  Departure Airport"
-rm -f ../out/departureairportDir.zip
-zip -rq ../out/departureairportDir.zip departureairportDir
-
+rm -f  dirDepAir.zip
+zip -rq dirDepAir.zip dirDepAir
 echo "  Destination Airport"
-rm -f ../out/destinationAirportDir.zip
-zip -rq ../out/destinationAirportDir.zip destinationAirportDir
-
+rm -f  dirDesAir.zip
+zip -rq dirDesAir.zip dirDesAir
 echo "  Plane"
-rm -f ../out/planeDir.zip
-zip -rq ../out/planeDir.zip planeDir
-
+rm -f  dirPlane.zip
+zip -rq dirPlane.zip dirPlane
 echo "  Pilot"
-rm -f ../out/pilotDir.zip
-zip -rq ../out/pilotDir.zip pilotDir
-
-echo "  Passenger"
-rm -f ../out/passengerDir.zip
-zip -rq ../out/passengerDir.zip passengerDir
-
+rm -f  dirPilot.zip
+zip -rq dirPilot.zip dirPilot
+echo "  Passengers"
+rm -f  dirPassengers.zip
+zip -rq dirPassengers.zip dirPassengers
 echo "  Hostess"
-rm -f ../out/hostessDir.zip
-zip -rq ../out/hostessDir.zip hostessDir
-
-
+rm -f  dirHostess.zip
+zip -rq dirHostess.zip dirHostess
 echo "Deploying and decompressing execution environments."
-cd ../..
-rm -rf test/out2
-mkdir -p test/out2
-cp test/out/generalRepositoryDir.zip test/out2/
-cp test/out/departureairportDir.zip test/out2/
-cp test/out/destinationAirportDir.zip test/out2/
-cp test/out/planeDir.zip test/out2/
-cp test/out/pilotDir.zip test/out2/
-cp test/out/passengerDir.zip test/out2/
-cp test/out/hostessDir.zip test/out2/
-cd test/out2
-unzip -q generalRepositoryDir.zip
-unzip -q departureairportDir.zip
-unzip -q destinationAirportDir.zip
-unzip -q planeDir.zip
-unzip -q pilotDir.zip
-unzip -q passengerDir.zip
-unzip -q hostessDir.zip
+mkdir -p ../test/Airlift
+rm -rf ../test/Airlift/*
+cp dirRegistry.zip ../test/Airlift
+cp dirGeneralRepos.zip ../test/Airlift
+cp dirDepAir.zip ../test/Airlift
+cp dirDesAir.zip ../test/Airlift
+cp dirPlane.zip ../test/Airlift
+cp dirPilot.zip ../test/Airlift
+cp dirHostess.zip ../test/Airlift
+cp dirPassengers.zip ../test/Airlift
+cd ../test/Airlift
+unzip -q dirRegistry.zip
+mv set_rmiregistry_alt.sh ..
+unzip -q dirGeneralRepos.zip
+unzip -q dirDepAir.zip
+unzip -q dirDesAir.zip
+unzip -q dirPlane.zip
+unzip -q dirPilot.zip
+unzip -q dirHostess.zip
+unzip -q dirPassengers.zip

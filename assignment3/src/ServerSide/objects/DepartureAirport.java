@@ -49,21 +49,6 @@ public class DepartureAirport implements DepartureAirportInterface {
     private GeneralRepositoryInterface repos ;
 
     /**
-     * Reference to passenger threads.
-     */
-    private final Passenger [] pass;
-
-    /**
-     * Reference to pilot.
-     */
-    private Pilot pi;
-
-    /**
-     * Reference to hostess.
-     */
-    private Hostess ho;
-
-    /**
      * array of passengers who checked documents.
      */
     private boolean [] checkedPass;
@@ -99,8 +84,6 @@ public class DepartureAirport implements DepartureAirportInterface {
         PTAL = 0;
         passengersInDepartureNotChecked = 0;
 
-        pass = new Passenger[SimulPar.N];
-
         try{
             passengersAtQueue = new MemFIFO<>(new Integer[SimulPar.N]);
         }catch (MemException e){
@@ -129,10 +112,7 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized int informPlaneReadyForBoarding() throws RemoteException {
-        pi = (Pilot) Thread.currentThread();
         // pilot is at transfer gate and ready for boarding
-        pi.setNflights(pi.getNflights()+1);
-        pi.setPilotState(PilotStates.READY_FOR_BOARDING);
         repos.setPilotState(PilotStates.READY_FOR_BOARDING);
         System.out.println("Plane ready for boarding.");
 
@@ -148,7 +128,6 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized Message prepareForPassBoarding() throws RemoteException {
-        ho = (Hostess) Thread.currentThread();
 
         if(SimulPar.N == PTAL){
             return new Message(ClientSide.entities.HostessStates.WAIT_FOR_FLIGHT, true);
@@ -159,7 +138,6 @@ public class DepartureAirport implements DepartureAirportInterface {
             } catch (InterruptedException e) {}
         }
         InF = 0;
-        ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
 
         waitPassengers = true;
@@ -180,10 +158,7 @@ public class DepartureAirport implements DepartureAirportInterface {
                 wait();
             } catch (InterruptedException e){}
         }
-        int passengerID = ((Passenger) Thread.currentThread()).getID();
-        pass[passID] = (Passenger) Thread.currentThread();
         passengersInDepartureNotChecked++;
-        pass[passID].setPassengerState(PassengerStates.IN_QUEUE);
         repos.setPassengerState(PassengerStates.IN_QUEUE, passID);
         // number of passengers in queue increases
 
@@ -203,7 +178,6 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized int checkDocuments() throws RemoteException{
-        ho = (Hostess) Thread.currentThread();
         while(passengersInDepartureNotChecked == 0){
             try{
                 wait();
@@ -219,7 +193,6 @@ public class DepartureAirport implements DepartureAirportInterface {
             System.exit(1);
         }
 
-        ho.setHostessState(HostessStates.CHECK_PASSENGER);
         repos.setHostessState(HostessStates.CHECK_PASSENGER, checkDocID);
 
         this.checkedPass[checkDocID] = true;
@@ -242,8 +215,6 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized void showDocuments(int passId) throws RemoteException {
-        int passengerID = ((Passenger) Thread.currentThread()).getID();
-        pass[passId] = (Passenger) Thread.currentThread();
         while (!this.checkedPass[passId]){
             try{
                 wait();
@@ -269,8 +240,6 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized int waitForNextPassenger() throws RemoteException {
-        ho = (Hostess) Thread.currentThread();
-        ho.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
         repos.setHostessState(HostessStates.WAIT_FOR_PASSENGER);
 
         this.canBoard = true;
@@ -300,11 +269,7 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized Message boardThePlane(int passId) throws RemoteException {
-        int passengerID = ((Passenger) Thread.currentThread()).getID();
-        pass[passId] = (Passenger) Thread.currentThread();
-
         InF++;
-        pass[passId].setPassengerState(PassengerStates.IN_FLIGHT);
         repos.setPassengerState(PassengerStates.IN_FLIGHT, passId);
 
         notifyAll();
@@ -317,8 +282,6 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized int waitForNextFlight() throws RemoteException {
-        ho = (Hostess) Thread.currentThread();
-        ho.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
         repos.setHostessState(HostessStates.WAIT_FOR_FLIGHT);
 
         PTAL += InF;
@@ -341,15 +304,12 @@ public class DepartureAirport implements DepartureAirportInterface {
      */
     @Override
     public synchronized Message parkAtTransferGate() throws RemoteException {
-        pi = (Pilot) Thread.currentThread();
         planeAtDeparture = true;
         boolean PilotEndOfLife = false;
 
-        pi.setPilotState(PilotStates.AT_TRANSFER_GATE);
         repos.setPilotState(PilotStates.AT_TRANSFER_GATE);
 
         if(SimulPar.N == PTAL){
-            pi.setPiEndOfLife(true);
             PilotEndOfLife = true;
         }
 

@@ -1,8 +1,6 @@
 package ClientSide.entities;
 
-import commonInfrastructures.Message;
 import interfaces.*;
-import ClientSide.entities.*;
 
 import java.rmi.RemoteException;
 

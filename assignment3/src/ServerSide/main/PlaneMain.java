@@ -108,7 +108,7 @@ public class PlaneMain {
         try {
             planeStub = (PlaneInterface) UnicastRemoteObject.exportObject (plane, portNumb);
         } catch (RemoteException e) {
-            System.out.println("Departure Airport stub generation exception: " + e.getMessage ());
+            System.out.println("Plane stub generation exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
@@ -138,26 +138,26 @@ public class PlaneMain {
         try {
             reg.bind (nameEntryObject, planeStub);
         } catch (RemoteException e) {
-            System.out.println("Departure Airport registration exception: " + e.getMessage ());
+            System.out.println("Plane registration exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         } catch (AlreadyBoundException e) {
-            System.out.println("Departure Airport already bound exception: " + e.getMessage ());
+            System.out.println("Plane already bound exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
 
-        System.out.println("Departure Airport object was registered!");
+        System.out.println("Plane object was registered!");
 
         /* wait for the end of operations */
 
-        System.out.println("Departure Airport is in operation!");
+        System.out.println("Plane is in operation!");
         try {
             while (!end) synchronized (Class.forName ("ServerSide.main.PlaneMain")) {
                 try {
                     (Class.forName ("ServerSide.main.PlaneMain")).wait ();
                 } catch (InterruptedException e) {
-                    System.out.println("Departure Airport main thread was interrupted!");
+                    System.out.println("Plane main thread was interrupted!");
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -173,27 +173,27 @@ public class PlaneMain {
         try {
             reg.unbind (nameEntryObject);
         } catch (RemoteException e) {
-            System.out.println("Departure Airport deregistration exception: " + e.getMessage ());
+            System.out.println("Plane deregistration exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         } catch (NotBoundException e) {
-            System.out.println("Departure Airport ot bound exception: " + e.getMessage ());
+            System.out.println("Plane ot bound exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
 
-        System.out.println("Departure Airport was deregistered!");
+        System.out.println("Plane was deregistered!");
 
         try {
             shutdownDone = UnicastRemoteObject.unexportObject (plane, true);
         } catch (NoSuchObjectException e) {
-            System.out.println("Departure Airport unexport exception: " + e.getMessage ());
+            System.out.println("Plane unexport exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
 
         if (shutdownDone)
-            System.out.println("Departure Airport was shutdown!");
+            System.out.println("Plane was shutdown!");
     }
 
     /**

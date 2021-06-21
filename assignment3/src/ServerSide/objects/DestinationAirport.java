@@ -12,17 +12,6 @@ import interfaces.*;
  * @author Mariana Pinto
  */
 public class DestinationAirport implements DestinationAirportInterface {
-
-    /**
-     * Reference to the passenger threads.
-     */
-    private final Passenger[] pass;
-
-    /**
-     * Reference to the Pilot.
-     */
-    private Pilot pi;
-
     /**
      * Reference to the General Repository.
      */
@@ -33,7 +22,6 @@ public class DestinationAirport implements DestinationAirportInterface {
      * @param repos general repository of information
      */
     public DestinationAirport(GeneralRepositoryInterface repos){
-        pass = new Passenger[SimulPar.N];
         this.repos = repos;
     }
 
@@ -42,8 +30,6 @@ public class DestinationAirport implements DestinationAirportInterface {
      */
     @Override
     public synchronized int announceArrival() throws RemoteException {
-        pi = (Pilot) Thread.currentThread();
-        pi.setPilotState(PilotStates.DEBOARDING);
         repos.setPilotState(PilotStates.DEBOARDING);
 
         notifyAll();
@@ -61,14 +47,9 @@ public class DestinationAirport implements DestinationAirportInterface {
      */
     @Override
     public synchronized Message leaveThePlane(int passId) throws RemoteException {
-        int passengerID = ((Passenger) Thread.currentThread()).getID();
-
-        pass[passId] = (Passenger) Thread.currentThread();
-
         if(repos.getInF() == 0){
             repos.setEmptyPlaneDest(true);
         }
-        pass[passId].setPassengerState(PassengerStates.AT_DESTINATION);
         repos.setPassengerState(PassengerStates.AT_DESTINATION, passId);
 
         notifyAll();

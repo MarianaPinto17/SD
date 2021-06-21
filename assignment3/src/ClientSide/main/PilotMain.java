@@ -93,11 +93,11 @@ public class PilotMain {
         try {
             desAir = (DestinationAirportInterface) registry.lookup(nameEntryDestinationAirport);
         } catch (RemoteException e) {
-            System.out.println("GeneralRepos lookup exception: " + e.getMessage ());
+            System.out.println("DestinationAirport lookup exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         } catch (NotBoundException e) {
-            System.out.println("GeneralRepos not bound exception: " + e.getMessage ());
+            System.out.println("DestinationAirport not bound exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
@@ -105,11 +105,11 @@ public class PilotMain {
         try {
             plane = (PlaneInterface) registry.lookup(nameEntryPlane);
         } catch (RemoteException e) {
-            System.out.println("DepartureAirport lookup exception: " + e.getMessage ());
+            System.out.println("Plane lookup exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         } catch (NotBoundException e) {
-            System.out.println("DepartureAirport not bound exception: " + e.getMessage ());
+            System.out.println("Plane not bound exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit (1);
         }
