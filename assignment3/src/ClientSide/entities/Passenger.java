@@ -120,7 +120,7 @@ public class Passenger extends Thread {
         try {
             ret = depAir.waitInQueue(id);
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on waitInQueue: " + e.getMessage ());
+            System.out.println("Passenger remote exception on waitInQueue: " + e.getMessage ());
             System.exit(1);
         }
 
@@ -135,7 +135,7 @@ public class Passenger extends Thread {
         try {
             depAir.showDocuments(id);
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on showDocuments: " + e.getMessage ());
+            System.out.println("Passenger remote exception on showDocuments: " + e.getMessage ());
             System.exit(1);
         }
     }
@@ -149,7 +149,7 @@ public class Passenger extends Thread {
         try {
             ret = depAir.boardThePlane(id);
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on boardThePlane: " + e.getMessage ());
+            System.out.println("Passenger remote exception on boardThePlane: " + e.getMessage ());
             System.exit(1);
         }
 
@@ -166,7 +166,7 @@ public class Passenger extends Thread {
         try {
             plane.waitForEndOfFlight(id);
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on waitForEndOfFlight: " + e.getMessage ());
+            System.out.println("Passenger remote exception on waitForEndOfFlight: " + e.getMessage ());
             System.exit(1);
         }
     }
@@ -182,7 +182,7 @@ public class Passenger extends Thread {
         try {
             ret = destAir.leaveThePlane(id);
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on leaveThePlane: " + e.getMessage ());
+            System.out.println("Passenger remote exception on leaveThePlane: " + e.getMessage ());
             System.exit(1);
         }
 

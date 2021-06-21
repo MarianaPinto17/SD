@@ -127,7 +127,7 @@ public class Pilot extends Thread {
         try {
             ret = depAir.informPlaneReadyForBoarding();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on informPlaneReadyForBoarding: " + e.getMessage ());
+            System.out.println("Pilot remote exception on informPlaneReadyForBoarding: " + e.getMessage ());
             System.exit(1);
         }
         currentState = ret;
@@ -142,7 +142,7 @@ public class Pilot extends Thread {
         try {
             ret = depAir.parkAtTransferGate();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on parkAtTransferGate: " + e.getMessage ());
+            System.out.println("Pilot remote exception on parkAtTransferGate: " + e.getMessage ());
             System.exit(1);
         }
         currentState = ret.getState();
@@ -160,7 +160,7 @@ public class Pilot extends Thread {
         try {
             ret = plane.waitForAllInBoard();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on waitForAllInBoard: " + e.getMessage ());
+            System.out.println("Pilot remote exception on waitForAllInBoard: " + e.getMessage ());
             System.exit(1);
         }
         currentState = ret;
@@ -175,7 +175,7 @@ public class Pilot extends Thread {
         try {
             ret = plane.flyToDestinationPoint();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on flyToDestinationPoint: " + e.getMessage ());
+            System.out.println("Pilot remote exception on flyToDestinationPoint: " + e.getMessage ());
             System.exit(1);
         }
         currentState = ret;
@@ -190,7 +190,7 @@ public class Pilot extends Thread {
         try {
             ret = plane.flyToDeparturePoint();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on flyToDeparturePoint: " + e.getMessage ());
+            System.out.println("Pilot remote exception on flyToDeparturePoint: " + e.getMessage ());
             System.exit(1);
         }
         currentState = ret.getState();
@@ -207,7 +207,7 @@ public class Pilot extends Thread {
         try {
             ret = destAir.announceArrival();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on announceArrival: " + e.getMessage ());
+            System.out.println("Pilot remote exception on announceArrival: " + e.getMessage ());
             System.exit(1);
         }
         currentState = ret;
@@ -225,7 +225,7 @@ public class Pilot extends Thread {
         try {
             ret = repos.getPTAL();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on getPTAL: " + e.getMessage ());
+            System.out.println("Pilot remote exception on getPTAL: " + e.getMessage ());
             System.exit(1);
         }
         return ret;
@@ -238,7 +238,7 @@ public class Pilot extends Thread {
         try {
             repos.sumUp();
         } catch (RemoteException e) {
-            System.out.println("Hostess remote exception on sumUp: " + e.getMessage ());
+            System.out.println("Pilot remote exception on sumUp: " + e.getMessage ());
             System.exit(1);
         }
     }

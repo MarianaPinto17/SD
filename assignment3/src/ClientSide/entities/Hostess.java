@@ -139,8 +139,8 @@ public class Hostess extends Thread{
     }
 
     /**
-     *
-     * @return
+     * Hostess informs boarding is over.
+     * @return true if boarding is over
      */
     public boolean isInformPlane(){
         boolean ret = false;
