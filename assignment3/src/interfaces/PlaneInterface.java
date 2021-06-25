@@ -1,7 +1,6 @@
 package interfaces;
 
 import java.rmi.*;
-import commonInfrastructures.*;
 
 /**
  * Plane Interface.
@@ -36,7 +35,7 @@ public interface PlaneInterface extends Remote {
      * @return pilot state flying back
      * @throws RemoteException
      */
-    public Message flyToDeparturePoint() throws RemoteException;
+    public ReturnType flyToDeparturePoint() throws RemoteException;
 
     /**
      * Hostess informs plane is ready to take off.

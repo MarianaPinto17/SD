@@ -64,7 +64,7 @@ cp ServerSide/main/SimulPar.class dirPilot/ServerSide/main
 cp ClientSide/main/PilotMain.class dirPilot/ClientSide/main
 cp ClientSide/entities/Pilot.class ClientSide/entities/PilotStates.class dirPilot/ClientSide/entities
 cp interfaces/DepartureAirportInterface.class interfaces/DestinationAirportInterface.class interfaces/PlaneInterface.class \
-    interfaces/GeneralRepositoryInterface.class interfaces/Message.class interfaces/MessageException.class dirPilot/interfaces
+    interfaces/GeneralRepositoryInterface.class interfaces/ReturnType.class dirPilot/interfaces
 cp commonInfrastructures/*.class dirPlane/commonInfrastructures
 
 echo "  Passengers"
@@ -75,7 +75,7 @@ cp ServerSide/main/SimulPar.class dirPassengers/ServerSide/main
 cp ClientSide/main/PassengerMain.class dirPassengers/ClientSide/main
 cp ClientSide/entities/Passenger.class ClientSide/entities/PassengerStates.class dirPassengers/ClientSide/entities
 cp interfaces/DepartureAirportInterface.class interfaces/DestinationAirportInterface.class interfaces/PlaneInterface.class \
-    interfaces/GeneralRepositoryInterface.class interfaces/Message.class interfaces/MessageException.class dirPassengers/interfaces
+    interfaces/GeneralRepositoryInterface.class interfaces/ReturnType.class dirPassengers/interfaces
 cp commonInfrastructures/*.class dirPlane/commonInfrastructures
 
 echo "  Hostess"
@@ -86,7 +86,7 @@ cp ServerSide/main/SimulPar.class dirHostess/ServerSide/main
 cp ClientSide/main/HostessMain.class dirHostess/ClientSide/main
 cp ClientSide/entities/Hostess.class ClientSide/entities/HostessStates.class dirHostess/ClientSide/entities
 cp interfaces/DepartureAirportInterface.class interfaces/PlaneInterface.class \
-    interfaces/GeneralRepositoryInterface.class interfaces/Message.class interfaces/MessageException.class dirHostess/interfaces
+    interfaces/GeneralRepositoryInterface.class interfaces/ReturnType.class dirHostess/interfaces
 cp commonInfrastructures/*.class dirPlane/commonInfrastructures
 
 

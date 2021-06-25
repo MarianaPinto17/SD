@@ -99,21 +99,6 @@ public class HostessMain {
         } catch (InterruptedException e) {}
         System.out.println("The Hostess has terminated.");
 
-        System.out.println();
-
-        try {
-            depAir.shutdown();
-        } catch (RemoteException e) {
-            System.out.println("Hostess generator remote exception on Departure Airport shutdown: " + e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            plane.shutdown();
-        } catch (RemoteException e) {
-            System.out.println("Hostess generator remote exception on Plane shutdown: " + e.getMessage());
-            System.exit(1);
-        }
     }
 
     /**

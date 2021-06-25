@@ -1,8 +1,6 @@
 package interfaces;
 
 import java.rmi.*;
-import commonInfrastructures.*;
-import interfaces.*;
 
 /**
  * Departure Airport Interface.
@@ -22,7 +20,7 @@ public interface DepartureAirportInterface extends Remote {
      * @return hostess state wait for passenger
      * @throws RemoteException
      */
-    public Message prepareForPassBoarding() throws RemoteException;
+    public ReturnType prepareForPassBoarding() throws RemoteException;
 
     /**
      * Passenger waits in queue to board the plane.
@@ -30,7 +28,7 @@ public interface DepartureAirportInterface extends Remote {
      * @return passenger state in queue
      * @throws RemoteException
      */
-    public Message waitInQueue(int passId) throws RemoteException;
+    public ReturnType waitInQueue(int passId) throws RemoteException;
 
     /**
      * Hostess checking passengers documents.
@@ -59,7 +57,7 @@ public interface DepartureAirportInterface extends Remote {
      * @return passenger state in flight
      * @throws RemoteException
      */
-    public Message boardThePlane(int passId) throws RemoteException;
+    public ReturnType boardThePlane(int passId) throws RemoteException;
 
     /**
      * Hostess waits for the next flight of the day.
@@ -73,7 +71,7 @@ public interface DepartureAirportInterface extends Remote {
      * @return pilot state at transfer gate.
      * @throws RemoteException
      */
-    public Message parkAtTransferGate() throws RemoteException;
+    public ReturnType parkAtTransferGate() throws RemoteException;
 
     /**
      * Operation server shutdown.

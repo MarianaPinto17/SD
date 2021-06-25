@@ -107,13 +107,13 @@ public class Plane implements PlaneInterface {
      * Pilot function - Pilot flies back to departure.
      */
     @Override
-    public synchronized Message flyToDeparturePoint() throws RemoteException {
+    public synchronized ReturnType flyToDeparturePoint() throws RemoteException {
 
         repos.setEmptyPlaneDest(false);
 
         repos.setPilotState(PilotStates.FLYING_BACK);
 
-        return new Message(PilotStates.FLYING_BACK, false);
+        return new ReturnType(PilotStates.FLYING_BACK, false);
 
     }
 
@@ -139,6 +139,5 @@ public class Plane implements PlaneInterface {
     @Override
     public void shutdown() throws RemoteException {
         PlaneMain.shutdown();
-        notifyAll();
     }
 }

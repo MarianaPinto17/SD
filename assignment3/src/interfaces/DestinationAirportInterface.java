@@ -1,7 +1,6 @@
 package interfaces;
 
 import java.rmi.*;
-import commonInfrastructures.*;
 
 /**
  * Destination Airport Interface.
@@ -22,7 +21,7 @@ public interface DestinationAirportInterface extends Remote {
      * @return passenger state at destination
      * @throws RemoteException
      */
-    public Message leaveThePlane(int passId) throws RemoteException;
+    public ReturnType leaveThePlane(int passId) throws RemoteException;
 
     /**
      * Operation server shutdown.

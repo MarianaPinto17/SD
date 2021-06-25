@@ -9,4 +9,4 @@ sshpass -f password ssh sd101@l040101-ws08.ua.pt 'cd test/AirLift ; unzip -uq di
 echo "Executing program at the server general repository."
 sshpass -f password ssh sd101@l040101-ws08.ua.pt 'cd test/AirLift/dirGeneralRepos ; ./repos_com_d.sh sd101'
 echo "Server shutdown."
-sshpass -f password ssh sd101@l040101-ws08.ua.pt 'cd test/AirLift/dirGeneralRepos ; less stat'
+sshpass -f password ssh sd101@l040101-ws08.ua.pt 'cd test/AirLift/dirGeneralRepos ; less log.txt'

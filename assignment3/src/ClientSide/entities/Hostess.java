@@ -1,7 +1,7 @@
 package ClientSide.entities;
 
 import java.rmi.*;
-import commonInfrastructures.*;
+
 import interfaces.*;
 
 
@@ -81,7 +81,7 @@ public class Hostess extends Thread{
      * @return hostess state
      */
     public boolean prepareForPassBoarding(){
-        Message ret = null;                            // return value
+        ReturnType ret = null;                            // return value
 
         try { 
             ret = depAir.prepareForPassBoarding();

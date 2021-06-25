@@ -64,12 +64,6 @@ public class GeneralRepository implements GeneralRepositoryInterface {
 
     private int PTAL;
 
-
-    /**
-     * Ready to fly
-     */
-    private boolean readyToFly;
-
     /**
      * Arrived at destination airport
      */
@@ -109,7 +103,6 @@ public class GeneralRepository implements GeneralRepositoryInterface {
         InF = 0;
         PTAL = 0;
         arrivedAtDest = false;
-        readyToFly = false;
         nFlights = 0;
         emptyPlaneDest = false;
         this.npassengers=new int[7];
@@ -137,7 +130,6 @@ public class GeneralRepository implements GeneralRepositoryInterface {
     @Override
     public synchronized void shutdown () throws RemoteException {
         GeneralRepositoryMain.shutdown();
-        notifyAll();
     }
 
 
@@ -169,7 +161,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
      *
      * Internal Operation.
      */
-    private void reportStatus(){
+    private synchronized void reportStatus(){
         String lineStatus = "";
         try {
             FileWriter fw = new FileWriter(logFileName, true);
@@ -194,6 +186,9 @@ public class GeneralRepository implements GeneralRepositoryInterface {
                     case 5:
                         lineStatus += "FLBK ";
                         break;
+                    default:
+                        lineStatus += "ERRO ";
+                        break;
                 }
 
                 switch (hostessState){
@@ -208,6 +203,9 @@ public class GeneralRepository implements GeneralRepositoryInterface {
                         break;
                     case 0:
                         lineStatus += "WTFL ";
+                        break;
+                    default:
+                        lineStatus += "ERRO ";
                         break;
                 }
 
@@ -224,6 +222,9 @@ public class GeneralRepository implements GeneralRepositoryInterface {
                             break;
                         case 0:
                             lineStatus += "GTAP ";
+                            break;
+                        default:
+                            lineStatus += "ERRO ";
                             break;
                     }
                 }
@@ -303,6 +304,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
                 e.printStackTrace();
             }
         }
+
         reportStatus ();
     }
 
@@ -372,7 +374,7 @@ public class GeneralRepository implements GeneralRepositoryInterface {
                         pw.print("\nFlight " + (i+1) + " transported " + npassengers[i] + " passengers");
                     }
                 }
-                pw.print(".");
+                pw.println(".");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -384,52 +386,12 @@ public class GeneralRepository implements GeneralRepositoryInterface {
      */
 
     /**
-     * Checks if a plane is ready to fly
-     * @return true if the plane is ready to fly
-     */
-    public boolean isReadyToFly() {
-        return readyToFly;
-    }
-
-    /**
-     * Sets the plane ready to fly.
-     * @param readyToFly changes status of readyToFly.
-     */
-    public void setReadyToFly(boolean readyToFly) {
-        this.readyToFly = readyToFly;
-    }
-
-    /**
-     * Checks the number of passengers in queue.
-     * @return the number of passengers in queue.
-     */
-    public int getInQ() {
-        return InQ;
-    }
-
-    /**
-     * Sets the number of passengers in queue.
-     * @param inQ changes status of inQ.
-     */
-    public void setInQ(int inQ) {
-        InQ = inQ;
-    }
-
-    /**
      * Number of passengers in flight.
      * @return number of passengers inside the plane.
      */
     @Override
     public int getInF() throws RemoteException {
         return InF;
-    }
-
-    /**
-     * Sets the number of passengers inside de plane.
-     * @param inF changes status of inF.
-     */
-    public void setInF(int inF) {
-        InF = inF;
     }
 
     /**
@@ -441,29 +403,6 @@ public class GeneralRepository implements GeneralRepositoryInterface {
         return PTAL;
     }
 
-    /**
-     * Sets the number of passengers that arrived at the destination airport.
-     * @param PTAL changes status of PTAL.
-     */
-    public void setPTAL(int PTAL) {
-        this.PTAL = PTAL;
-    }
-
-    /**
-     * Checks if the plane is at destination.
-     * @return true if the plane is at destination.
-     */
-    public boolean isArrivedAtDest() {
-        return arrivedAtDest;
-    }
-
-    /**
-     * Sets the status of the plane to Arrived at destination or not.
-     * @param arrivedAtDest changes status of arrivedAtDest.
-     */
-    public void setArrivedAtDest(boolean arrivedAtDest) {
-        this.arrivedAtDest = arrivedAtDest;
-    }
 
     /**
      * Sets the status of the plane to empty when all the passengers left the plane at the destination airport.

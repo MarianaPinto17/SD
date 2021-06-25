@@ -1,7 +1,7 @@
 package ServerSide.objects;
 
 import java.rmi.*;
-import commonInfrastructures.*;
+
 import ClientSide.entities.*;
 import ServerSide.main.*;
 import interfaces.*;
@@ -46,15 +46,15 @@ public class DestinationAirport implements DestinationAirportInterface {
      * Passenger function - when the plane arrives at destination the passenger exits the plane.
      */
     @Override
-    public synchronized Message leaveThePlane(int passId) throws RemoteException {
+    public synchronized ReturnType leaveThePlane(int passId) throws RemoteException {
         if(repos.getInF() == 0){
             repos.setEmptyPlaneDest(true);
         }
-        repos.setPassengerState(PassengerStates.AT_DESTINATION, passId);
+        repos.setPassengerState(passId, PassengerStates.AT_DESTINATION);
 
         notifyAll();
 
-        return new Message(PassengerStates.AT_DESTINATION, passId);
+        return new ReturnType(PassengerStates.AT_DESTINATION, passId);
     }
 
     /**
@@ -64,6 +64,5 @@ public class DestinationAirport implements DestinationAirportInterface {
     @Override
     public void shutdown() throws RemoteException {
         DestinationAirportMain.shutdown();
-        notifyAll();
     }
 }

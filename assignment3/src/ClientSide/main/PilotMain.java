@@ -125,22 +125,17 @@ public class PilotMain {
 
         System.out.println();
 
-        while (pilot.isAlive ()) {
-            try {
-                depAir.shutdown();
-            } catch (RemoteException e) {
-                System.out.println("Pilot generator remote exception on Departure Airport shutdown: " + e.getMessage());
-                System.exit(1);
-            }
-            Thread.yield();
+        try {
+            pilot.join();
+        } catch (InterruptedException e) { }
+        System.out.println("The pilot has terminated.");
 
-            try {
-                pilot.join();
-            } catch (InterruptedException e) { }
-            System.out.println("The pilot has terminated.");
+        try {
+            depAir.shutdown();
+        } catch (RemoteException e) {
+            System.out.println("Pilot generator remote exception on Departure Airport shutdown: " + e.getMessage());
+            System.exit(1);
         }
-
-
         System.out.println();
         try {
             repos.shutdown();

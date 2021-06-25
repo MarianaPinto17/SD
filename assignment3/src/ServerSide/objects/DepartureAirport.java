@@ -127,10 +127,10 @@ public class DepartureAirport implements DepartureAirportInterface {
      * Hostess Function - prepare to start boarding passengers on the plane.
      */
     @Override
-    public synchronized Message prepareForPassBoarding() throws RemoteException {
+    public synchronized ReturnType prepareForPassBoarding() throws RemoteException {
 
         if(SimulPar.N == PTAL){
-            return new Message(ClientSide.entities.HostessStates.WAIT_FOR_FLIGHT, true);
+            return new ReturnType(ClientSide.entities.HostessStates.WAIT_FOR_FLIGHT, true);
         }
         while(!readyForBoarding){
             try {
@@ -144,7 +144,7 @@ public class DepartureAirport implements DepartureAirportInterface {
 
         notifyAll();
 
-        return new Message(HostessStates.WAIT_FOR_PASSENGER,false);
+        return new ReturnType(HostessStates.WAIT_FOR_PASSENGER,false);
 
     }
 
@@ -152,14 +152,14 @@ public class DepartureAirport implements DepartureAirportInterface {
      * Passenger function - passenger waits in queue to board the plane.
      */
     @Override
-    public synchronized Message waitInQueue(int passID) throws RemoteException{
+    public synchronized ReturnType waitInQueue(int passID) throws RemoteException{
         while(!waitPassengers){
             try{
                 wait();
             } catch (InterruptedException e){}
         }
         passengersInDepartureNotChecked++;
-        repos.setPassengerState(PassengerStates.IN_QUEUE, passID);
+        repos.setPassengerState(passID, PassengerStates.IN_QUEUE);
         // number of passengers in queue increases
 
         try{
@@ -170,7 +170,7 @@ public class DepartureAirport implements DepartureAirportInterface {
         }
         notifyAll();
 
-        return new Message(PassengerStates.IN_QUEUE, passID);
+        return new ReturnType(PassengerStates.IN_QUEUE, passID);
     }
 
     /**
@@ -268,13 +268,13 @@ public class DepartureAirport implements DepartureAirportInterface {
      * Passenger function - passenger boards the plane.
      */
     @Override
-    public synchronized Message boardThePlane(int passId) throws RemoteException {
+    public synchronized ReturnType boardThePlane(int passId) throws RemoteException {
         InF++;
-        repos.setPassengerState(PassengerStates.IN_FLIGHT, passId);
+        repos.setPassengerState(passId, PassengerStates.IN_FLIGHT);
 
         notifyAll();
 
-        return new Message(PassengerStates.IN_FLIGHT, passId);
+        return new ReturnType(PassengerStates.IN_FLIGHT, passId);
     }
 
     /**
@@ -303,7 +303,7 @@ public class DepartureAirport implements DepartureAirportInterface {
      * Pilot function - when the pilot parks the plane at the Transfer gate.
      */
     @Override
-    public synchronized Message parkAtTransferGate() throws RemoteException {
+    public synchronized ReturnType parkAtTransferGate() throws RemoteException {
         planeAtDeparture = true;
         boolean PilotEndOfLife = false;
 
@@ -315,7 +315,7 @@ public class DepartureAirport implements DepartureAirportInterface {
 
         notifyAll();
 
-        return new Message(PilotStates.AT_TRANSFER_GATE, PilotEndOfLife);
+        return new ReturnType(PilotStates.AT_TRANSFER_GATE, PilotEndOfLife);
 
     }
 
@@ -331,7 +331,6 @@ public class DepartureAirport implements DepartureAirportInterface {
     @Override
     public void shutdown() throws RemoteException {
         DepartureAirportMain.shutdown();
-        notifyAll();
     }
 
     /**

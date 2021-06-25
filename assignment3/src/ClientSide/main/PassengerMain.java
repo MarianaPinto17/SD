@@ -123,28 +123,6 @@ public class PassengerMain {
             }
             System.out.println("The passenger " + (i + 1) + " has terminated.");
         }
-
-        System.out.println();
-        try {
-            depAir.shutdown();
-        } catch (RemoteException e) {
-            System.out.println("Passenger generator remote exception on Departure Airport shutdown: " + e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            desAir.shutdown();
-        } catch (RemoteException e) {
-            System.out.println("Passenger generator remote exception on Destination Airport shutdown: " + e.getMessage());
-            System.exit(1);
-        }
-
-        try {
-            plane.shutdown();
-        } catch (RemoteException e) {
-            System.out.println("Passenger generator remote exception on Plane shutdown: " + e.getMessage());
-            System.exit(1);
-        }
     }
 
     /**

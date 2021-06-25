@@ -136,7 +136,7 @@ public class Pilot extends Thread {
      * Pilot parks the plane at the transfer gate.
      */
     public void parkAtTransferGate(){
-        Message ret = null;
+        ReturnType ret = null;
 
         try {
             ret = depAir.parkAtTransferGate();
@@ -184,7 +184,7 @@ public class Pilot extends Thread {
      * Pilot flies the plane to Departure airport.
      */
     public void flyToDeparturePoint(){
-        Message ret = null;
+        ReturnType ret = null;
 
         try {
             ret = plane.flyToDeparturePoint();

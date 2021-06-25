@@ -101,7 +101,7 @@ public class Passenger extends Thread {
     private void travelToAirport()
     {
         try {
-            sleep ((long) (1 + 8000 * Math.random ()));
+            sleep ((long) (1 + 1000 * Math.random ()));
         } catch (InterruptedException e) {}
 
     }
@@ -113,7 +113,7 @@ public class Passenger extends Thread {
      * Passenger waits in queue.
      */
     public void waitInQueue(){
-        Message ret = null;
+        ReturnType ret = null;
 
         try {
             ret = depAir.waitInQueue(id);
@@ -142,7 +142,7 @@ public class Passenger extends Thread {
      * Passenger boards the plane.
      */
     public void boardThePlane(){
-        Message ret = null;
+        ReturnType ret = null;
 
         try {
             ret = depAir.boardThePlane(id);
@@ -175,7 +175,7 @@ public class Passenger extends Thread {
      * Passenger leaves the plane when arriving to destination airport.
      */
     public void leaveThePlane(){
-        Message ret = null;
+        ReturnType ret = null;
 
         try {
             ret = destAir.leaveThePlane(id);
